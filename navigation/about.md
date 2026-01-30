@@ -63,12 +63,12 @@ Flags from Wikipedia Images
     var container = document.getElementById("grid_container"); // This container connects to the HTML div
 
     // 2. Define a JavaScript object for our http source and our data rows for the Living in the World grid
-    var http_source = "https://upload.wikimedia.org/wikipedia/commons/";
+    var http_source = "https://flagcdn.com/";
     var living_in_the_world = [
-        {"flag": "0/01/Flag_of_California.svg", "greeting": "Hi", "description": "California - My whole life"},
-        {"flag": "1/17/Flag_of_India.svg", "greeting": "Namaste", "description": "India - Country of origin"},
-        {"flag": "f/f4/Flag_of_Greece.svg", "greeting": "Yasou", "description": "Greece - visited"},
-        {"flag": "e/ef/Flag_of_Hawaii.svg", "greeting": "Aloha", "description": "Hawaii - visited and loved it"},
+        {"flag": "us-ca.svg", "greeting": "Hi", "description": "California - My whole life"},
+        {"flag": "in.svg", "greeting": "Namaste", "description": "India - Country of origin"},
+        {"flag": "gr.svg", "greeting": "Yasou", "description": "Greece - visited"},
+        {"flag": "us-hi.svg", "greeting": "Aloha", "description": "Hawaii - visited and loved it"},
     ];
 
     // 3a. Consider how to update style count for size of container

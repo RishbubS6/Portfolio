@@ -19,7 +19,7 @@ description: "Class of 2028"
 owner_name: Rishab Shyamal
 github_username: RishbubS6 
 github_repo: "Portfolio" 
-baseurl: "/Portfolio/about" 
+baseurl: "/Portfolio" 
 future: true
 
 # Build settings
