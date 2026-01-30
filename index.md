@@ -1,11 +1,10 @@
 ---
 layout: post 
-title: Portfolio Home 
+title: I'm Rishab Shyamal
 hide: true
-show_reading_time: false
 ---
 
-Hi! My name is [Your Full Name]
+Hi! My name is Rishab Shyamal 
 
 ### Development Environment
 
@@ -30,7 +29,7 @@ Hi! My name is [Your Full Name]
 
 ### Class Progress
 
-> Here is my progress through coding, click to see these online
+> Here is my progress through coding, click to see these online - none work right now
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <a href="{{site.baseurl}}/snake" style="text-decoration: none;">
@@ -50,6 +49,6 @@ Hi! My name is [Your Full Name]
 <!-- Contact Section -->
 ### Get in Touch
 
-> Feel free to reach out if you'd like to collaborate or learn more about our work.
+> Feel free to reach out if you'd like to collaborate or learn more about our work. I don't bite!
+<p style="color: #2A7DB1;">My 🔥aura🔥 <a href="https://youtu.be/4uDgMx2V3Hc" style="color: #2A7DB1; text-decoration: underline;">video</a></p>
 
-<p style="color: #2A7DB1;">Open Coding Society: <a href="https://opencodingsociety.com" style="color: #2A7DB1; text-decoration: underline;">Socials</a></p>

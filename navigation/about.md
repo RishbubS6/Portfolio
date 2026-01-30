@@ -1,16 +1,22 @@
 ---
-layout: post
-title: About
+layout: blogs 
+title: Blogs
+search_exclude: true
 permalink: /about/
-comments: true
 ---
 
 ## As a conversation Starter
 
-Here are some places I have lived.
+I like random occurences and relaxing.
+
+Love trivia - will digest random facts like a maniac
+
+BIG Cricket fan - I'm the #1 Dhoni Supporter
+
+I've been to over 23 countries and 5 continents (including Antarctca), here are my favorites below:
 
 <comment>
-Flags are made using Wikipedia images
+Flags from Wikipedia Images
 </comment>
 
 <style>
@@ -60,10 +66,10 @@ Flags are made using Wikipedia images
     // 2. Define a JavaScript object for our http source and our data rows for the Living in the World grid
     var http_source = "https://upload.wikimedia.org/wikipedia/commons/";
     var living_in_the_world = [
-        {"flag": "0/01/Flag_of_California.svg", "greeting": "Hey", "description": "California - forever"},
-        {"flag": "b/b9/Flag_of_Oregon.svg", "greeting": "Hi", "description": "Oregon - 9 years"},
-        {"flag": "b/be/Flag_of_England.svg", "greeting": "Alright mate", "description": "England - 2 years"},
-        {"flag": "e/ef/Flag_of_Hawaii.svg", "greeting": "Aloha", "description": "Hawaii - 2 years"},
+        {"flag": "0/01/Flag_of_California.svg", "greeting": "Hi", "description": "California - My whole life"},
+        {"flag": "1/17/Flag_of_India.svg", "greeting": "Namaste", "description": "India - Country of origin"},
+        {"flag": "f/f4/Flag_of_Greece.svg", "greeting": "Yasou", "description": "Greece - visited"},
+        {"flag": "e/ef/Flag_of_Hawaii.svg", "greeting": "Aloha", "description": "Hawaii - visited and loved it"},
     ];
 
     // 3a. Consider how to update style count for size of container
@@ -97,42 +103,80 @@ Flags are made using Wikipedia images
     }
 </script>
 
+<!-- Favorite TV Shows grid -->
+## Favorite TV Shows
+
+<div class="grid-container" id="shows_grid">
+    <!-- Favorite shows will be added here by JavaScript -->
+</div>
+
+<script>
+    // Base path for local images (place your images in /images/fav_shows/)
+    var site_base = "{{ site.baseurl | default: '' }}";
+    var shows_http_source = (site_base && site_base !== '')
+        ? (site_base.replace(/\/$/, '') + '/images/fav_shows/')
+        : './images/fav_shows/';
+    var favorite_shows = [
+        {"img": "Sakamoto_Days.webp", "title": "Sakamoto Days"},
+        {"img": "Bleach.webp", "title": "Bleach — TYBW"},
+        {"img": "White_Collar.jpeg", "title": "White Collar"},
+        {"img": "Sienfeld.webp", "title": "Seinfeld"}
+    ];
+
+    var showsContainer = document.getElementById("shows_grid");
+    for (const show of favorite_shows) {
+        var item = document.createElement("div");
+        item.className = "grid-item";
+        var img = document.createElement("img");
+        img.src = shows_http_source + encodeURIComponent(show.img);
+        img.alt = show.title;
+        var p = document.createElement("p");
+        p.textContent = show.title;
+        item.appendChild(img);
+        item.appendChild(p);
+        showsContainer.appendChild(item);
+    }
+</script>
+
 ### Journey through Life
 
-Here is what I did at those places
+- 🏫 Up to high school at Del Norte in California
+- 🏫 High school not yet over, lets go year of '28
+- Traveled to over 23 countries!
+- Scouting America!
+- DECA
+- Quizbowl & A-League are peak 
+- I play a LOT of games:
+- Hollow Knight - both
+- Started League
+- Pokemon
+- Fire Emblem
+- Anime is good: 
+- Sakamoto Days
+- Wind Breaker
+- SAO
+- Bleach
 
-- 🏫 Lots of Elementary Schools in Tucson, LA, Honolulu, and Glendale (CA)
-- 🏫 Middle and High School in Glendale (CA), Hoover High graduated '77
-- 🎓 Glendale CA Community College, UCLA Extension, LA Wilshire Computer Tech School '77 to '79
-- ⛪ England, London Missionary for Church of Jesus Christ of Latter-day Saints '79 to '81
-- 💼 Culver City, Glendale CA founder at Ashton-Tate, original PC's dBase 2 and 3 '82 to '87
-- 🎓 Eugene Oregon Undergraduate CompSci Degree at University of Oregon (Go Ducks!) '89 to '91
-- 💼 Eugene Oregon, founder and owner @ Microniche `88, Point Control CAD CAM developer '91 to '96
-- 🏢 San Diego CA Qualcomm, Satellite Comm and 1st Mobile OS (BREW) '96 to '19
-- 👨‍🏫 San Diego CA Teacher of Computer Science @ Del Norte High School San Diego '19 to present
+### About Me
 
-### Culture, Family, and Fun
+For me, everything is my family and friends
 
-Everything for me, as for many others, revolves around family and faith.
-
-- My mother told me that I was Danish, English. and Irish, here is my researched [family tree]({{site.baseurl}}/images/about/familytree.png)
-- My family is pretty big as I have been married twice, my 1st wife passed away.  We have had 5 kids, 4 adopted by me, 1 biological.  Plus, there are three grandkids.  My name to my grandkids is Abuilito.
-- The gallery of pics has some of my family, fun, culture and faith memories.
+- Soy Indiano
+- I speak English, Tamil, and un poco de Espanol
+- Love to go to the great outdoors, camping, hiking, backpacking
+- Slept in a hammock overnight several times
+- Gamer
+- Love to be involved in the community
+- Gotta love food ofc
+- Gonna be a businessman or lawyer or smth, not sure - just not STEM
+- "Don't break anyone's heart, they only have one. Break their bones instead, they have 206". - Ichigo K.
+- "Shoot for the moon, because if you miss, you'll land amongst the stars". - I forgot who said this
 
 <comment>
-Gallery of Pics, scroll to the right for more ...
+My most aura pics 🔥Go to my main page to see a goated edit of me in full aura mode
 </comment>
 <div class="image-gallery">
-  <img src="{{site.baseurl}}/images/about/missionary.jpg" alt="Image 1">
-  <img src="{{site.baseurl}}/images/about/john_tamara.jpg" alt="Image 2">
-  <img src="{{site.baseurl}}/images/about/tamara_fam.jpg" alt="Image 3">
-  <img src="{{site.baseurl}}/images/about/surf.jpg" alt="Image 4">
-  <img src="{{site.baseurl}}/images/about/john_lora.jpg" alt="Image 5">
-  <img src="{{site.baseurl}}/images/about/lora_fam.jpg" alt="Image 6">
-  <img src="{{site.baseurl}}/images/about/lora_fam2.jpg" alt="Image 7">
-  <img src="{{site.baseurl}}/images/about/pj_party.jpg" alt="Image 8">
-  <img src="{{site.baseurl}}/images/about/trent_family.png" alt="Image 9">
-  <img src="{{site.baseurl}}/images/about/claire.jpg" alt="Image 10">
-  <img src="{{site.baseurl}}/images/about/grandkids.jpg" alt="Image 11">
-  <img src="{{site.baseurl}}/images/about/farm.jpg" alt="Image 12">
+    <img src="{{ site.baseurl }}/images/about/Shotgun.png" alt="Image 1">
+    <img src="{{ site.baseurl }}/images/about/NYLT.png" alt="Image 2">
+    <img src="{{ site.baseurl }}/images/about/Tuff.jpeg" alt="Image 3">
 </div>
