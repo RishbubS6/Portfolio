@@ -1,7 +1,6 @@
 ---
-layout: blogs 
-title: Blogs
-search_exclude: true
+layout: post 
+title: About
 permalink: /about/
 ---
 
