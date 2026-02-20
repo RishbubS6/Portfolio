@@ -1,3 +1,13 @@
+---
+layout: post
+courses: { csse: {week: 5} } 
+codemirror: true
+microblog: true
+title: Homework Summation
+permalink: /homeworks
+author: Rishab Shyamal
+---
+
 # Tri 1 Homework Summation Blog
 
 This page summarizes each Tri 1 JavaScript homework with a short note on what was learned and a link to the notebook for the full exercise.
