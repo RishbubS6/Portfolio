@@ -25,8 +25,6 @@ Hi! My name is Rishab Shyamal
     </a>
 </div>
 
-</div>
-
 <!-- Fun Fact Generator -->
 <div id="fun-fact-widget" style="margin-top: 18px; padding: 16px; border-radius: 8px; background: #000; color: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.45); max-width:720px;">
     <h4 style="margin:0 0 8px 0; color: #fff;">Fun Fact Generator</h4>
@@ -137,12 +135,12 @@ Hi! My name is Rishab Shyamal
             Calculator
         </div>
     </a>
-    <a href="{{site.baseurl}}/pong" style="text-decoration: none;">
+    <a href="{{site.baseurl}}/custompong" style="text-decoration: none;">
         <div style="background-color: #FF8C00; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
             Pong
         </div>
     </a>
-    <a href="{{site.baseurl}}/whats-that-pokemon" style="text-decoration: none;">
+    <a href="{{site.baseurl}}/whos-that-pokemon" style="text-decoration: none;">
         <div style="background-color: #FFD700; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
             What's That Pokémon!
         </div>
