@@ -145,9 +145,9 @@ Hi! My name is Rishab Shyamal
             What's That Pokémon!
         </div>
     </a>
-    <a href="{{site.baseurl}}/_notebooks/JavaScriptLessons/homeworks/homeworks.md" style="text-decoration: none;">
+    <a href="{{site.baseurl}}/homeworks" style="text-decoration: none;">
         <div style="background-color: #6A5ACD; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
-            homeworks gallery
+            Homeworks Gallery
         </div>
     </a>
 </div>
