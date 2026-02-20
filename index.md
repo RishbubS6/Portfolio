@@ -117,7 +117,7 @@ Hi! My name is Rishab Shyamal
 
 ### Class Progress
 
-> Here is my progress through coding, click to see these online - none work right now
+> Here is my progress through coding, click to see these online - Some are games, some are blog posts, some are classworks/homeworks
 
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <a href="{{site.baseurl}}/snake" style="text-decoration: none;">
