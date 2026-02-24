@@ -130,6 +130,11 @@ Hi! My name is Rishab Shyamal
             N@TM Blog
         </div>
     </a>
+    <a href="{{site.baseurl}}/accomplishments" style="text-decoration: none;">
+        <div style="background-color: #fe2788; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
+            Accomplishments Blog
+        </div>
+    </a>
     <a href="{{site.baseurl}}/calculator" style="text-decoration: none;">
         <div style="background-color: #1E90FF; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
             Calculator
