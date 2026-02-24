@@ -34,13 +34,13 @@ At N@TM our class presented our RPG game (at least the parts that worked) to eve
 <div class="natm-gallery">
 {% for img in gallery_images %}
   <a class="natm-item" href="#lightbox-{{ forloop.index }}">
-    <img src="{{ img.path | relative_url }}" alt="{{ img.name }}">
-    <div class="natm-caption">{{ img.name | replace: '-', ' ' | replace: '_', ' ' | split:'.' | first }}</div>
+    <img src="{{ img.path | relative_url | replace: ' ', '%20' | replace: '(', '%28' | replace: ')', '%29' | replace: '#', '%23' | replace: '&', '%26' }}" alt="{{ img.name }}">
+    <div class="natm-caption">{{ img.name | split:'.' | first | replace: '-', ' ' | replace: '_', ' ' }}</div>
   </a>
 
   <div id="lightbox-{{ forloop.index }}" class="lightbox">
     <a href="#" style="position:absolute;inset:0;"></a>
-    <img src="{{ img.path | relative_url }}" alt="{{ img.name }}">
+    <img src="{{ img.path | relative_url | replace: ' ', '%20' | replace: '(', '%28' | replace: ')', '%29' | replace: '#', '%23' | replace: '&', '%26' }}" alt="{{ img.name }}">
   </div>
 {% endfor %}
 </div>
