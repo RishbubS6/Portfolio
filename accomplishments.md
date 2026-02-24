@@ -61,3 +61,4 @@ In this unit, I primarily helped the class by answering table questions and coor
 - I designed the main character for the game as well as the intended background for each level
 - I also learned about how to help groups working on very different things with different goals do their best while also trying to ensure my group succeeds
 - I also learned how to manage compromising on our game, as we couldn't achieve our original vision, but along the way we modified it, adding and removing parts (more removing than adding), to reach our end product
+
