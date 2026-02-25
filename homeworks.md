@@ -14,6 +14,12 @@ This page summarizes each Tri 1 JavaScript homework with a short note on what wa
 
 ---
 
+**Classes and Methods (what I learned):** I practiced creating, accessing, and modifying arrays, and used loops to process array elements (sum, average, find min/max).
+
+<a href="{{site.baseurl}}/js/classes" style="text-decoration:none; background-color:#00FF00; color:black; padding:10px 20px; border-radius:5px; font-weight:bold; display:inline-block;">Classes & Methods</a>
+
+---
+
 **Arrays (what I learned):** I practiced creating, accessing, and modifying arrays, and used loops to process array elements (sum, average, find min/max).
 
 <a href="{{site.baseurl}}/js/arrays" style="text-decoration:none; background-color:#00FF00; color:black; padding:10px 20px; border-radius:5px; font-weight:bold; display:inline-block;">Arrays</a>
