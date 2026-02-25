@@ -80,7 +80,7 @@ In this unit, I primarily helped the class by answering table questions and coor
 .lightbox:target{ display:flex;}
 </style>
 
-{% assign gallery_images = site.static_files | where_exp: "f", "f.path contains '/images/N@TMBlog/'" | sort: "name" %}
+{% assign gallery_images = site.static_files | where_exp: "f", "f.path contains '/images/Achievments/'" | sort: "name" %}
 <div class="natm-gallery">
 {% for img in gallery_images %}
   <a class="natm-item" href="#lightbox-{{ forloop.index }}">
