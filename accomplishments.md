@@ -23,22 +23,22 @@ I'll get into more detail about my journey and accomplishments below.
 ### Serving a team
 Throughout this trimester, I held several roles in the classroom, being a student, a teacher, and a scrum master. Outside of this class I have had experience in each of these roles, though few opportunities were as in depth and continuous as CSSE was. 
 
-## As a Teacher
+# As a Teacher
 - I learned how better present content to individuals who have no experience, as well as how to simplify advanced content to be taught easily and understandably
 - I learned how to create interactive homeworks to check understanding and ensure students understand material
 - I learned how to interact with students and help ensure they understand content, even when some may not openly ask questions
 
-## As a Student
+# As a Student
 - I learned more about how to effectivley communicate with a teacher
 - I learned more about understanding a teacher's goals in teaching us and how to help them achieve that goal while achieving my own
 
-## As a Scrum Master
+# As a Scrum Master
 - I have had lots of experience in roles like these, but to be honest, this was unique and challenging in several ways I didn't anticipate
 - I was the scrum master in each group I was a member of, since the start of class. However, during the class game project I took a step back from the role and Flora served more as scrum master, and I was more of a scrummer and the scrum master for the spriting team
 - I learned how to help everyone in a team through challenges, where everyone experienced very different challenges and had different levels of content knowledge/understanding.
 - I also learned how to better coordinate teams with different levels of motivation and reasons for being here effectivley so each member could achieve their goals
 
-## Achievements in these roles
+# Achievements in these roles
 - In all of these roles, I think my biggest achievement is how I helped work with the class, interacted with new people and got to know everyone somewhat well
 - We also all worked together to make fun hacks and a (somewhat) functional class game
 
