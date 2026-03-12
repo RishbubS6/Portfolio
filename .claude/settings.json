@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(python -c \"import bame_ai_server; print\\(''Flask server imports OK''\\)\")",
+      "Bash(curl -s http://localhost:5000/api/providers)"
+    ]
+  }
+}

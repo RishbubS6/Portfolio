@@ -1,13 +1,9 @@
 ---
+layout: post
 permalink: /ai
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BAME AI — Your Personal Research Intelligence</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -364,8 +360,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:9px
   .cap-chips{display:none;}
 }
 </style>
-</head>
-<body>
+
 <!-- Hidden inputs -->
 <input type="file" id="file-input" accept=".pdf,.txt,.md,.csv,.json,.js,.py,.html,.css,.tsv" multiple style="display:none">
 <input type="file" id="img-input" accept="image/*" multiple style="display:none">
@@ -394,22 +389,6 @@ header{display:flex;align-items:center;justify-content:space-between;padding:9px
       <div class="tone-card" data-tone="researcher"><span class="tone-emoji">🔬</span><div class="tone-name">Deep Researcher</div><div class="tone-desc">Thorough citations, academic precision</div></div>
     </div>
 
-    <div class="ob-divider"></div>
-    <div class="ob-label">02 — Pick your AI provider</div>
-    <div class="prov-grid" id="ob-prov-grid">
-      <div class="prov-card selected" data-prov="google"><span class="prov-logo">🔵</span><div class="prov-name">Google</div><div class="prov-model">Gemini 2.0 Flash</div></div>
-      <div class="prov-card" data-prov="openai"><span class="prov-logo">⚫</span><div class="prov-name">OpenAI</div><div class="prov-model">GPT-4o</div></div>
-      <div class="prov-card" data-prov="anthropic"><span class="prov-logo">🟠</span><div class="prov-name">Anthropic</div><div class="prov-model">Claude Sonnet</div></div>
-    </div>
-
-    <div class="ob-label">03 — Paste your API key (stored locally, never shared)</div>
-    <div class="api-row">
-      <div class="api-wrap">
-        <input type="password" class="api-input" id="ob-key" placeholder="AIza..." autocomplete="off" spellcheck="false">
-        <button class="api-eye" id="ob-eye">👁</button>
-      </div>
-      <div class="api-hint" id="ob-hint">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a> — no credit card needed</div>
-    </div>
     <button class="ob-btn" id="ob-launch">Launch BAME AI →</button>
   </div>
 </div>
@@ -446,7 +425,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:9px
   <div class="status-bar">
     <div class="sdot" id="sdot"></div>
     <span class="stext" id="stext">Online — ready to go</span>
-    <span class="smodel" id="smodel">Google · Gemini 2.0 Flash</span>
+    <span class="smodel" id="smodel">Google · Gemini 2.5 Flash Lite</span>
   </div>
 
   <div id="layout">
@@ -593,29 +572,10 @@ header{display:flex;align-items:center;justify-content:space-between;padding:9px
 <div id="modal-settings" class="overlay">
   <div class="mbox" style="max-width:440px;">
     <div class="mtitle">⚙️ Settings</div>
-    <div style="margin-bottom:14px;">
-      <span class="mlabel">AI Provider</span>
-      <div class="prov-grid" id="settings-prov-grid">
-        <div class="prov-card" data-prov="google"><span class="prov-logo">🔵</span><div class="prov-name">Google</div><div class="prov-model">Gemini 2.0 Flash</div></div>
-        <div class="prov-card" data-prov="openai"><span class="prov-logo">⚫</span><div class="prov-name">OpenAI</div><div class="prov-model">GPT-4o</div></div>
-        <div class="prov-card" data-prov="anthropic"><span class="prov-logo">🟠</span><div class="prov-name">Anthropic</div><div class="prov-model">Claude Sonnet</div></div>
-      </div>
-    </div>
-    <div style="margin-bottom:12px;">
-      <span class="mlabel">API Key</span>
-      <div class="skey-wrap">
-        <input type="password" class="skey-in" id="s-key-in" placeholder="Paste new key to update..." autocomplete="off" spellcheck="false">
-        <button class="seye" id="s-eye">👁</button>
-      </div>
-      <div class="scurr">Current: <span id="s-curr-key">none</span></div>
-    </div>
+    <div style="padding:10px 0 14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:11px;">Model: Google · Gemini 2.5 Flash Lite</div>
     <div class="mactions">
       <button class="mbtn cancel" id="s-cancel">Cancel</button>
-      <button class="mbtn ok" id="s-save">Save →</button>
     </div>
-    <div class="sdivider"></div>
-    <div class="sdanger-title">Danger Zone</div>
-    <button class="sdanger-btn" id="s-logout">🔑 Clear Key & Return to Setup</button>
   </div>
 </div>
 
@@ -638,7 +598,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:9px
 // PROVIDERS
 // ══════════════════════════════════════════════════════════════════════
 const PROVIDERS = {
-  google:    { name:'Google Gemini', model:'Gemini 2.0 Flash',    placeholder:'AIza...',     hint:'Free key: <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>' },
+  google:    { name:'Google Gemini', model:'Gemini 2.5 Flash Lite',    placeholder:'AIza...',     hint:'Free key: <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com</a>' },
   openai:    { name:'OpenAI',        model:'GPT-4o',               placeholder:'sk-...',      hint:'Key: <a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com</a>' },
   anthropic: { name:'Anthropic',     model:'Claude Sonnet',        placeholder:'sk-ant-...', hint:'Key: <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>' },
 };
@@ -667,7 +627,8 @@ const TONES = {
 // ══════════════════════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════════════════════
-let S = { apiKey:'', prov:'google', tone:'witty', thinking:false, webSearch:true };
+const API_SERVER = 'http://localhost:5000';
+let S = { tone:'witty', thinking:false, webSearch:true };
 let conversations = [];   // [{id, name, messages:[]}]
 let activeConvId = 0;
 let memories = [];
@@ -681,7 +642,7 @@ function msgs(){ return activeConv()?.messages || []; }
 function load(){
   try{
     const d = JSON.parse(localStorage.getItem('bame_v4')||'{}');
-    S.apiKey = d.apiKey||''; S.prov = d.prov||'google'; S.tone = d.tone||'witty';
+    S.tone = d.tone||'witty';
     memories = d.memories||[];
     conversations = d.convs||[];
   }catch(e){}
@@ -690,14 +651,14 @@ function load(){
 }
 function save(){
   try{ localStorage.setItem('bame_v4', JSON.stringify({
-    apiKey:S.apiKey, prov:S.prov, tone:S.tone, memories,
+    tone:S.tone, memories,
     convs: conversations.map(c=>({...c, messages:c.messages.slice(-80)}))
   })); }catch(e){}
 }
 load();
 
 // ══════════════════════════════════════════════════════════════════════
-// API CALLS
+// API CALLS — proxied through Flask server at API_SERVER
 // ══════════════════════════════════════════════════════════════════════
 function buildSys(){
   const base = TONES[S.tone].sys + ART_SYS;
@@ -705,123 +666,47 @@ function buildSys(){
   return base + memCtx;
 }
 
-async function callGoogle(key, messages, sys){
-  const contents = messages.map(m=>({ role:m.role==='assistant'?'model':'user', parts:[{text:m.content}] }));
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,
-    { method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ system_instruction:{parts:[{text:sys}]}, contents, generationConfig:{maxOutputTokens:8192} }) });
-  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-  const d = await r.json();
-  return d?.candidates?.[0]?.content?.parts?.[0]?.text || 'No response.';
-}
-
-async function callOpenAI(key, messages, sys){
-  const r = await fetch('https://api.openai.com/v1/chat/completions',
-    { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
-      body:JSON.stringify({ model:'gpt-4o', max_tokens:8192,
-        messages:[{role:'system',content:sys},...messages.map(m=>({role:m.role==='assistant'?'assistant':'user',content:m.content}))] }) });
-  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-  const d = await r.json(); return d?.choices?.[0]?.message?.content || 'No response.';
-}
-
-async function streamOpenAI(key, messages, sys, onChunk){
-  const r = await fetch('https://api.openai.com/v1/chat/completions',
-    { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},
-      body:JSON.stringify({ model:'gpt-4o', max_tokens:8192, stream:true,
-        messages:[{role:'system',content:sys},...messages.map(m=>({role:m.role==='assistant'?'assistant':'user',content:m.content}))] }) });
-  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-  const reader=r.body.getReader(); const dec=new TextDecoder(); let full='';
-  while(true){
-    const{done,value}=await reader.read(); if(done)break;
-    for(const line of dec.decode(value).split('\n').filter(l=>l.startsWith('data:'))){
-      const d=line.slice(5).trim(); if(d==='[DONE]')continue;
-      try{ const t=JSON.parse(d).choices?.[0]?.delta?.content||''; if(t){full+=t;onChunk(t);} }catch(e){}
-    }
-  }
-  return full;
-}
-
-async function streamGoogle(key, messages, sys, onChunk){
-  // Google SSE stream
-  const contents = messages.map(m=>({ role:m.role==='assistant'?'model':'user', parts:[{text:m.content}] }));
-  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse&key=${key}`,
-    { method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({ system_instruction:{parts:[{text:sys}]}, contents, generationConfig:{maxOutputTokens:8192} }) });
-  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-  const reader=r.body.getReader(); const dec=new TextDecoder(); let full=''; let buf='';
-  while(true){
-    const{done,value}=await reader.read(); if(done)break;
-    buf+=dec.decode(value);
-    const parts=buf.split('\n\n'); buf=parts.pop()||'';
-    for(const part of parts){
-      if(!part.startsWith('data:'))continue;
-      try{
-        const d=JSON.parse(part.slice(5).trim());
-        const t=d?.candidates?.[0]?.content?.parts?.[0]?.text||'';
-        if(t){full+=t;onChunk(t);}
-      }catch(e){}
-    }
-  }
-  return full || await callGoogle(key, messages, sys);
-}
-
-async function callAnthropic(key, messages, sys){
-  const r = await fetch('https://api.anthropic.com/v1/messages',
-    { method:'POST', headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-beta':'interleaved-thinking-2025-05-14'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:8096, system:sys, messages:messages.slice(-50) }) });
-  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-  const d = await r.json();
-  return (d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('') || 'No response.';
-}
-
-async function streamAnthropic(key, messages, sys, onChunk){
-  const r = await fetch('https://api.anthropic.com/v1/messages',
-    { method:'POST', headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-beta':'interleaved-thinking-2025-05-14'},
-      body:JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:8096, stream:true, system:sys, messages:messages.slice(-50) }) });
-  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-  const reader=r.body.getReader(); const dec=new TextDecoder(); let full=''; let buf='';
-  while(true){
-    const{done,value}=await reader.read(); if(done)break;
-    buf+=dec.decode(value);
-    const parts=buf.split('\n\n'); buf=parts.pop()||'';
-    for(const part of parts){
-      if(!part.startsWith('data:'))continue;
-      try{
-        const ev=JSON.parse(part.slice(5).trim());
-        if(ev.type==='content_block_delta'&&ev.delta?.type==='text_delta'){
-          const t=ev.delta.text||''; if(t){full+=t;onChunk(t);}
-        }
-      }catch(e){}
-    }
-  }
-  return full || await callAnthropic(key, messages, sys);
-}
-
 async function callAPI(messages, onChunk){
   const sys = buildSys();
   const m = messages || msgs().slice(-50);
   if(onChunk){
-    switch(S.prov){
-      case 'openai':    return streamOpenAI(S.apiKey, m, sys, onChunk);
-      case 'google':    return streamGoogle(S.apiKey, m, sys, onChunk);
-      case 'anthropic': return streamAnthropic(S.apiKey, m, sys, onChunk);
+    const r = await fetch(`${API_SERVER}/api/stream`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:m, system:sys})
+    });
+    if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error||`HTTP ${r.status}`); }
+    const reader=r.body.getReader(); const dec=new TextDecoder(); let full=''; let buf='';
+    while(true){
+      const{done,value}=await reader.read(); if(done)break;
+      buf+=dec.decode(value);
+      const parts=buf.split('\n\n'); buf=parts.pop()||'';
+      for(const part of parts){
+        if(!part.startsWith('data:'))continue;
+        const d=part.slice(5).trim(); if(d==='[DONE]')continue;
+        try{ const p=JSON.parse(d); if(p.error) throw new Error(p.error); const t=p.text||''; if(t){full+=t;onChunk(t);} }catch(e){ if(e.message&&!e.message.startsWith('JSON')) throw e; }
+      }
     }
+    return full;
   }
-  switch(S.prov){
-    case 'openai':    return callOpenAI(S.apiKey, m, sys);
-    case 'google':    return callGoogle(S.apiKey, m, sys);
-    case 'anthropic': return callAnthropic(S.apiKey, m, sys);
-  }
+  const r = await fetch(`${API_SERVER}/api/chat`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({messages:m, system:sys})
+  });
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error||`HTTP ${r.status}`); }
+  const d = await r.json();
+  if(d.error) throw new Error(d.error);
+  return d.content;
 }
 
 async function callSimple(prompt){
-  const m = [{role:'user',content:prompt}];
-  const sys = 'You are a helpful assistant. Be concise and precise.';
-  switch(S.prov){
-    case 'openai':    return callOpenAI(S.apiKey, m, sys);
-    case 'google':    return callGoogle(S.apiKey, m, sys);
-    case 'anthropic': return callAnthropic(S.apiKey, m, sys);
-  }
+  const r = await fetch(`${API_SERVER}/api/chat`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({messages:[{role:'user',content:prompt}], system:'You are a helpful assistant. Be concise and precise.'})
+  });
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error||`HTTP ${r.status}`); }
+  const d = await r.json();
+  if(d.error) throw new Error(d.error);
+  return d.content;
 }
 
 // ══════════════════════════════════════════════════════════════════════
@@ -831,8 +716,9 @@ const URL_RE = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/gi;
 
 async function scrapeURL(url){
   try{
-    const r = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-      { signal:AbortSignal.timeout(8000) });
+    const r = await fetch(`${API_SERVER}/api/scrape`,
+      { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({url}),
+        signal:AbortSignal.timeout(10000) });
     if(!r.ok) throw new Error('fetch failed');
     const d = await r.json();
     const html = d.contents||'';
@@ -876,8 +762,8 @@ async function runResearch(query, depth){
       const q = queries[i];
       setThink(thEl, `🔍 Searching: "${q}" (${i+1}/${queries.length})`);
       try{
-        const sr = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(q)}`)}`,
-          {signal:AbortSignal.timeout(7000)});
+        const sr = await fetch(`${API_SERVER}/api/search`,
+          {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query:q}),signal:AbortSignal.timeout(9000)});
         const sd = await sr.json();
         const urls = [...sd.contents.matchAll(/href="(https?:\/\/[^"]+)"/g)]
           .map(m=>m[1]).filter(u=>!u.includes('duckduckgo')&&!u.includes('google')&&u.startsWith('http'))
@@ -921,7 +807,6 @@ async function runResearch(query, depth){
 let imgStyle = '', imgSize = '1024x1024';
 
 async function generateImage(prompt){
-  if(!S.apiKey){ showToast('❌ No API key set'); return; }
   document.getElementById('welcome')?.remove();
   const conv = activeConv();
   if(conv) conv.messages.push({role:'user',content:`Generate image: ${prompt}`});
@@ -934,29 +819,15 @@ async function generateImage(prompt){
     let imgUrl = '', revisedPrompt = prompt;
     const fullPrompt = imgStyle ? `${prompt}, ${imgStyle}` : prompt;
 
-    if(S.prov === 'openai' || S.prov === 'anthropic'){
-      // DALL-E 3 via OpenAI key
-      const key = S.prov === 'openai' ? S.apiKey : S.apiKey;
-      const r = await fetch('https://api.openai.com/v1/images/generations',{
-        method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${S.prov==='openai'?S.apiKey:S.apiKey}`},
-        body:JSON.stringify({ model:'dall-e-3', prompt:fullPrompt, n:1, size:imgSize, response_format:'url' })
-      });
-      if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status}`); }
-      const d = await r.json();
-      imgUrl = d.data[0].url;
-      revisedPrompt = d.data[0].revised_prompt || prompt;
-    } else {
-      // Google Imagen 3
-      const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${S.apiKey}`,{
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({ instances:[{prompt:fullPrompt}], parameters:{sampleCount:1} })
-      });
-      if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e?.error?.message||`HTTP ${r.status} — Note: Imagen requires Gemini API with billing enabled`); }
-      const d = await r.json();
-      const b64 = d.predictions?.[0]?.bytesBase64Encoded;
-      if(!b64) throw new Error('No image data returned');
-      imgUrl = `data:image/png;base64,${b64}`;
-    }
+    const imgR = await fetch(`${API_SERVER}/api/image`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:fullPrompt, size:imgSize})
+    });
+    if(!imgR.ok){ const e=await imgR.json().catch(()=>({})); throw new Error(e?.error||`HTTP ${imgR.status}`); }
+    const imgD = await imgR.json();
+    if(imgD.error) throw new Error(imgD.error);
+    imgUrl = imgD.url;
+    revisedPrompt = imgD.revised_prompt || prompt;
 
     thEl.remove();
     const chat = document.getElementById('chat');
@@ -967,7 +838,7 @@ async function generateImage(prompt){
       <div class="msg-body">
         <div class="msg-meta"><span style="font-weight:700">BAME AI</span><span style="color:var(--muted2);margin-left:5px;">${now()}</span></div>
         <div class="img-result">
-          <div class="img-result-hdr">🎨 Generated · ${imgSize} · ${S.prov==='google'?'Imagen 3':'DALL·E 3'}</div>
+          <div class="img-result-hdr">🎨 Generated · ${imgSize} · Imagen 3</div>
           <img src="${imgUrl}" class="gen-img" alt="${esc(prompt)}">
           <div class="img-result-btns">
             <a class="img-abtn" href="${imgUrl}" target="_blank">🔗 Open</a>
@@ -1130,7 +1001,6 @@ function removeAttach(i){ attachments.splice(i,1); renderAttachStrip(); }
 document.addEventListener('dragover',e=>e.preventDefault());
 document.addEventListener('drop',async e=>{
   e.preventDefault();
-  if(!S.apiKey) return;
   await handleFiles(Array.from(e.dataTransfer.files));
 });
 
@@ -1170,7 +1040,7 @@ async function sendMessage(){
   document.getElementById('welcome')?.remove();
 
   // Detect image generation intent
-  if(text && isImgIntent(text) && S.apiKey){
+  if(text && isImgIntent(text)){
     const prompt=text.replace(/^(generate|create|draw|make|design|paint|render|imagine|show me)\s+(an?\s+)?(image|picture|photo|illustration|art|painting|drawing|portrait|landscape)(?:\s+of)?/i,'').trim()||text;
     ta.value=''; autoResize(); sendBtn.disabled=true;
     await generateImage(prompt);
@@ -1489,39 +1359,8 @@ function renderMemory(){
 // ══════════════════════════════════════════════════════════════════════
 // SETTINGS
 // ══════════════════════════════════════════════════════════════════════
-function setupProvGrid(gridId, active){
-  document.querySelectorAll(`#${gridId} .prov-card`).forEach(c=>{
-    c.classList.toggle('selected',c.dataset.prov===active);
-    c.addEventListener('click',()=>{ document.querySelectorAll(`#${gridId} .prov-card`).forEach(x=>x.classList.remove('selected')); c.classList.add('selected'); });
-  });
-}
-
-document.getElementById('btn-settings').addEventListener('click',()=>{
-  document.getElementById('s-curr-key').textContent=S.apiKey?S.apiKey.slice(0,10)+'...'+S.apiKey.slice(-4):'not set';
-  document.getElementById('s-key-in').value='';
-  setupProvGrid('settings-prov-grid',S.prov);
-  openModal('modal-settings');
-});
-document.getElementById('s-eye').addEventListener('click',()=>{ const i=document.getElementById('s-key-in'); i.type=i.type==='password'?'text':'password'; });
+document.getElementById('btn-settings').addEventListener('click',()=>openModal('modal-settings'));
 document.getElementById('s-cancel').addEventListener('click',()=>closeModal('modal-settings'));
-document.getElementById('s-save').addEventListener('click',()=>{
-  const k=document.getElementById('s-key-in').value.trim();
-  const pc=document.querySelector('#settings-prov-grid .prov-card.selected');
-  if(k) S.apiKey=k;
-  if(pc) S.prov=pc.dataset.prov;
-  save(); updateProvUI(); closeModal('modal-settings'); showToast('✅ Settings saved');
-});
-document.getElementById('s-logout').addEventListener('click',()=>{
-  if(!confirm('Clear API key and return to setup?'))return;
-  S.apiKey=''; conversations=[{id:0,name:'New Chat',messages:[]}]; activeConvId=0;
-  save(); closeModal('modal-settings');
-  document.getElementById('ob-key').value='';
-  document.getElementById('onboarding').style.display='flex';
-  document.getElementById('onboarding').classList.remove('hidden');
-  document.getElementById('app').classList.remove('visible');
-  document.getElementById('app').style.pointerEvents='none';
-  showWelcome();
-});
 
 // ══════════════════════════════════════════════════════════════════════
 // VIBE MODAL
@@ -1559,7 +1398,6 @@ document.querySelectorAll('#modal-imggen .picker-btn').forEach(b=>{ b.addEventLi
 document.getElementById('imggen-go').addEventListener('click',async()=>{
   const p=document.getElementById('img-prompt').value.trim();
   if(!p){showToast('⚠️ Describe the image');return;}
-  if(!S.apiKey){showToast('❌ No API key');return;}
   closeModal('modal-imggen');
   await generateImage(p);
 });
@@ -1608,7 +1446,6 @@ function scrollBot(){ chatEl.scrollTo({top:chatEl.scrollHeight,behavior:'smooth'
 
 let toastT; function showToast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
 function setStatus(type,text){ document.getElementById('sdot').className='sdot'+(type==='thinking'?' thinking':''); document.getElementById('stext').textContent=text; }
-function updateProvUI(){ const p=PROVIDERS[S.prov]; document.getElementById('smodel').textContent=`${p.name} · ${p.model}`; }
 function updateToneUI(){ document.getElementById('tone-badge').textContent=S.tone; document.getElementById('tone-emoji').textContent=TONES[S.tone].emoji; }
 
 function setupToneGrid(gid,active){ document.querySelectorAll(`#${gid} .tone-card`).forEach(c=>{ c.classList.toggle('selected',c.dataset.tone===active); c.addEventListener('click',()=>{ document.querySelectorAll(`#${gid} .tone-card`).forEach(x=>x.classList.remove('selected')); c.classList.add('selected'); }); }); }
@@ -1619,42 +1456,23 @@ function setupToneGrid(gid,active){ document.querySelectorAll(`#${gid} .tone-car
 const ob=document.getElementById('onboarding');
 const app=document.getElementById('app');
 
-setupProvGrid('ob-prov-grid', S.prov);
 setupToneGrid('ob-tone-grid', S.tone);
 
-const obKey=document.getElementById('ob-key');
-if(S.apiKey) obKey.value=S.apiKey;
-
-// Update hint on provider selection
-document.getElementById('ob-prov-grid').addEventListener('click',e=>{
-  const c=e.target.closest('.prov-card'); if(!c)return;
-  const p=PROVIDERS[c.dataset.prov];
-  obKey.placeholder=p.placeholder;
-  document.getElementById('ob-hint').innerHTML=p.hint;
-});
-const initP=PROVIDERS[S.prov]; obKey.placeholder=initP.placeholder; document.getElementById('ob-hint').innerHTML=initP.hint;
-
-document.getElementById('ob-eye').addEventListener('click',()=>{ obKey.type=obKey.type==='password'?'text':'password'; });
 document.getElementById('ob-launch').addEventListener('click',()=>{
-  const key=obKey.value.trim();
   const tc=document.querySelector('#ob-tone-grid .tone-card.selected');
-  const pc=document.querySelector('#ob-prov-grid .prov-card.selected');
-  if(!key){ shake(obKey); showToast('⚠️ Enter your API key'); return; }
-  S.apiKey=key; S.tone=tc?tc.dataset.tone:'witty'; S.prov=pc?pc.dataset.prov:'google';
+  S.tone=tc?tc.dataset.tone:'witty';
   save(); launchApp();
 });
-
-function shake(el){ el.style.borderColor='var(--danger)'; el.animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(-4px)'},{transform:'translateX(0)'}],{duration:300}); setTimeout(()=>el.style.borderColor='',2000); }
 
 function launchApp(){
   ob.classList.add('hidden');
   setTimeout(()=>{
     ob.style.display='none'; app.classList.add('visible');
-    updateToneUI(); updateProvUI(); renderTabs(); renderMemory();
+    updateToneUI(); renderTabs(); renderMemory();
     if(msgs().length)renderAllMsgs(); else showWelcome();
   },500);
 }
-if(S.apiKey) setTimeout(launchApp,80);
+setTimeout(launchApp, 80);
 
 // ══════════════════════════════════════════════════════════════════════
 // KEYBOARD SHORTCUTS
@@ -1676,5 +1494,3 @@ document.addEventListener('keydown',e=>{
 // ══════════════════════════════════════════════════════════════════════
 (()=>{ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js'; document.head.appendChild(s); })();
 </script>
-</body>
-</html>
