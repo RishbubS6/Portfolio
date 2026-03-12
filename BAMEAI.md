@@ -1,5 +1,4 @@
 ---
-layout: post
 permalink: /ai
 ---
 
@@ -8,6 +7,9 @@ permalink: /ai
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -19,6 +21,7 @@ permalink: /ai
   --danger:#ef4444;--ok:#10b981;--warn:#f59e0b;
 }
 html,body{height:100%;overflow:hidden;}
+.site-header{transform:translateY(-100%);}
 body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);display:flex;flex-direction:column;}
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.022;background-image:linear-gradient(var(--accent) 1px,transparent 1px),linear-gradient(90deg,var(--accent) 1px,transparent 1px);background-size:40px 40px;}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.25;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");}
@@ -521,7 +524,7 @@ header{display:flex;align-items:center;justify-content:space-between;padding:9px
 <div id="modal-imggen" class="overlay">
   <div class="mbox">
     <div class="mtitle">🎨 Image Generation</div>
-    <p style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:12px;line-height:1.65;">Powered by DALL·E 3 (OpenAI) or Imagen 3 (Google). Select your provider's key first.</p>
+    <p style="font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;margin-bottom:12px;line-height:1.65;">Powered by Pollinations.ai — free, no key required.</p>
     <span class="mlabel">Image description</span>
     <textarea class="mcode" id="img-prompt" style="min-height:80px;resize:none;" placeholder="Describe the image you want to generate..."></textarea>
     <span class="mlabel" style="margin-top:10px;">Style preset</span>
@@ -838,7 +841,7 @@ async function generateImage(prompt){
       <div class="msg-body">
         <div class="msg-meta"><span style="font-weight:700">BAME AI</span><span style="color:var(--muted2);margin-left:5px;">${now()}</span></div>
         <div class="img-result">
-          <div class="img-result-hdr">🎨 Generated · ${imgSize} · Imagen 3</div>
+          <div class="img-result-hdr">🎨 Generated · ${imgSize} · Pollinations.ai</div>
           <img src="${imgUrl}" class="gen-img" alt="${esc(prompt)}">
           <div class="img-result-btns">
             <a class="img-abtn" href="${imgUrl}" target="_blank">🔗 Open</a>
@@ -1203,7 +1206,23 @@ function renderThinking(){
 }
 function setThink(el,t){ const s=el.querySelector('#think-txt'); if(s)s.textContent=t; scrollBot(); }
 
-function renderMD(t){ return marked.parse(t.replace(/(<[^>]+class="[^"]*(?:search-tag|src-chip)[^"]*"[\s\S]*?<\/[^>]+>)/g,'\n\n$1\n\n')); }
+function renderMD(t){
+  // Protect LaTeX blocks from marked processing
+  const latexBlocks = [];
+  t = t.replace(/\$\$[\s\S]+?\$\$|\\\[[\s\S]+?\\\]/g, m => { latexBlocks.push({type:'block',src:m}); return `LATEXBLOCK${latexBlocks.length-1}END`; });
+  t = t.replace(/\$[^\$\n]+?\$|\\\([^\)]+?\\\)/g, m => { latexBlocks.push({type:'inline',src:m}); return `LATEXINLINE${latexBlocks.length-1}END`; });
+  let html = marked.parse(t.replace(/(<[^>]+class="[^"]*(?:search-tag|src-chip)[^"]*"[\s\S]*?<\/[^>]+>)/g,'\n\n$1\n\n'));
+  // Restore and render LaTeX
+  html = html.replace(/LATEXBLOCK(\d+)END/g, (_,i) => {
+    try { return katex.renderToString(latexBlocks[i].src.replace(/^\$\$|\$\$$|^\\\[|\\\]$/g,''), {displayMode:true,throwOnError:false}); }
+    catch(e){ return latexBlocks[i].src; }
+  });
+  html = html.replace(/LATEXINLINE(\d+)END/g, (_,i) => {
+    try { return katex.renderToString(latexBlocks[i].src.replace(/^\$|\$$|^\\\(|\\\)$/g,''), {displayMode:false,throwOnError:false}); }
+    catch(e){ return latexBlocks[i].src; }
+  });
+  return html;
+}
 function esc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function escChat(t){ return esc(t).replace(/\n/g,'<br>'); }
 function now(){ return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
@@ -1493,4 +1512,19 @@ document.addEventListener('keydown',e=>{
 // LOAD CHART.JS (for data analysis in artifacts)
 // ══════════════════════════════════════════════════════════════════════
 (()=>{ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js'; document.head.appendChild(s); })();
+
+// ══════════════════════════════════════════════════════════════════════
+// AUTO-HIDE NAVBAR
+// ══════════════════════════════════════════════════════════════════════
+(()=>{
+  const hdr = document.querySelector('.site-header');
+  if(!hdr) return;
+  hdr.style.cssText += 'position:fixed;top:0;left:0;right:0;transform:translateY(-100%);transition:transform 0.25s ease;z-index:99999;';
+  // Invisible hover trigger zone at the top of the screen
+  const trigger = document.createElement('div');
+  trigger.style.cssText = 'position:fixed;top:0;left:0;right:0;height:8px;z-index:100000;';
+  document.body.appendChild(trigger);
+  trigger.addEventListener('mouseenter', ()=> hdr.style.transform='translateY(0)');
+  hdr.addEventListener('mouseleave', ()=> hdr.style.transform='translateY(-100%)');
+})();
 </script>
