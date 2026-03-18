@@ -155,6 +155,11 @@ Hi! My name is Rishab Shyamal
             Homeworks Gallery
         </div>
     </a>
+    <a href="{{site.baseurl}}/ai" style="text-decoration: none;">
+        <div style="background-color: #FFD700; color: black; padding: 10px 20px; border-radius: 5px; font-weight: bold;">
+            BAME AI
+        </div>
+    </a>
 </div>
 
 <br>
