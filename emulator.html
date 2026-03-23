@@ -8,9 +8,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ── TOKENS ── */
 :root{
-  --bg:#07071a;--s1:#0e0e24;--s2:#15152e;
+  --bg:#07071a;--s1:#0d0d22;--s2:#14142c;
   --bd:#252545;--bd2:#35355a;
   --ac:#7c3aed;--ac2:#a855f7;--neon:#c084fc;
   --gr:#22d3ee;--rd:#f43f5e;--am:#f59e0b;
@@ -22,68 +21,42 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--tx);font-family:var(--fn);min-height:100%;overflow-x:hidden}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   NUCLEAR KILL ALL EMULATORJS UI
-   These target every known EJS overlay class.
-   The pill-shaped ovals, the bottom bar, the
-   hover controls — all gone.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-[class*="ejs_menu"],
-[class*="ejs_button"],
-[class*="ejs_bar"],
-[class*="ejs_control"],
-[class*="ejs_volume"],
-[class*="ejs_progress"],
-[class*="ejs_overlay"],
-[class*="ejs_settings"],
-[class*="ejs_network"],
-[class*="ejs_info"],
-[class*="ejs_title"],
-[class*="ejs_toast"],
-[class*="ejs_loading"],
-[id*="ejs_"],
-[class^="ejs"],
-[class*=" ejs"],
-.ejs_menu_bar,
-.ejs_canvas_controls,
-.ejs_canvas_buttons,
-#ejs_canvas_buttons,
-#ejs_menu_bar,
-#ejs_overlay,
-.emulator-ui,
-.ejs-ui,
-/* catch pill overlays by shape — EJS uses large border-radius pill divs */
-#game > div:not(#ejs-actual-canvas-wrap)[style*="border-radius"],
-#game > div > div[style*="border-radius: 999"],
-#game > div > div[style*="border-radius:999"],
-#game > div[style*="position: absolute"][style*="bottom"],
-#game > div[style*="position:absolute"][style*="bottom"]
-{ display:none!important; opacity:0!important; pointer-events:none!important; visibility:hidden!important; }
+/* ─── HIDE EJS OVERLAYS VIA CSS ───
+   Target only EJS-specific class/id patterns.
+   We do NOT hide position:absolute divs here because
+   the canvas wrapper itself uses position:absolute.
+   We use pointer-events:none + z-index suppression instead. */
+[class*="ejs_menu"],[class*="ejs_button"],[class*="ejs_bar"],
+[class*="ejs_control"],[class*="ejs_volume"],[class*="ejs_progress"],
+[class*="ejs_overlay"],[class*="ejs_settings"],[class*="ejs_network"],
+[class*="ejs_info"],[class*="ejs_title"],[class*="ejs_toast"],
+[id*="ejs_menu"],[id*="ejs_bar"],[id*="ejs_button"],[id*="ejs_overlay"],
+[id*="ejs_settings"],[id*="ejs_volume"]
+{ display:none!important;pointer-events:none!important }
 
-/* The actual canvas/video must stay visible */
-#game canvas,
-#game video{ display:block!important; visibility:visible!important; opacity:1!important; }
+/* Canvas & video must always show */
+#game canvas,#game video{
+  display:block!important;visibility:visible!important;
+  opacity:1!important;pointer-events:auto!important;
+  position:relative!important;z-index:1!important;
+}
 
-/* ── BASE ELEMENTS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--bd);
+/* ─── UTILITY ─── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--bd);
   border-radius:8px;background:transparent;color:var(--td);font-family:var(--fn);
   font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
 .btn:hover{border-color:var(--ac2);color:var(--ac2);background:rgba(168,85,247,.07)}
 .btn.on{border-color:var(--ac2);color:var(--ac2);background:rgba(168,85,247,.12)}
-.btn.gon{border-color:var(--gr);color:var(--gr);background:rgba(34,211,238,.07)}
+.btn.gon{border-color:var(--gr);color:var(--gr);background:rgba(34,211,238,.08)}
 .btn.solid{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;
   box-shadow:0 4px 20px rgba(124,58,237,.35)}
 .btn.solid:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,.55)}
 .btn svg{width:14px;height:14px;flex-shrink:0}
-.btn.danger{color:var(--rd);border-color:var(--rd);background:rgba(244,63,94,.06)}
-.btn.danger:hover{background:rgba(244,63,94,.14)}
-
-input[type=range]{-webkit-appearance:none;flex:1;height:4px;background:var(--bd);border-radius:2px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--ac2);border-radius:50%;box-shadow:0 0 8px rgba(168,85,247,.6);cursor:pointer}
+.btn.red{color:var(--rd);border-color:rgba(244,63,94,.4);background:rgba(244,63,94,.05)}
+.btn.red:hover{border-color:var(--rd);background:rgba(244,63,94,.12)}
 .tog{position:relative;width:40px;height:22px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0}
 .tog-sl{position:absolute;inset:0;background:var(--s2);border:1px solid var(--bd);border-radius:11px;cursor:pointer;transition:all .2s}
@@ -91,38 +64,45 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;heigh
 .tog input:checked+.tog-sl{background:var(--ac);border-color:var(--ac2)}
 .tog input:checked+.tog-sl::before{transform:translateX(18px);background:#fff}
 .sel{padding:6px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:7px;color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;outline:none}
-input.inp{padding:6px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-family:var(--mo);font-size:11px;outline:none;cursor:text}
+input.inp{padding:6px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-family:var(--mo);font-size:11px;outline:none}
 input.inp:focus{border-color:var(--ac)}
+input[type=range]{-webkit-appearance:none;flex:1;height:4px;background:var(--bd);border-radius:2px;outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--ac2);border-radius:50%;box-shadow:0 0 8px rgba(168,85,247,.6);cursor:pointer}
 
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-@keyframes loadbar{0%{width:5%}60%{width:82%}100%{width:96%}}
+@keyframes lb{0%{width:5%}60%{width:82%}100%{width:96%}}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LANDING — clean drop zone only
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:28px}
-.logo-t{font-family:var(--px);font-size:clamp(20px,4vw,34px);color:var(--neon);text-shadow:0 0 30px rgba(192,132,252,.9),0 0 60px rgba(168,85,247,.4);letter-spacing:4px;text-align:center}
+/* ════════════════════════════════════
+   LANDING
+════════════════════════════════════ */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:40px 20px;gap:28px}
+.logo-t{font-family:var(--px);font-size:clamp(20px,4vw,34px);color:var(--neon);
+  text-shadow:0 0 30px rgba(192,132,252,.9),0 0 60px rgba(168,85,247,.4);
+  letter-spacing:4px;text-align:center}
 .logo-s{font-family:var(--mo);font-size:12px;color:var(--tm);letter-spacing:3px;text-align:center}
-
 .dropz{width:100%;max-width:480px;border:2px dashed var(--bd2);border-radius:20px;
-  padding:48px 32px;text-align:center;cursor:pointer;background:var(--s1);transition:all .25s;position:relative;overflow:hidden}
-.dropz::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(124,58,237,.1) 0%,transparent 70%);opacity:0;transition:opacity .3s}
+  padding:48px 32px;text-align:center;cursor:pointer;background:var(--s1);
+  transition:all .25s;position:relative;overflow:hidden}
+.dropz::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(124,58,237,.1) 0%,transparent 70%);
+  opacity:0;transition:opacity .3s}
 .dropz:hover,.dropz.dov{border-color:var(--ac2);box-shadow:var(--glow)}
 .dropz:hover::before,.dropz.dov::before{opacity:1}
 .dropz.dov{border-style:solid;background:rgba(124,58,237,.08)}
-.drop-ico{font-size:48px;display:block;margin-bottom:16px;filter:drop-shadow(0 0 14px rgba(168,85,247,.7));animation:float 3s ease-in-out infinite}
+.drop-ico{font-size:48px;display:block;margin-bottom:16px;
+  filter:drop-shadow(0 0 14px rgba(168,85,247,.7));animation:float 3s ease-in-out infinite}
 .drop-txt{font-family:var(--px);font-size:9px;color:var(--ac2);line-height:2.2;margin-bottom:10px}
 .drop-hint{font-size:11px;color:var(--tm);font-family:var(--mo);margin-bottom:20px}
 #fi{display:none}
-
-/* Library grid */
 .lib{width:100%;max-width:820px}
 .lib-hdr{display:flex;align-items:center;gap:12px;margin-bottom:14px}
 .lib-ttl{font-family:var(--mo);font-size:11px;color:var(--tm);letter-spacing:3px;text-transform:uppercase}
 .lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.lc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .2s;position:relative}
+.lc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;
+  cursor:pointer;transition:all .2s;position:relative}
 .lc:hover{border-color:var(--ac2);box-shadow:var(--glow);transform:translateY(-2px)}
 .lc-cov{width:100%;aspect-ratio:3/2;overflow:hidden}
 .lc-cov img{width:100%;height:100%;object-fit:cover}
@@ -130,210 +110,276 @@ input.inp:focus{border-color:var(--ac)}
 .lc-name{font-family:var(--mo);font-size:11px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
 .lc-meta{font-size:10px;color:var(--tm);font-family:var(--mo)}
 .lc-pt{font-size:9px;color:var(--gr);font-family:var(--mo)}
-.lc-del{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(244,63,94,.2);border:1px solid var(--rd);color:var(--rd);font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.lc-del{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;
+  background:rgba(244,63,94,.2);border:1px solid var(--rd);color:var(--rd);
+  font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .lc:hover .lc-del{display:flex}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   EMULATOR SCREEN — minimal chrome
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#emu{display:none;min-height:100vh;flex-direction:column}
+/* ════════════════════════════════════
+   EMULATOR — just header + game + speed strip
+════════════════════════════════════ */
+#emu{display:none;height:100vh;flex-direction:column}
+.eh{display:flex;align-items:center;padding:0 16px;height:40px;background:var(--s1);
+  border-bottom:1px solid var(--bd);gap:10px;flex-shrink:0;z-index:100}
+.eh-logo{font-family:var(--px);font-size:8px;color:var(--neon);
+  text-shadow:0 0 10px rgba(192,132,252,.6);white-space:nowrap;flex-shrink:0}
+.eh-name{font-family:var(--mo);font-size:12px;color:var(--tx);flex:1;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px;opacity:.75}
+.eh-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.pill-rw{display:none;font-family:var(--px);font-size:6px;padding:3px 8px;border-radius:5px;
+  border:1px solid var(--gr);color:var(--gr);background:rgba(34,211,238,.07);
+  animation:pulse 1s infinite}
+.stimer{font-family:var(--px);font-size:7px;color:var(--td);padding:3px 8px;
+  background:var(--s2);border-radius:5px;border:1px solid var(--bd);letter-spacing:1px}
+.eh-hint{font-family:var(--mo);font-size:10px;color:var(--tm);white-space:nowrap;opacity:.7}
 
-/* Thin header bar */
-.eh{display:flex;align-items:center;padding:8px 14px;background:var(--s1);
-  border-bottom:1px solid var(--bd);gap:10px;flex-shrink:0;position:sticky;top:0;z-index:100}
-.eh-logo{font-family:var(--px);font-size:8px;color:var(--neon);text-shadow:0 0 10px rgba(192,132,252,.6);white-space:nowrap}
-.eh-name{font-family:var(--mo);font-size:12px;color:var(--tx);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px;opacity:.75}
-.eh-hint{font-family:var(--mo);font-size:10px;color:var(--tm);white-space:nowrap}
-.stimer{font-family:var(--px);font-size:7px;color:var(--td);padding:4px 8px;background:var(--s2);border-radius:5px;border:1px solid var(--bd)}
-.eh-btns{display:flex;gap:5px;flex-shrink:0}
-.eh-btns .btn{padding:6px 11px;font-size:11px}
-
-/* Speed bar — slim strip under header */
-.speed-bar{display:flex;align-items:center;justify-content:center;gap:4px;
-  padding:6px 14px;background:var(--s1);border-bottom:1px solid var(--bd)}
-.speed-lbl{font-family:var(--mo);font-size:9px;color:var(--tm);margin-right:6px}
+/* Speed strip */
+.speed-bar{display:flex;align-items:center;justify-content:center;gap:3px;
+  height:36px;padding:0 16px;background:var(--s1);border-bottom:1px solid var(--bd);
+  flex-shrink:0}
+.sp-lbl{font-family:var(--mo);font-size:9px;color:var(--tm);margin-right:6px}
 .spd{padding:3px 10px;border-radius:5px;border:1px solid transparent;background:transparent;
-  color:var(--td);font-family:var(--mo);font-size:10px;cursor:pointer;transition:all .13s}
+  color:var(--td);font-family:var(--mo);font-size:10px;cursor:pointer;transition:all .12s}
 .spd:hover{background:var(--s2);color:var(--tx)}
-.spd.on{background:var(--ac);color:#fff;border-color:var(--ac2);box-shadow:0 0 8px rgba(168,85,247,.4)}
-.speed-sep{width:1px;height:16px;background:var(--bd);margin:0 4px}
-.pill-rw{display:none;font-family:var(--px);font-size:7px;padding:3px 8px;border-radius:5px;
-  border:1px solid var(--gr);color:var(--gr);background:rgba(34,211,238,.07);animation:pulse 1s infinite}
+.spd.on{background:var(--ac);color:#fff;border-color:var(--ac2);
+  box-shadow:0 0 8px rgba(168,85,247,.4)}
+.sp-sep{width:1px;height:16px;background:var(--bd);margin:0 6px}
+.sp-btn{padding:3px 12px;border-radius:5px;border:1px solid var(--bd);background:transparent;
+  color:var(--td);font-family:var(--fn);font-size:11px;font-weight:600;cursor:pointer;
+  transition:all .12s;white-space:nowrap}
+.sp-btn:hover{border-color:var(--ac2);color:var(--ac2)}
+.sp-btn.on{border-color:var(--gr);color:var(--gr)}
 
-/* Game area — just the canvas, nothing else */
-.game-area{flex:1;display:flex;align-items:center;justify-content:center;padding:14px;background:var(--bg)}
-#fs-wrap{display:contents}
-.gframe{position:relative;border-radius:12px;overflow:hidden;
-  box-shadow:0 0 0 2px var(--bd),0 0 40px rgba(124,58,237,.2),0 20px 60px rgba(0,0,0,.7)}
-#game{display:block;width:480px;height:320px;background:#000;position:relative}
-#game canvas,#game video{display:block!important;width:100%!important;height:100%!important;position:relative!important}
+/* Game area — fills all remaining height */
+.game-area{flex:1;display:flex;align-items:center;justify-content:center;
+  background:#000;overflow:hidden;position:relative}
 
-/* Scanlines */
-.scl-on::before{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.22) 2px,rgba(0,0,0,.22) 4px)}
+/* The canvas wrapper — no extra chrome */
+#fs-wrap{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;
+}
+.gframe{
+  position:relative;
+  /* Size set by JS to maintain 3:2 aspect ratio */
+  width:480px;height:320px;
+  background:#000;overflow:hidden;
+  border-radius:4px;
+}
+/* #game fills the gframe exactly */
+#game{
+  width:100%;height:100%;
+  background:#000;
+  display:block;
+  position:relative;
+}
+/* EJS renders a container div then puts the canvas inside it.
+   Make that container fill #game completely. */
+#game > div:first-child{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+}
+#game canvas,#game video{
+  width:100%!important;height:100%!important;
+  display:block!important;
+  object-fit:contain;
+}
 
-/* Color filters */
-.cf-warm    #game{filter:sepia(.3) saturate(1.4) brightness(1.05) hue-rotate(-8deg)}
-.cf-cool    #game{filter:hue-rotate(20deg) saturate(.85) brightness(1.06)}
-.cf-gameboy #game{filter:sepia(1) saturate(4) hue-rotate(68deg) brightness(.83) contrast(1.15)}
-.cf-gbp     #game{filter:sepia(.5) saturate(.4) brightness(.95) contrast(1.05)}
-.cf-phosphor #game{filter:sepia(1) saturate(6) hue-rotate(88deg) brightness(1.1) contrast(1.2)}
-.cf-crt     #game{filter:contrast(1.12) brightness(1.04)}
-.cf-crt::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55) 100%)}
-.cf-vhs     #game{filter:saturate(.6) contrast(1.3) brightness(.85)}
-.cf-gray    #game{filter:grayscale(1)}
-.cf-invert  #game{filter:invert(1) hue-rotate(180deg)}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FULLSCREEN — proper centered letterbox
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* FULLSCREEN */
 #fs-wrap:fullscreen,
 #fs-wrap:-webkit-full-screen,
 #fs-wrap:-moz-full-screen{
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  width:100vw!important;height:100vh!important;background:#000!important;
-  padding:0!important;margin:0!important}
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:100vw!important;height:100vh!important;
+  background:#000!important;
+  padding:0!important;
+}
 #fs-wrap:fullscreen .gframe,
 #fs-wrap:-webkit-full-screen .gframe,
 #fs-wrap:-moz-full-screen .gframe{
-  border-radius:0!important;box-shadow:none!important;
-  /* Let JS set the exact pixel size via onFSChange */}
-#fs-wrap:fullscreen #game,
-#fs-wrap:-webkit-full-screen #game,
-#fs-wrap:-moz-full-screen #game{
-  /* Fit inside screen preserving 3:2 GBA aspect ratio */
-  width:min(100vw, calc(100vh * 1.5))!important;
-  height:min(100vh, calc(100vw / 1.5))!important;
-  max-width:100vw!important;max-height:100vh!important}
+  border-radius:0!important;
+}
 #fs-wrap:fullscreen #game canvas,
 #fs-wrap:fullscreen #game video,
 #fs-wrap:-webkit-full-screen #game canvas,
 #fs-wrap:-webkit-full-screen #game video{
-  width:100%!important;height:100%!important}
+  width:100%!important;height:100%!important;
+}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ESC SETTINGS OVERLAY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#esc-overlay{
+/* Scanlines */
+.scl-on::after{
+  content:"";position:absolute;inset:0;z-index:20;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.22) 2px,rgba(0,0,0,.22) 4px);
+}
+
+/* Color filters */
+.cf-warm    .gframe{filter:sepia(.3) saturate(1.4) brightness(1.05) hue-rotate(-8deg)}
+.cf-cool    .gframe{filter:hue-rotate(20deg) saturate(.85) brightness(1.06)}
+.cf-gameboy .gframe{filter:sepia(1) saturate(4) hue-rotate(68deg) brightness(.83) contrast(1.15)}
+.cf-gbp     .gframe{filter:sepia(.5) saturate(.4) brightness(.95) contrast(1.05)}
+.cf-phosphor .gframe{filter:sepia(1) saturate(6) hue-rotate(88deg) brightness(1.1) contrast(1.2)}
+.cf-crt     .gframe{filter:contrast(1.12) brightness(1.04)}
+.cf-vhs     .gframe{filter:saturate(.6) contrast(1.3) brightness(.85)}
+.cf-gray    .gframe{filter:grayscale(1)}
+.cf-invert  .gframe{filter:invert(1) hue-rotate(180deg)}
+/* CRT vignette */
+.cf-crt .gframe::after{
+  content:"";position:absolute;inset:0;pointer-events:none;z-index:9;
+  background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55) 100%);
+}
+
+/* ════════════════════════════════════
+   ESC OVERLAY — full options panel
+════════════════════════════════════ */
+#esc-ov{
   display:none;position:fixed;inset:0;z-index:500;
-  background:rgba(0,0,0,.85);backdrop-filter:blur(20px);
-  align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto}
-#esc-overlay.open{display:flex}
-.esc-inner{width:100%;max-width:860px;display:flex;flex-direction:column;gap:20px}
-.esc-title{font-family:var(--px);font-size:14px;color:var(--neon);text-shadow:var(--glow);text-align:center;letter-spacing:3px;padding:10px 0}
-.esc-hint{font-family:var(--mo);font-size:11px;color:var(--tm);text-align:center;margin-top:-12px}
-.esc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-.esc-card{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:20px}
-.esc-card-ttl{font-family:var(--px);font-size:8px;color:var(--ac2);letter-spacing:1px;margin-bottom:16px}
-.esc-close{align-self:center;margin-bottom:10px;padding:12px 36px;background:var(--ac);border:none;border-radius:10px;color:#fff;font-family:var(--px);font-size:8px;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 20px rgba(124,58,237,.4)}
-.esc-close:hover{background:var(--ac2)}
-
-/* Settings rows inside overlay */
-.sr{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd)}
+  background:rgba(0,0,0,.88);backdrop-filter:blur(22px) saturate(1.5);
+  overflow-y:auto;padding:24px 16px 40px;
+}
+#esc-ov.open{display:block}
+.esc-in{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+.esc-topbar{display:flex;align-items:center;gap:14px;margin-bottom:4px}
+.esc-logo{font-family:var(--px);font-size:12px;color:var(--neon);text-shadow:var(--glow);letter-spacing:3px}
+.esc-subtitle{font-family:var(--mo);font-size:11px;color:var(--tm)}
+.esc-resume{margin-left:auto}
+.esc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
+.ec{background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:18px}
+.ec-t{font-family:var(--px);font-size:7.5px;color:var(--ac2);letter-spacing:1px;margin-bottom:14px}
+.sr{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--bd)}
 .sr:last-child{border-bottom:none}
-.sl{font-size:12px;color:var(--td)}
+.sl{font-size:12px;color:var(--td);line-height:1.3}
 .sl small{display:block;font-size:9px;color:var(--tm);margin-top:2px;font-family:var(--mo)}
 
-/* Key map grid inside overlay */
-.km-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
-.km-row{display:flex;align-items:center;gap:6px;padding:6px 8px;background:var(--s2);border-radius:6px;border:1px solid transparent;cursor:pointer;transition:all .13s}
-.km-row:hover{border-color:var(--ac)}
-.km-row.ed{border-color:var(--am);background:rgba(245,158,11,.08)}
-.km-btn-lbl{font-family:var(--px);font-size:6px;color:var(--ac2);min-width:36px}
-.km-key{flex:1;display:flex;justify-content:flex-end}
-.km-badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:19px;padding:0 5px;background:var(--s1);border:1px solid var(--bd2);border-radius:4px;font-family:var(--mo);font-size:9px;color:var(--td)}
-.ed .km-badge{border-color:var(--am);color:var(--am);animation:blink .8s infinite}
-.km-hint{font-size:9px;font-family:var(--mo);color:var(--tm);text-align:center;margin-top:8px}
-
-/* Save slots inside overlay */
+/* Save slots — horizontal 8-across */
 .slots{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;margin-bottom:10px}
-.slt{aspect-ratio:1.5;background:var(--s2);border:1px solid var(--bd);border-radius:6px;cursor:pointer;position:relative;overflow:hidden;transition:all .18s;display:flex;align-items:flex-end;font-family:var(--px);font-size:6px;color:var(--tm)}
+.slt{aspect-ratio:1.6;background:var(--s2);border:1px solid var(--bd);border-radius:6px;
+  cursor:pointer;position:relative;overflow:hidden;transition:all .18s;
+  display:flex;align-items:flex-end;font-family:var(--px);font-size:6px;color:var(--tm)}
 .slt:hover{border-color:var(--ac2)}
 .slt.cur{border-color:var(--ac2);box-shadow:0 0 0 1.5px var(--ac)}
 .slt.has{border-color:var(--gr)}
 .slt.has .sn{color:var(--gr)}
-.sn{padding:2px 0;z-index:2;background:rgba(0,0,0,.6);width:100%;text-align:center}
-.sthumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65}
+.sn{padding:2px 0;z-index:2;background:rgba(0,0,0,.65);width:100%;text-align:center}
+.sthumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
+
+/* Key map */
+.km-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.km-row{display:flex;align-items:center;gap:6px;padding:5px 8px;background:var(--s2);
+  border-radius:6px;border:1px solid transparent;cursor:pointer;transition:all .13s}
+.km-row:hover{border-color:var(--ac)}
+.km-row.ed{border-color:var(--am);background:rgba(245,158,11,.08)}
+.km-btn-lbl{font-family:var(--px);font-size:6px;color:var(--ac2);min-width:36px}
+.km-key{flex:1;display:flex;justify-content:flex-end}
+.km-badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:19px;
+  padding:0 5px;background:var(--s1);border:1px solid var(--bd2);border-radius:4px;
+  font-family:var(--mo);font-size:9px;color:var(--td)}
+.ed .km-badge{border-color:var(--am);color:var(--am);animation:blink .8s infinite}
+.km-hint{font-size:9px;font-family:var(--mo);color:var(--tm);text-align:center;margin-top:7px}
 
 /* Stat rows */
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px}
+.stat-row{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px}
 .stat-row:last-child{border-bottom:none}
-.stat-k{font-family:var(--mo);color:var(--tm)}
-.stat-v{font-family:var(--px);font-size:7px;color:var(--neon)}
+.sk{font-family:var(--mo);color:var(--tm)}
+.sv{font-family:var(--px);font-size:7px;color:var(--neon)}
 
-/* Cheat list */
-.cheat-list{display:flex;flex-direction:column;gap:4px;max-height:130px;overflow-y:auto;margin-bottom:8px}
-.chi{display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--s2);border:1px solid var(--bd);border-radius:6px}
+/* Shortcut grid */
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 14px;margin-top:10px}
+.sc-row{display:flex;align-items:center;gap:7px;font-size:10px;font-family:var(--mo);color:var(--td);padding:2px 0}
+.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:19px;
+  padding:0 5px;background:var(--s2);border:1px solid var(--bd2);border-radius:4px;
+  font-family:var(--mo);font-size:9px;color:var(--ac2);white-space:nowrap}
+
+/* Cheats */
+.chlist{display:flex;flex-direction:column;gap:4px;max-height:130px;overflow-y:auto;margin-bottom:8px}
+.chi{display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--s2);
+  border:1px solid var(--bd);border-radius:6px}
 .chi-en{width:13px;height:13px;cursor:pointer;accent-color:var(--ac)}
 .chi-nm{flex:1;font-family:var(--mo);font-size:10px;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.chi-del{font-size:12px;cursor:pointer;color:var(--tm);border:none;background:none}
+.chi-del{font-size:12px;cursor:pointer;color:var(--tm);border:none;background:none;line-height:1}
 .chi-del:hover{color:var(--rd)}
 
-/* Screenshot gallery */
+/* Gallery */
 .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.gal-thumb{aspect-ratio:3/2;border-radius:5px;overflow:hidden;border:1px solid var(--bd);cursor:pointer;position:relative}
-.gal-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
-.gal-thumb:hover img{transform:scale(1.07)}
-.gal-del{position:absolute;top:3px;right:3px;width:17px;height:17px;border-radius:50%;background:rgba(244,63,94,.85);border:none;color:#fff;font-size:9px;cursor:pointer;display:none;align-items:center;justify-content:center}
-.gal-thumb:hover .gal-del{display:flex}
+.gt{aspect-ratio:3/2;border-radius:5px;overflow:hidden;border:1px solid var(--bd);cursor:pointer;position:relative}
+.gt img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.gt:hover img{transform:scale(1.07)}
+.gt-del{position:absolute;top:3px;right:3px;width:17px;height:17px;border-radius:50%;
+  background:rgba(244,63,94,.85);border:none;color:#fff;font-size:9px;cursor:pointer;
+  display:none;align-items:center;justify-content:center}
+.gt:hover .gt-del{display:flex}
 
-/* Keybind reference table */
-.kref-table{display:grid;grid-template-columns:1fr 1fr;gap:3px 16px}
-.kref-row{display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mo);color:var(--td);padding:2px 0}
-.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:19px;padding:0 5px;background:var(--s2);border:1px solid var(--bd2);border-radius:4px;font-family:var(--mo);font-size:9px;color:var(--ac2);white-space:nowrap}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ════════════════════════════════════
    TOUCH CONTROLS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+════════════════════════════════════ */
 #touch-ctrl{display:none;position:fixed;bottom:0;left:0;right:0;
-  padding:10px 12px 14px;background:linear-gradient(transparent,rgba(7,7,26,.97));
+  padding:10px 12px 14px;
+  background:linear-gradient(transparent,rgba(7,7,26,.97));
   z-index:50;pointer-events:none}
-.tl{display:flex;align-items:flex-end;justify-content:space-between;max-width:500px;margin:0 auto;pointer-events:all;gap:8px}
+.tl{display:flex;align-items:flex-end;justify-content:space-between;
+  max-width:500px;margin:0 auto;pointer-events:all;gap:8px}
 .dpad{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:2px}
 .db{display:flex;align-items:center;justify-content:center;background:rgba(14,14,36,.92);
   border:1px solid var(--bd);border-radius:7px;font-size:18px;cursor:pointer;
   -webkit-tap-highlight-color:transparent;user-select:none;transition:background .09s}
-.db:active,.db.down{background:rgba(124,58,237,.4);border-color:var(--ac2)}
+.db:active,.db.dn{background:rgba(124,58,237,.4);border-color:var(--ac2)}
 .dpad-c{background:rgba(7,7,26,.5)!important;border-color:transparent!important;cursor:default}
 .t-mid{display:flex;flex-direction:column;align-items:center;gap:8px}
 .t-sys{display:flex;gap:10px}
-.t-sys-btn{padding:7px 14px;background:rgba(14,14,36,.92);border:1px solid var(--bd);border-radius:20px;color:var(--tm);font-family:var(--mo);font-size:9px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.t-sys-btn{padding:7px 14px;background:rgba(14,14,36,.92);border:1px solid var(--bd);
+  border-radius:20px;color:var(--tm);font-family:var(--mo);font-size:9px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none}
 .t-sys-btn:active{background:rgba(124,58,237,.3)}
 .t-lr{display:flex;gap:6px}
-.t-lr-btn{padding:8px 18px;background:rgba(14,14,36,.92);border:1px solid var(--bd);border-radius:8px;color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.t-lr-btn{padding:8px 18px;background:rgba(14,14,36,.92);border:1px solid var(--bd);
+  border-radius:8px;color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none}
 .t-lr-btn:active{background:rgba(124,58,237,.3)}
 .abxy{position:relative;width:122px;height:116px}
-.abxy-btn{position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:var(--px);font-size:7px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
+.abxy-btn{position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--px);font-size:7px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none}
 .ab-a{top:32px;right:0;border-color:var(--rd);color:var(--rd);background:rgba(244,63,94,.12)}
 .ab-b{bottom:0;left:39px;border-color:var(--am);color:var(--am);background:rgba(245,158,11,.12)}
-.ab-a:active,.ab-a.down{background:rgba(244,63,94,.5)}
-.ab-b:active,.ab-b.down{background:rgba(245,158,11,.5)}
+.ab-a:active,.ab-a.dn{background:rgba(244,63,94,.5)}
+.ab-b:active,.ab-b.dn{background:rgba(245,158,11,.5)}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LOADING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-#loading{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);flex-direction:column;align-items:center;justify-content:center;gap:20px}
+/* LOADING */
+#loading{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);
+  flex-direction:column;align-items:center;justify-content:center;gap:20px}
 .lpx{font-family:var(--px);font-size:13px;color:var(--neon);text-shadow:var(--glow);animation:pulse 1.5s infinite}
 .lbw{width:260px;height:6px;background:var(--s2);border-radius:3px;overflow:hidden;border:1px solid var(--bd)}
-.lba{height:100%;background:linear-gradient(90deg,var(--ac),var(--neon));border-radius:3px;animation:loadbar 2.5s ease infinite;box-shadow:0 0 12px rgba(168,85,247,.6)}
+.lba{height:100%;background:linear-gradient(90deg,var(--ac),var(--neon));border-radius:3px;
+  animation:lb 2.5s ease infinite;box-shadow:0 0 12px rgba(168,85,247,.6)}
 .lsub{font-family:var(--mo);font-size:10px;color:var(--tm);letter-spacing:2px}
 
-/* Screenshot lightbox */
-#lightbox{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.92);backdrop-filter:blur(12px);flex-direction:column;align-items:center;justify-content:center;gap:14px}
+/* Lightbox */
+#lightbox{display:none;position:fixed;inset:0;z-index:700;
+  background:rgba(0,0,0,.92);backdrop-filter:blur(12px);
+  flex-direction:column;align-items:center;justify-content:center;gap:14px}
 #lightbox.open{display:flex}
 #lb-img{max-width:90vw;max-height:70vh;border-radius:8px;box-shadow:0 0 60px rgba(0,0,0,.8)}
 .lb-acts{display:flex;gap:8px}
 
 /* Toast / Flash */
-#toasts{position:fixed;bottom:20px;right:20px;z-index:800;display:flex;flex-direction:column;gap:7px;pointer-events:none;align-items:flex-end}
-.ti{padding:9px 16px;background:var(--s2);border:1px solid var(--bd2);border-radius:9px;font-family:var(--mo);font-size:11px;color:var(--neon);box-shadow:var(--glow);transform:translateX(140px);opacity:0;transition:all .25s;max-width:280px}
+#toasts{position:fixed;bottom:20px;right:20px;z-index:800;
+  display:flex;flex-direction:column;gap:7px;pointer-events:none;align-items:flex-end}
+.ti{padding:9px 16px;background:var(--s2);border:1px solid var(--bd2);border-radius:9px;
+  font-family:var(--mo);font-size:11px;color:var(--neon);box-shadow:var(--glow);
+  transform:translateX(140px);opacity:0;transition:all .25s;max-width:280px}
 .ti.show{transform:translateX(0);opacity:1}
-#flash{position:fixed;inset:0;z-index:700;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s}
+#flash{position:fixed;inset:0;z-index:600;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s}
 #flash.go{opacity:.65}
 
 @media(max-width:640px){
-  #game{width:100vw!important;height:calc(100vw*(2/3))!important;max-width:480px;max-height:320px}
-  .eh{padding:7px 10px;flex-wrap:wrap}
+  #game{width:100%!important}
+  .eh{height:36px;padding:0 10px}
   .stimer,.eh-hint{display:none}
   #touch-ctrl{display:block}
   .esc-grid{grid-template-columns:1fr}
@@ -346,8 +392,8 @@ input.inp:focus{border-color:var(--ac)}
 
 <!-- ══════════ LANDING ══════════ -->
 <div id="landing">
-  <!-- GBA logo SVG -->
-  <svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:200px;margin-bottom:4px">
+  <svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg"
+       style="display:block;width:200px;margin-bottom:4px">
     <defs>
       <radialGradient id="rg"><stop offset="0%" stop-color="#1e1e3a"/><stop offset="100%" stop-color="#0a0a1a"/></radialGradient>
       <filter id="gf"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
@@ -377,11 +423,8 @@ input.inp:focus{border-color:var(--ac)}
     <text x="29" y="20" text-anchor="middle" fill="#7c3aed" font-size="6" font-family="monospace" font-weight="bold">L</text>
     <text x="191" y="20" text-anchor="middle" fill="#7c3aed" font-size="6" font-family="monospace" font-weight="bold">R</text>
   </svg>
-
   <div class="logo-t">GBA.ME</div>
   <div class="logo-s">Browser Game Boy Advance Emulator</div>
-
-  <!-- Library (hidden until ROMs exist) -->
   <div class="lib" id="lib" style="display:none">
     <div class="lib-hdr">
       <div class="lib-ttl">📚 Library</div>
@@ -389,8 +432,6 @@ input.inp:focus{border-color:var(--ac)}
     </div>
     <div class="lib-grid" id="lib-grid"></div>
   </div>
-
-  <!-- Drop zone -->
   <div class="dropz" id="dropz">
     <span class="drop-ico">🎮</span>
     <div class="drop-txt">Drop your .gba / .gbc / .gb ROM here</div>
@@ -402,44 +443,34 @@ input.inp:focus{border-color:var(--ac)}
 
 <!-- ══════════ EMULATOR ══════════ -->
 <div id="emu">
-
-  <!-- Minimal header -->
   <header class="eh">
     <div class="eh-logo">GBA.ME</div>
     <div class="eh-name" id="gname">—</div>
-    <div class="pill-rw" id="pill-rw">⏪ RW</div>
-    <div class="eh-hint">Press ESC for options</div>
-    <div class="stimer" id="stimer">00:00:00</div>
-    <div class="eh-btns">
-      <button class="btn" id="btn-fs" onclick="toggleFS()" title="F11">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <div class="eh-right">
+      <div class="pill-rw" id="pill-rw">⏪ RW</div>
+      <div class="stimer" id="stimer">00:00:00</div>
+      <div class="eh-hint">ESC = Options</div>
+      <button class="btn" id="btn-fs" onclick="toggleFS()" title="F11" style="padding:4px 10px;font-size:11px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px">
           <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
           <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
         </svg>Full
       </button>
-      <button class="btn danger" onclick="goLanding()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
-        </svg>Exit
-      </button>
+      <button class="btn red" onclick="goLanding()" style="padding:4px 10px;font-size:11px">Exit</button>
     </div>
   </header>
-
-  <!-- Speed bar -->
   <div class="speed-bar">
-    <span class="speed-lbl">SPEED</span>
+    <span class="sp-lbl">SPEED</span>
     <button class="spd" data-s="0.25" onclick="setSpeed(0.25)">¼×</button>
     <button class="spd" data-s="0.5"  onclick="setSpeed(0.5)">½×</button>
     <button class="spd on" data-s="1" onclick="setSpeed(1)">1×</button>
     <button class="spd" data-s="2"    onclick="setSpeed(2)">2×</button>
     <button class="spd" data-s="4"    onclick="setSpeed(4)">4×</button>
-    <div class="speed-sep"></div>
-    <button class="btn" onclick="togglePause()" id="btn-pause" style="padding:3px 12px;font-size:10px">⏸ Pause</button>
-    <button class="btn" onclick="doShot()" style="padding:3px 10px;font-size:10px" title="F12">📸</button>
+    <div class="sp-sep"></div>
+    <button class="sp-btn" id="btn-pause" onclick="togglePause()" title="P">⏸ Pause</button>
+    <button class="sp-btn" onclick="doShot()" title="F12">📸</button>
   </div>
-
-  <!-- Game canvas — just the screen -->
-  <div class="game-area">
+  <div class="game-area" id="game-area">
     <div id="fs-wrap">
       <div class="gframe" id="gframe">
         <div id="game"></div>
@@ -448,7 +479,7 @@ input.inp:focus{border-color:var(--ac)}
   </div>
 </div>
 
-<!-- ══════════ TOUCH CONTROLS ══════════ -->
+<!-- TOUCH CONTROLS -->
 <div id="touch-ctrl">
   <div class="tl">
     <div style="display:flex;flex-direction:column;gap:8px">
@@ -464,17 +495,19 @@ input.inp:focus{border-color:var(--ac)}
   </div>
 </div>
 
-<!-- ══════════ ESC SETTINGS OVERLAY ══════════ -->
-<div id="esc-overlay">
-  <div class="esc-inner">
-    <div class="esc-title">GBA.ME</div>
-    <div class="esc-hint">Press ESC again to close</div>
-
+<!-- ESC OVERLAY -->
+<div id="esc-ov">
+  <div class="esc-in">
+    <div class="esc-topbar">
+      <div class="esc-logo">GBA.ME</div>
+      <div class="esc-subtitle" id="esc-gname-sub">—</div>
+      <button class="btn solid esc-resume" onclick="closeEsc()" style="padding:8px 24px">▶ Resume</button>
+    </div>
     <div class="esc-grid">
 
       <!-- Save States -->
-      <div class="esc-card">
-        <div class="esc-card-ttl">💾 Save States</div>
+      <div class="ec">
+        <div class="ec-t">💾 Save States</div>
         <div class="slots" id="slots"></div>
         <div style="display:flex;gap:6px;margin-bottom:8px">
           <select class="sel" id="aslot" onchange="onSlotChange()" style="flex:1">
@@ -483,69 +516,61 @@ input.inp:focus{border-color:var(--ac)}
             <option value="5">Slot 5</option><option value="6">Slot 6</option>
             <option value="7">Slot 7</option><option value="8">Slot 8 (Auto)</option>
           </select>
-          <button class="btn" onclick="clearSlot()" style="padding:6px 10px;font-size:10px;color:var(--rd);border-color:var(--rd)">✕</button>
+          <button class="btn red" onclick="clearSlot()" style="padding:6px 10px;font-size:10px">✕</button>
         </div>
-        <div style="display:flex;gap:6px;margin-bottom:8px">
-          <button class="btn gon" onclick="saveSlot()" style="flex:1;justify-content:center">Save (F1)</button>
-          <button class="btn" onclick="loadSlot()" style="flex:1;justify-content:center">Load (F3)</button>
+        <div style="display:flex;gap:6px;margin-bottom:6px">
+          <button class="btn gon" onclick="saveSlot()" style="flex:1;justify-content:center">Save  F1</button>
+          <button class="btn" onclick="loadSlot()" style="flex:1;justify-content:center">Load  F3</button>
         </div>
         <div style="display:flex;gap:6px">
           <button class="btn" onclick="exportState()" style="flex:1;justify-content:center;font-size:10px">⬇ Export</button>
           <button class="btn" onclick="document.getElementById('imp-si').click()" style="flex:1;justify-content:center;font-size:10px">⬆ Import</button>
         </div>
         <input type="file" id="imp-si" style="display:none" onchange="importState(this)" accept=".gbamesave">
+        <hr style="border:none;border-top:1px solid var(--bd);margin:12px 0">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:14px;cursor:pointer" id="vico" onclick="toggleMute()">🔊</span>
+          <input type="range" id="vol-sl" min="0" max="100" value="100" oninput="setVol(this.value)" style="flex:1">
+          <span style="font-family:var(--mo);font-size:11px;color:var(--tm);min-width:28px;text-align:right" id="vval">100</span>
+        </div>
       </div>
 
-      <!-- Controls / Key Mapping -->
-      <div class="esc-card">
-        <div class="esc-card-ttl">🎮 Key Bindings <span style="font-size:6px;color:var(--tm)">(click to remap)</span></div>
+      <!-- Key Mapping -->
+      <div class="ec">
+        <div class="ec-t">🎮 Key Bindings <span style="font-size:6px;color:var(--tm)">(click to remap)</span></div>
         <div class="km-grid" id="kmg"></div>
-        <div class="km-hint">Click a row, then press any key to remap</div>
+        <div class="km-hint">Click a row, press any key to remap</div>
         <div style="display:flex;gap:6px;margin-top:10px">
           <button class="btn" onclick="resetKeys()" style="flex:1;justify-content:center;font-size:10px">↺ Reset</button>
-          <button class="btn solid" onclick="applyKeysNow()" style="flex:1;justify-content:center;font-size:10px">Apply Now</button>
+          <button class="btn solid" onclick="applyKeysNow()" style="flex:1;justify-content:center;font-size:10px">Apply Now ↺</button>
         </div>
         <div id="km-notice" style="display:none;margin-top:8px;padding:7px 10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:7px;font-family:var(--mo);font-size:9px;color:var(--am)">
-          Changes pending — click Apply Now to reload.
-        </div>
-        <!-- Volume inside keys card -->
-        <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)">
-          <div style="font-family:var(--px);font-size:7px;color:var(--tm);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">🔊 Volume</div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span style="font-size:15px;cursor:pointer" id="vico" onclick="toggleMute()">🔊</span>
-            <input type="range" id="vol-sl" min="0" max="100" value="100" oninput="setVol(this.value)">
-            <span style="font-family:var(--mo);font-size:11px;color:var(--tm);min-width:28px;text-align:right" id="vval">100</span>
-          </div>
+          Unsaved — click Apply Now to reload with new keys.
         </div>
       </div>
 
-      <!-- Display Settings -->
-      <div class="esc-card">
-        <div class="esc-card-ttl">🎨 Display</div>
+      <!-- Display -->
+      <div class="ec">
+        <div class="ec-t">🎨 Display</div>
         <div class="sr">
           <div class="sl">Colour Filter</div>
           <select class="sel" id="filter-sel" onchange="setFilter(this.value)">
-            <option value="none">None</option>
-            <option value="warm">Warm</option>
-            <option value="cool">Cool</option>
-            <option value="gameboy">Game Boy</option>
-            <option value="gbp">GBP Grey</option>
-            <option value="phosphor">Phosphor</option>
-            <option value="crt">CRT</option>
-            <option value="vhs">VHS</option>
-            <option value="gray">Greyscale</option>
-            <option value="invert">Invert</option>
+            <option value="none">None</option><option value="warm">Warm</option>
+            <option value="cool">Cool</option><option value="gameboy">Game Boy</option>
+            <option value="gbp">GBP Grey</option><option value="phosphor">Phosphor</option>
+            <option value="crt">CRT</option><option value="vhs">VHS</option>
+            <option value="gray">Greyscale</option><option value="invert">Invert</option>
           </select>
         </div>
         <div class="sr">
           <div class="sl">Brightness</div>
-          <div style="display:flex;align-items:center;gap:6px;width:140px">
+          <div style="display:flex;align-items:center;gap:6px;width:150px">
             <input type="range" id="bright-sl" min="20" max="180" value="100" oninput="setBright(this.value)">
             <span style="font-family:var(--mo);font-size:10px;color:var(--tm);min-width:34px" id="bval">100%</span>
           </div>
         </div>
         <div class="sr">
-          <div class="sl">Scanlines<small>CRT overlay</small></div>
+          <div class="sl">Scanlines<small>CRT line overlay</small></div>
           <label class="tog"><input type="checkbox" id="scl-tog" onchange="toggleScanlines(this.checked)"><span class="tog-sl"></span></label>
         </div>
         <div class="sr">
@@ -557,94 +582,77 @@ input.inp:focus{border-color:var(--ac)}
           <label class="tog"><input type="checkbox" id="mutef-tog" checked><span class="tog-sl"></span></label>
         </div>
         <div class="sr">
-          <div class="sl">Auto-Save<small>Saves to slot 8</small></div>
+          <div class="sl">Auto-Save<small>Writes to slot 8</small></div>
           <select class="sel" id="autosave-sel" onchange="setAutoSave(this.value)">
             <option value="0">Off</option>
-            <option value="60">1 min</option>
-            <option value="120">2 min</option>
-            <option value="300">5 min</option>
+            <option value="60">1 min</option><option value="120">2 min</option><option value="300">5 min</option>
           </select>
         </div>
       </div>
 
-      <!-- Stats -->
-      <div class="esc-card">
-        <div class="esc-card-ttl">📊 Stats</div>
-        <div class="stat-row"><span class="stat-k">Session</span><span class="stat-v" id="st-sess">00:00:00</span></div>
-        <div class="stat-row"><span class="stat-k">Total playtime</span><span class="stat-v" id="st-pt">0m</span></div>
-        <div class="stat-row"><span class="stat-k">ROM size</span><span class="stat-v" id="st-sz">—</span></div>
-        <div class="stat-row"><span class="stat-k">Rewind buffer</span><span class="stat-v" id="st-rw">0 / 120</span></div>
-        <div class="stat-row"><span class="stat-k">Save slots used</span><span class="stat-v" id="st-sv">0</span></div>
-        <div class="stat-row"><span class="stat-k">Screenshots</span><span class="stat-v" id="st-sh">0</span></div>
-        <!-- Full keybind reference -->
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)">
-          <div style="font-family:var(--px);font-size:7px;color:var(--am);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">⌨ Shortcuts</div>
-          <div class="kref-table">
-            <div class="kref-row"><span class="kbd">ESC</span>This menu</div>
-            <div class="kref-row"><span class="kbd">F11</span>Fullscreen</div>
-            <div class="kref-row"><span class="kbd">F1</span>Quick Save</div>
-            <div class="kref-row"><span class="kbd">F3</span>Quick Load</div>
-            <div class="kref-row"><span class="kbd">F5</span>Reset</div>
-            <div class="kref-row"><span class="kbd">F12</span>Screenshot</div>
-            <div class="kref-row"><span class="kbd">P</span>Pause</div>
-            <div class="kref-row"><span class="kbd">M</span>Mute</div>
-            <div class="kref-row"><span class="kbd">Space ↓</span>Fast Fwd</div>
-            <div class="kref-row"><span class="kbd">[ ↓</span>Rewind</div>
-            <div class="kref-row"><span class="kbd">]</span>+1 Frame</div>
-            <div class="kref-row"><span class="kbd">1–8</span>Select slot</div>
-            <div class="kref-row"><span class="kbd">Alt+1–5</span>Speed</div>
-            <div class="kref-row"><span class="kbd">= / -</span>Brightness</div>
-          </div>
+      <!-- Stats + Shortcuts -->
+      <div class="ec">
+        <div class="ec-t">📊 Stats</div>
+        <div class="stat-row"><span class="sk">Session</span><span class="sv" id="st-sess">00:00:00</span></div>
+        <div class="stat-row"><span class="sk">Total playtime</span><span class="sv" id="st-pt">0m</span></div>
+        <div class="stat-row"><span class="sk">ROM size</span><span class="sv" id="st-sz">—</span></div>
+        <div class="stat-row"><span class="sk">Rewind buffer</span><span class="sv" id="st-rw">0 / 120</span></div>
+        <div class="stat-row"><span class="sk">Saves used</span><span class="sv" id="st-sv">0</span></div>
+        <div class="stat-row"><span class="sk">Screenshots</span><span class="sv" id="st-sh">0</span></div>
+        <div style="font-family:var(--px);font-size:7px;color:var(--am);letter-spacing:1px;margin:14px 0 10px">⌨ Shortcuts</div>
+        <div class="sc-grid">
+          <div class="sc-row"><span class="kbd">ESC</span>This menu</div>
+          <div class="sc-row"><span class="kbd">F11</span>Fullscreen</div>
+          <div class="sc-row"><span class="kbd">F1</span>Quick Save</div>
+          <div class="sc-row"><span class="kbd">F3</span>Quick Load</div>
+          <div class="sc-row"><span class="kbd">F5</span>Reset</div>
+          <div class="sc-row"><span class="kbd">F12</span>Screenshot</div>
+          <div class="sc-row"><span class="kbd">P</span>Pause</div>
+          <div class="sc-row"><span class="kbd">M</span>Mute</div>
+          <div class="sc-row"><span class="kbd">Space↓</span>Fast Fwd</div>
+          <div class="sc-row"><span class="kbd">[↓</span>Rewind</div>
+          <div class="sc-row"><span class="kbd">]</span>+1 Frame</div>
+          <div class="sc-row"><span class="kbd">1–8</span>Select slot</div>
         </div>
       </div>
 
       <!-- Cheats -->
-      <div class="esc-card">
-        <div class="esc-card-ttl">🃏 Cheat Codes</div>
-        <div class="cheat-list" id="cheat-list"></div>
+      <div class="ec">
+        <div class="ec-t">🃏 Cheat Codes</div>
+        <div class="chlist" id="cheat-list"></div>
         <input class="inp" id="ch-name" placeholder="Cheat name" style="width:100%;margin-bottom:5px">
         <input class="inp" id="ch-code" placeholder="Code (e.g. 8202BC20 0063)" style="width:100%;margin-bottom:8px;font-family:var(--mo)">
         <button class="btn solid" onclick="addCheat()" style="width:100%;justify-content:center">Add Cheat</button>
       </div>
 
       <!-- Screenshots -->
-      <div class="esc-card">
-        <div class="esc-card-ttl">📸 Screenshots</div>
+      <div class="ec">
+        <div class="ec-t">📸 Screenshots</div>
         <div class="gal-grid" id="gal-grid">
           <div style="grid-column:span 4;text-align:center;padding:14px;font-family:var(--mo);font-size:10px;color:var(--tm)">Press F12 in-game to capture!</div>
         </div>
-        <button class="btn danger" onclick="clearShots()" style="width:100%;justify-content:center;margin-top:8px;font-size:10px">🗑 Clear All</button>
+        <button class="btn red" onclick="clearShots()" style="width:100%;justify-content:center;margin-top:8px;font-size:10px">🗑 Clear All</button>
       </div>
 
-    </div><!-- /esc-grid -->
-
-    <button class="esc-close" onclick="closeEsc()">▶ Resume Game</button>
+    </div>
+    <div style="text-align:center;margin-top:8px">
+      <button class="btn solid" onclick="closeEsc()" style="padding:12px 40px;font-size:10px;font-family:var(--px);letter-spacing:1px">▶ Resume Game</button>
+    </div>
   </div>
 </div>
 
-<!-- LOADING -->
+<!-- LOADING / LIGHTBOX / FLASH / TOASTS -->
 <div id="loading">
   <div class="lpx">Loading ROM...</div>
   <div class="lbw"><div class="lba"></div></div>
   <div class="lsub" id="lsub">Initializing emulator core</div>
 </div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox">
-  <img id="lb-img" src="" alt="">
-  <div class="lb-acts">
-    <button class="btn" onclick="dlShot()">⬇ Download</button>
-    <button class="btn danger" onclick="closeLb()">✕ Close</button>
-  </div>
-</div>
-
+<div id="lightbox"><img id="lb-img" src="" alt=""><div class="lb-acts"><button class="btn" onclick="dlShot()">⬇ Download</button><button class="btn red" onclick="closeLb()">✕ Close</button></div></div>
 <div id="flash"></div>
 <div id="toasts"></div>
 
 <script>
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   KEY BINDINGS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ KEY BINDINGS ━━━━━━━━━━━━━━━━ */
 const DEF_KEYS={A:88,B:90,L:65,R:83,UP:38,DOWN:40,LEFT:37,RIGHT:39,START:13,SELECT:8};
 const LR={A:8,B:0,L:10,R:11,UP:4,DOWN:5,LEFT:6,RIGHT:7,START:3,SELECT:2};
 const BTN_ORDER=['A','B','L','R','UP','DOWN','LEFT','RIGHT','START','SELECT'];
@@ -654,22 +662,9 @@ function saveKeys(){localStorage.setItem('gbame_keys',JSON.stringify(keys))}
 function kname(kc){const m={88:'X',90:'Z',65:'A',83:'S',81:'Q',87:'W',69:'E',68:'D',70:'F',71:'G',72:'H',74:'J',75:'K',76:'L',78:'N',77:'M',67:'C',86:'V',66:'B',38:'↑',40:'↓',37:'←',39:'→',13:'Enter',8:'BkSpc',32:'Space',9:'Tab',27:'Esc',16:'Shift',17:'Ctrl',18:'Alt',112:'F1',113:'F2',114:'F3',115:'F4',116:'F5',49:'1',50:'2',51:'3',52:'4',53:'5',54:'6',55:'7',56:'8',57:'9',48:'0',96:'N0',97:'N1',98:'N2',99:'N3',100:'N4',101:'N5',102:'N6',103:'N7',104:'N8',105:'N9'};return m[kc]||('?'+kc)}
 function buildEJSOpts(kb){const o={};for(const[b,kc]of Object.entries(kb)){const id=LR[b];if(id!==undefined)o['0-'+id]=kc}return o}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   INDEXEDDB
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ INDEXEDDB ━━━━━━━━━━━━━━━━ */
 let db=null;
-function openDB(){
-  return new Promise((res,rej)=>{
-    const req=indexedDB.open('gbame',2);
-    req.onupgradeneeded=e=>{
-      const d=e.target.result;
-      if(!d.objectStoreNames.contains('roms')){const s=d.createObjectStore('roms',{keyPath:'id',autoIncrement:true});s.createIndex('name','name',{unique:false})}
-      if(!d.objectStoreNames.contains('shots')){const s=d.createObjectStore('shots',{keyPath:'id',autoIncrement:true});s.createIndex('rom','rom',{unique:false})}
-    };
-    req.onsuccess=e=>{db=e.target.result;res(db)};
-    req.onerror=()=>rej(req.error);
-  });
-}
+function openDB(){return new Promise((res,rej)=>{const req=indexedDB.open('gbame',2);req.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains('roms')){const s=d.createObjectStore('roms',{keyPath:'id',autoIncrement:true});s.createIndex('name','name',{unique:false})}if(!d.objectStoreNames.contains('shots')){const s=d.createObjectStore('shots',{keyPath:'id',autoIncrement:true});s.createIndex('rom','rom',{unique:false})}};req.onsuccess=e=>{db=e.target.result;res(db)};req.onerror=()=>rej(req.error)})}
 const dbOp=(s,m,fn)=>new Promise((res,rej)=>{const tx=db.transaction(s,m);fn(tx.objectStore(s),res,rej)});
 const dbAdd=(s,d)=>dbOp(s,'readwrite',(os,r,e)=>{const q=os.add(d);q.onsuccess=()=>r(q.result);q.onerror=e});
 const dbAll=(s)=>dbOp(s,'readonly',(os,r)=>{const q=os.getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>r([])});
@@ -677,26 +672,20 @@ const dbGet=(s,id)=>dbOp(s,'readonly',(os,r)=>{const q=os.get(id);q.onsuccess=()
 const dbDel=(s,id)=>dbOp(s,'readwrite',(os,r)=>{os.delete(id);r()});
 const dbIdx=(s,i,v)=>dbOp(s,'readonly',(os,r)=>{const q=os.index(i).getAll(v);q.onsuccess=()=>r(q.result);q.onerror=()=>r([])});
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   COVER + HELPERS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ COVER / HELPERS ━━━━━━━━━━━━━━━━ */
 function genCover(name){const h=name.split('').reduce((a,c)=>Math.imul(31,a)+c.charCodeAt(0)|0,0);const h1=Math.abs(h)%360,h2=Math.abs(h*137)%360,h3=Math.abs(h*79)%360;const init=name.replace(/[^a-zA-Z0-9]/g,'').slice(0,2).toUpperCase()||'??';return'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 106"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="hsl('+h1+',60%,16%)"/><stop offset="100%" stop-color="hsl('+h2+',55%,10%)"/></linearGradient></defs><rect width="160" height="106" fill="url(#g)"/><circle cx="120" cy="20" r="40" fill="hsl('+h3+',50%,22%)" opacity="0.45"/><text x="80" y="62" text-anchor="middle" dominant-baseline="middle" fill="hsl('+h2+',80%,72%)" font-family="monospace" font-size="28" font-weight="bold" opacity="0.9">'+init+'</text><text x="80" y="84" text-anchor="middle" fill="hsl('+h1+',40%,52%)" font-family="monospace" font-size="7" opacity="0.65">'+name.slice(0,18)+'</text></svg>')}
 function getPT(n){return parseInt(localStorage.getItem('gbame_pt_'+n)||'0')}
 function addPT(n,s){localStorage.setItem('gbame_pt_'+n,getPT(n)+Math.floor(s))}
 function fmtPT(s){if(!s)return'0m';const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h?h+'h '+m+'m':m+'m'}
 function fmtSz(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(0)+'KB';return(b/1048576).toFixed(1)+'MB'}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   LIBRARY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ LIBRARY ━━━━━━━━━━━━━━━━ */
 async function saveRomToLib(name,ext,size,blob){if(!db)return null;const ex=await dbIdx('roms','name',name);if(ex.length)return ex[0].id;const arr=await blob.arrayBuffer();return dbAdd('roms',{name,ext,size,added:Date.now(),data:arr})}
-async function renderLib(){if(!db)return;const roms=await dbAll('roms');const sec=document.getElementById('lib');const grid=document.getElementById('lib-grid');if(!roms.length){sec.style.display='none';return}sec.style.display='';roms.sort((a,b)=>b.added-a.added);grid.innerHTML='';roms.forEach(rom=>{const pt=getPT(rom.name);const div=document.createElement('div');div.className='lc';div.innerHTML='<div class="lc-cov"><img src="'+genCover(rom.name)+'" alt="'+rom.name+'"></div><div class="lc-info"><div class="lc-name" title="'+rom.name+'">'+rom.name+'</div><div class="lc-meta">'+fmtSz(rom.size)+'</div>'+(pt?'<div class="lc-pt">'+fmtPT(pt)+'</div>':'')+' </div><button class="lc-del" onclick="event.stopPropagation();delRom('+rom.id+')" title="Remove">✕</button>';div.addEventListener('click',()=>loadRomDB(rom.id));grid.appendChild(div)})}
+async function renderLib(){if(!db)return;const roms=await dbAll('roms');const sec=document.getElementById('lib');const grid=document.getElementById('lib-grid');if(!roms.length){sec.style.display='none';return}sec.style.display='';roms.sort((a,b)=>b.added-a.added);grid.innerHTML='';roms.forEach(rom=>{const pt=getPT(rom.name);const div=document.createElement('div');div.className='lc';div.innerHTML='<div class="lc-cov"><img src="'+genCover(rom.name)+'" alt="'+rom.name+'"></div><div class="lc-info"><div class="lc-name" title="'+rom.name+'">'+rom.name+'</div><div class="lc-meta">'+fmtSz(rom.size)+'</div>'+(pt?'<div class="lc-pt">'+fmtPT(pt)+'</div>':'')+'</div><button class="lc-del" onclick="event.stopPropagation();delRom('+rom.id+')" title="Remove">✕</button>';div.addEventListener('click',()=>loadRomDB(rom.id));grid.appendChild(div)})}
 async function delRom(id){if(!confirm('Remove from library?'))return;await dbDel('roms',id);renderLib();toast('🗑 Removed')}
 async function loadRomDB(id){const r=await dbGet('roms',id);if(!r){toast('❌ ROM not found');return}handleFile(new File([r.data],r.name+'.'+(r.ext||'gba')),false)}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FILE HANDLING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ FILE HANDLING ━━━━━━━━━━━━━━━━ */
 document.getElementById('fi').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0])});
 const dropz=document.getElementById('dropz');
 dropz.addEventListener('dragover',e=>{e.preventDefault();dropz.classList.add('dov')});
@@ -705,24 +694,20 @@ dropz.addEventListener('drop',e=>{e.preventDefault();dropz.classList.remove('dov
 async function handleFile(file,save=true){
   const ext=file.name.split('.').pop().toLowerCase();
   if(!['gba','gbc','gb','zip'].includes(ext)){toast('❌ Use .gba, .gbc, .gb, or .zip');return}
-  curRomName=file.name.replace(/\.[^.]+$/,'');curRomSize=file.size;curRomExt=ext;
+  curRomName=file.name.replace(/\.[^.]+$/,'');curRomSize=file.size;
   if(save&&db)saveRomToLib(curRomName,ext,file.size,file).then(()=>renderLib()).catch(()=>{});
   startEmu(file,ext);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   STATE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-let curRomName='',curRomSize=0,curRomExt='';
+/* ━━━━━━━━━━━━━━━━ STATE VARIABLES ━━━━━━━━━━━━━━━━ */
+let curRomName='',curRomSize=0;
 let emuLoaded=false,paused=false,muted=false,curSpeed=1;
 let activeSlot=1,editingKey=null,keysChanged=false;
 let saves={},shots=[],cheats=[];
 let sessStart=null,sessInterval=null,autoSaveTimer=null;
 let escOpen=false;
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   GET EMSCRIPTEN MODULE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ GET EMSCRIPTEN MODULE ━━━━━━━━━━━━━━━━ */
 function getEM(){
   if(window.Module&&typeof window.Module._retro_serialize_size==='function')return window.Module;
   const gm=window.EJS_emulator?.gameManager;
@@ -730,50 +715,58 @@ function getEM(){
   return null;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   REWIND SYSTEM
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const SNAP_MS=2000,SNAP_MAX=120,RW_STEP_MS=100;
-let rewindBuf=[],snapTimer=null,rewindTimer=null,isRewinding=false;
-function takeSnap(){const em=getEM();if(!em||paused||isRewinding)return;try{const sz=em._retro_serialize_size();if(!sz)return;const ptr=em._malloc(sz);if(!em._retro_serialize(ptr,sz)){em._free(ptr);return}const data=new Uint8Array(em.HEAPU8.buffer,ptr,sz).slice();em._free(ptr);rewindBuf.push(data);if(rewindBuf.length>SNAP_MAX)rewindBuf.shift();document.getElementById('st-rw').textContent=rewindBuf.length+' / '+SNAP_MAX}catch(e){}}
-function startSnap(){clearInterval(snapTimer);snapTimer=setInterval(takeSnap,SNAP_MS)}
-function stopSnap(){clearInterval(snapTimer);snapTimer=null}
-function startRewind(){if(rewindBuf.length===0){toast('No rewind history yet');return}if(isRewinding)return;isRewinding=true;stopSnap();document.getElementById('pill-rw').style.display='';if(paused)try{window.EJS_emulator?.play?.()}catch(e){}rewindTimer=setInterval(()=>{if(rewindBuf.length===0){stopRewind();return}const data=rewindBuf.pop();document.getElementById('st-rw').textContent=rewindBuf.length+' / '+SNAP_MAX;const em=getEM();if(!em){stopRewind();return}try{const ptr=em._malloc(data.length);em.HEAPU8.set(data,ptr);em._retro_unserialize(ptr,data.length);em._free(ptr)}catch(e){stopRewind()}},RW_STEP_MS)}
-function stopRewind(){if(!isRewinding)return;clearInterval(rewindTimer);rewindTimer=null;isRewinding=false;document.getElementById('pill-rw').style.display='none';if(emuLoaded)startSnap()}
+/* ━━━━━━━━━━━━━━━━ REWIND ━━━━━━━━━━━━━━━━ */
+const SNAP_MS=2000,SNAP_MAX=120,RW_STEP=100;
+let rwBuf=[],snapT=null,rwT=null,rwOn=false;
+function takeSnap(){const em=getEM();if(!em||paused||rwOn)return;try{const sz=em._retro_serialize_size();if(!sz)return;const ptr=em._malloc(sz);if(!em._retro_serialize(ptr,sz)){em._free(ptr);return}const d=new Uint8Array(em.HEAPU8.buffer,ptr,sz).slice();em._free(ptr);rwBuf.push(d);if(rwBuf.length>SNAP_MAX)rwBuf.shift();document.getElementById('st-rw').textContent=rwBuf.length+' / '+SNAP_MAX}catch(e){}}
+function startSnap(){clearInterval(snapT);snapT=setInterval(takeSnap,SNAP_MS)}
+function stopSnap(){clearInterval(snapT);snapT=null}
+function startRW(){if(!rwBuf.length){toast('No rewind history yet');return}if(rwOn)return;rwOn=true;stopSnap();document.getElementById('pill-rw').style.display='';if(paused)try{window.EJS_emulator?.play?.()}catch(e){}rwT=setInterval(()=>{if(!rwBuf.length){stopRW();return}const d=rwBuf.pop();document.getElementById('st-rw').textContent=rwBuf.length+' / '+SNAP_MAX;const em=getEM();if(!em){stopRW();return}try{const ptr=em._malloc(d.length);em.HEAPU8.set(d,ptr);em._retro_unserialize(ptr,d.length);em._free(ptr)}catch(e){stopRW()}},RW_STEP)}
+function stopRW(){if(!rwOn)return;clearInterval(rwT);rwT=null;rwOn=false;document.getElementById('pill-rw').style.display='none';if(emuLoaded)startSnap()}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   KILL EJS UI — run after EJS injects DOM
-   Nukes pill overlays, menu bars, etc.
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━
+   KILL EJS UI
+   Strategy: hide ONLY elements that have EJS class/id patterns
+   OR that are positioned AFTER the canvas in the DOM (overlays).
+   We NEVER hide an element that contains or is a canvas/video.
+━━━━━━━━━━━━━━━━ */
+function containsMedia(el){
+  return el.tagName==='CANVAS'||el.tagName==='VIDEO'||
+         el.querySelector('canvas,video')!==null;
+}
 function killEJSUI(){
   const game=document.getElementById('game');
   if(!game)return;
-  // Walk all children, hide anything that isn't the canvas/video
-  function hide(el){
-    if(el.tagName==='CANVAS'||el.tagName==='VIDEO')return;
-    // If it has ejs in class or id, nuke it
-    const cls=el.className||'';const id=el.id||'';
-    if(/ejs/i.test(cls)||/ejs/i.test(id)){el.style.cssText='display:none!important;opacity:0!important;pointer-events:none!important';return}
-    // Nuke absolutely-positioned overlay divs (the pill shapes)
-    const st=window.getComputedStyle(el);
-    if(st.position==='absolute'&&(parseFloat(st.borderRadius)>20||st.borderRadius.includes('%'))){el.style.cssText='display:none!important;opacity:0!important;pointer-events:none!important';return}
-    // Recurse
-    Array.from(el.children).forEach(hide);
-  }
-  Array.from(game.children).forEach(hide);
-  // Observe for future injections
-  if(!game._ejsObserver){
-    game._ejsObserver=new MutationObserver(()=>killEJSUI());
-    game._ejsObserver.observe(game,{childList:true,subtree:true});
+  let canvasFound=false;
+  Array.from(game.querySelectorAll('*')).forEach(el=>{
+    if(el.tagName==='CANVAS'||el.tagName==='VIDEO'){canvasFound=true;return}
+    // Skip if this element wraps the canvas
+    if(containsMedia(el))return;
+    const cls=(el.className&&typeof el.className==='string'?el.className:'');
+    const id=el.id||'';
+    // Kill known EJS patterns
+    if(/ejs/i.test(cls)||/ejs/i.test(id)){
+      el.style.cssText='display:none!important;pointer-events:none!important';return;
+    }
+    // Kill overlays that appear AFTER the canvas in DOM order
+    if(canvasFound){
+      const st=window.getComputedStyle(el);
+      if(st.position==='absolute'||st.position==='fixed'){
+        el.style.cssText='display:none!important;pointer-events:none!important';return;
+      }
+    }
+  });
+  // Watch for future injections
+  if(!game._obs){
+    game._obs=new MutationObserver(()=>setTimeout(killEJSUI,50));
+    game._obs.observe(game,{childList:true,subtree:true,attributes:true,attributeFilter:['style','class']});
   }
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   START EMULATOR
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ START EMULATOR ━━━━━━━━━━━━━━━━ */
 function startEmu(file,ext){
   showLoading('Loading '+curRomName+'…');
-  stopSnap();rewindBuf=[];stopSessTimer();
+  stopSnap();rwBuf=[];stopSessTimer();
   const url=URL.createObjectURL(file);
   const core=(ext==='gb'||ext==='gbc')?'gambatte':'mgba';
   window.EJS_player='#game';
@@ -783,17 +776,27 @@ function startEmu(file,ext){
   window.EJS_startOnLoaded=true;
   window.EJS_volume=parseInt(document.getElementById('vol-sl').value)/100;
   window.EJS_defaultOptions=buildEJSOpts(keys);
-  window.EJS_Buttons={playPause:false,restart:false,mute:false,settings:false,fullscreen:false,saveState:false,loadState:false,screenRecord:false,gamepad:false,cheat:false,volume:false,quickSave:false,quickLoad:false,screenshot:false,cacheManager:false};
+  window.EJS_Buttons={
+    playPause:false,restart:false,mute:false,settings:false,fullscreen:false,
+    saveState:false,loadState:false,screenRecord:false,gamepad:false,cheat:false,
+    volume:false,quickSave:false,quickLoad:false,screenshot:false,cacheManager:false
+  };
   window.EJS_onGameStart=function(){
-    emuLoaded=true;hideLoading();showEmuScreen();
+    emuLoaded=true;
+    hideLoading();
+    showEmuScreen();
     loadSaves();loadCheats();renderSlots();renderCheats();
-    setTimeout(()=>{setVol(document.getElementById('vol-sl').value);killEJSUI()},600);
-    // Keep killing the EJS UI as it may reinject
-    setInterval(killEJSUI,2000);
+    setTimeout(()=>{
+      setVol(document.getElementById('vol-sl').value);
+      sizeGame();
+      killEJSUI();
+    },400);
+    // Keep nuking any EJS overlays that reinject
+    setInterval(killEJSUI,3000);
     startSnap();startSessTimer();
     keysChanged=false;
     document.getElementById('km-notice').style.display='none';
-    toast('🎮 '+curRomName+' — press ESC for options');
+    toast('🎮 '+curRomName+' — ESC for options');
   };
   document.querySelector('script[data-ejs]')?.remove();
   document.getElementById('game').innerHTML='';
@@ -801,92 +804,56 @@ function startEmu(file,ext){
   const s=document.createElement('script');
   s.src='https://cdn.emulatorjs.org/stable/data/loader.js';
   s.dataset.ejs='1';
-  s.onerror=()=>{hideLoading();toast('❌ Failed to load emulator. Check your connection.')};
+  s.onerror=()=>{hideLoading();toast('❌ Failed to load emulator. Check connection.')};
   document.body.appendChild(s);
   setTimeout(()=>{if(!emuLoaded){hideLoading();showEmuScreen()}},18000);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   UI TRANSITIONS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function showLoading(msg){
-  document.getElementById('loading').style.display='flex';
-  document.getElementById('landing').style.display='none';
-  document.getElementById('emu').style.display='none';
-  if(msg)document.getElementById('lsub').textContent=msg;
+/* Size the game frame to the available area while preserving 3:2 */
+function sizeGame(){
+  const area=document.getElementById('game-area');
+  if(!area)return;
+  const aw=area.clientWidth,ah=area.clientHeight;
+  let w,h;
+  if(aw/ah>=1.5){h=ah;w=Math.floor(h*1.5)}else{w=aw;h=Math.floor(w/1.5)}
+  const gframe=document.getElementById('gframe');
+  if(gframe){gframe.style.width=w+'px';gframe.style.height=h+'px'}
 }
-function hideLoading(){document.getElementById('loading').style.display='none'}
-function showEmuScreen(){
-  document.getElementById('emu').style.cssText='display:flex;flex-direction:column';
-  document.getElementById('gname').textContent=curRomName;
-  document.getElementById('st-sz').textContent=fmtSz(curRomSize);
-  refreshGallery();
-}
-function goLanding(){
-  if(!confirm('Exit game? Unsaved progress will be lost.'))return;
-  closeEsc();stopSnap();stopSessTimer();stopRewind();clearAutoSave();
-  document.getElementById('emu').style.display='none';
-  document.getElementById('landing').style.cssText='display:flex;flex-direction:column';
-  document.getElementById('game').innerHTML='';
-  document.querySelector('script[data-ejs]')?.remove();
-  emuLoaded=false;paused=false;rewindBuf=[];saves={};cheats=[];curRomName='';
-  renderLib();
-}
+window.addEventListener('resize',()=>{if(emuLoaded&&!document.fullscreenElement)sizeGame()});
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ESC OVERLAY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ UI TRANSITIONS ━━━━━━━━━━━━━━━━ */
+function showLoading(msg){document.getElementById('loading').style.display='flex';document.getElementById('landing').style.display='none';document.getElementById('emu').style.display='none';if(msg)document.getElementById('lsub').textContent=msg}
+function hideLoading(){document.getElementById('loading').style.display='none'}
+function showEmuScreen(){document.getElementById('emu').style.cssText='display:flex;flex-direction:column';document.getElementById('gname').textContent=curRomName;document.getElementById('esc-gname-sub').textContent=curRomName;document.getElementById('st-sz').textContent=fmtSz(curRomSize);refreshGallery();sizeGame()}
+function goLanding(){if(!confirm('Exit game? Unsaved progress will be lost.'))return;closeEsc();stopSnap();stopSessTimer();stopRW();clearAutoSave();document.getElementById('emu').style.display='none';document.getElementById('landing').style.cssText='display:flex;flex-direction:column';document.getElementById('game').innerHTML='';document.querySelector('script[data-ejs]')?.remove();emuLoaded=false;paused=false;rwBuf=[];saves={};cheats=[];curRomName='';renderLib()}
+
+/* ━━━━━━━━━━━━━━━━ ESC OVERLAY ━━━━━━━━━━━━━━━━ */
 function openEsc(){
   escOpen=true;
-  // Auto-pause when menu opens
   if(emuLoaded&&!paused)try{window.EJS_emulator?.pause?.();stopSnap()}catch(e){}
-  renderSlots();renderCheats();renderGallery();updateStats();
-  document.getElementById('esc-overlay').classList.add('open');
+  renderSlots();renderCheats();renderGallery();
+  document.getElementById('st-sv').textContent=Object.keys(saves).length;
+  document.getElementById('st-sh').textContent=shots.length;
+  document.getElementById('esc-ov').classList.add('open');
 }
 function closeEsc(){
   escOpen=false;
-  document.getElementById('esc-overlay').classList.remove('open');
+  document.getElementById('esc-ov').classList.remove('open');
   editingKey=null;renderKM();
-  // Resume if we paused it
-  if(emuLoaded&&paused===false)try{window.EJS_emulator?.play?.();startSnap()}catch(e){}
-}
-function updateStats(){
-  document.getElementById('st-sv').textContent=Object.keys(saves).length;
-  document.getElementById('st-sh').textContent=shots.length;
+  if(emuLoaded&&!paused)try{window.EJS_emulator?.play?.();startSnap()}catch(e){}
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   GAME CONTROLS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function togglePause(){
-  if(!emuLoaded)return;
-  paused=!paused;
-  try{paused?window.EJS_emulator?.pause():window.EJS_emulator?.play()}catch(e){}
-  if(paused)stopSnap();else startSnap();
-  const b=document.getElementById('btn-pause');
-  b.textContent=paused?'▶ Resume':'⏸ Pause';
-  b.classList.toggle('on',paused);
-  toast(paused?'⏸ Paused':'▶️ Resumed');
-}
-function resetGame(){if(!emuLoaded)return;try{window.EJS_emulator?.restart?.();rewindBuf=[];toast('🔄 Reset')}catch(e){toast('Reset: '+e.message)}}
-function frameAdv(){if(!emuLoaded)return;if(!paused)togglePause();const em=getEM();if(em){try{em._retro_run();toast('⏭ +1 frame')}catch(e){toast('Frame advance unavailable')}}else toast('Emulator module not ready')}
+/* ━━━━━━━━━━━━━━━━ GAME CONTROLS ━━━━━━━━━━━━━━━━ */
+function togglePause(){if(!emuLoaded)return;paused=!paused;try{paused?window.EJS_emulator?.pause():window.EJS_emulator?.play()}catch(e){}if(paused)stopSnap();else startSnap();const b=document.getElementById('btn-pause');b.textContent=paused?'▶ Resume':'⏸ Pause';b.classList.toggle('on',paused);toast(paused?'⏸ Paused':'▶️ Resumed')}
+function resetGame(){if(!emuLoaded)return;try{window.EJS_emulator?.restart?.();rwBuf=[];toast('🔄 Reset')}catch(e){toast('Reset: '+e.message)}}
+function frameAdv(){if(!emuLoaded)return;if(!paused)togglePause();const em=getEM();if(em){try{em._retro_run();toast('⏭ +1 frame')}catch(e){toast('Frame advance unavailable')}}else toast('Module not ready')}
 let ffOn=false;
 function setFF(on){if(ffOn===on)return;ffOn=on;if(!emuLoaded)return;try{on?window.EJS_emulator?.gameManager?.setSpeed?.(4):window.EJS_emulator?.gameManager?.setSpeed?.(curSpeed)}catch(e){}}
-function setSpeed(n,silent){
-  curSpeed=n;
-  document.querySelectorAll('.spd').forEach(b=>b.classList.toggle('on',parseFloat(b.dataset.s)===n));
-  if(!emuLoaded)return;
-  let ok=false;
-  try{if(typeof window.EJS_emulator?.gameManager?.setSpeed==='function'){window.EJS_emulator.gameManager.setSpeed(n);ok=true}}catch(e){}
-  if(!ok)try{if(typeof window.EJS_emulator?.setSpeed==='function'){window.EJS_emulator.setSpeed(n);ok=true}}catch(e){}
-  if(!silent)toast(ok?'⚡ Speed: '+n+'×':'⚡ '+n+'× (speed API unavailable)');
-}
+function setSpeed(n,silent){curSpeed=n;document.querySelectorAll('.spd').forEach(b=>b.classList.toggle('on',parseFloat(b.dataset.s)===n));if(!emuLoaded)return;let ok=false;try{if(typeof window.EJS_emulator?.gameManager?.setSpeed==='function'){window.EJS_emulator.gameManager.setSpeed(n);ok=true}}catch(e){}if(!ok)try{if(typeof window.EJS_emulator?.setSpeed==='function'){window.EJS_emulator.setSpeed(n);ok=true}}catch(e){}if(!silent)toast(ok?'⚡ Speed: '+n+'×':'⚡ '+n+'× (speed API N/A)')}
 function setVol(v){const n=parseInt(v);document.getElementById('vval').textContent=n;document.getElementById('vol-sl').value=n;document.getElementById('vico').textContent=n===0?'🔇':n<50?'🔉':'🔊';if(emuLoaded)try{window.EJS_emulator?.setVolume?.(n/100)}catch(e){}}
 function toggleMute(){muted=!muted;const v=muted?0:100;document.getElementById('vol-sl').value=v;setVol(v);toast(muted?'🔇 Muted':'🔊 Unmuted')}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SAVE STATES
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ SAVE STATES ━━━━━━━━━━━━━━━━ */
 function loadSaves(){try{saves=JSON.parse(localStorage.getItem('gbame_sv_'+curRomName)||'{}')}catch(e){saves={}}}
 function persistSaves(){localStorage.setItem('gbame_sv_'+curRomName,JSON.stringify(saves))}
 function getSlot(){return parseInt(document.getElementById('aslot').value)||1}
@@ -895,69 +862,34 @@ function getThumb(){try{const c=document.querySelector('#game canvas');return c?
 function saveSlot(){
   if(!emuLoaded){toast('No game running');return}
   const slot=getSlot();const em=getEM();
-  if(em){try{const sz=em._retro_serialize_size();if(sz>0){const ptr=em._malloc(sz);if(em._retro_serialize(ptr,sz)){const bytes=new Uint8Array(em.HEAPU8.buffer,ptr,sz).slice();em._free(ptr);let b64='';const chunk=8192;for(let i=0;i<bytes.length;i+=chunk)b64+=String.fromCharCode(...bytes.subarray(i,i+chunk));b64=btoa(b64);saves[slot]={b64,thumb:getThumb(),date:new Date().toLocaleString()};persistSaves();renderSlots();updateStats();toast('💾 Saved to slot '+slot);return}em._free(ptr)}}catch(e){console.warn('Serialize failed:',e)}}
-  toast('❌ Save state unavailable — emulator still loading');
+  if(em){try{const sz=em._retro_serialize_size();if(sz>0){const ptr=em._malloc(sz);if(em._retro_serialize(ptr,sz)){const bytes=new Uint8Array(em.HEAPU8.buffer,ptr,sz).slice();em._free(ptr);let b64='';const chunk=8192;for(let i=0;i<bytes.length;i+=chunk)b64+=String.fromCharCode(...bytes.subarray(i,i+chunk));b64=btoa(b64);saves[slot]={b64,thumb:getThumb(),date:new Date().toLocaleString()};persistSaves();renderSlots();document.getElementById('st-sv').textContent=Object.keys(saves).length;toast('💾 Saved to slot '+slot);return}em._free(ptr)}}catch(e){console.warn('Serialize failed:',e)}}
+  toast('❌ Save state unavailable — module still loading');
 }
 function loadSlot(){
   if(!emuLoaded){toast('No game running');return}
   const slot=getSlot();if(!saves[slot]){toast('Slot '+slot+' is empty');return}
   const em=getEM();
-  if(em&&saves[slot].b64){try{const bin=atob(saves[slot].b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);const ptr=em._malloc(bytes.length);em.HEAPU8.set(bytes,ptr);const ok=em._retro_unserialize(ptr,bytes.length);em._free(ptr);if(ok){toast('📂 Loaded slot '+slot)}else{toast('❌ State incompatible with this ROM')};return}catch(e){console.warn('Unserialize failed:',e)}}
-  toast('❌ Load unavailable — emulator still loading');
+  if(em&&saves[slot].b64){try{const bin=atob(saves[slot].b64);const bytes=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)bytes[i]=bin.charCodeAt(i);const ptr=em._malloc(bytes.length);em.HEAPU8.set(bytes,ptr);const ok=em._retro_unserialize(ptr,bytes.length);em._free(ptr);ok?toast('📂 Loaded slot '+slot):toast('❌ Incompatible state');return}catch(e){console.warn('Unserialize failed:',e)}}
+  toast('❌ Load unavailable — module still loading');
 }
-function clearSlot(){const slot=getSlot();if(!saves[slot]){toast('Already empty');return}delete saves[slot];persistSaves();renderSlots();updateStats();toast('🗑 Slot '+slot+' cleared')}
+function clearSlot(){const slot=getSlot();if(!saves[slot]){toast('Already empty');return}delete saves[slot];persistSaves();renderSlots();document.getElementById('st-sv').textContent=Object.keys(saves).length;toast('🗑 Slot '+slot+' cleared')}
 function exportState(){const slot=getSlot();if(!saves[slot]){toast('Slot empty');return}const a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(saves[slot]));a.download=curRomName+'_slot'+slot+'.gbamesave';a.click();toast('⬇ Exported')}
-function importState(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const data=JSON.parse(e.target.result);if(!data.b64){toast('❌ Invalid file');return}saves[getSlot()]=data;persistSaves();renderSlots();toast('⬆ Imported to slot '+getSlot())}catch(e){toast('❌ Invalid file')}};r.readAsText(f);inp.value=''}
-function renderSlots(){
-  const c=document.getElementById('slots');c.innerHTML='';
-  for(let i=1;i<=8;i++){
-    const d=document.createElement('div');d.className='slt'+(saves[i]?' has':'')+(i===activeSlot?' cur':'');
-    d.title=saves[i]?'Slot '+i+' — '+saves[i].date:'Slot '+i+' (empty)';
-    d.onclick=()=>{activeSlot=i;document.getElementById('aslot').value=i;renderSlots()};
-    if(saves[i]?.thumb){const img=document.createElement('img');img.src=saves[i].thumb;img.className='sthumb';d.appendChild(img)}
-    const sn=document.createElement('span');sn.className='sn';sn.textContent=i+(i===8?'A':'');d.appendChild(sn);
-    c.appendChild(d);
-  }
-}
+function importState(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{const d=JSON.parse(e.target.result);if(!d.b64){toast('❌ Invalid file');return}saves[getSlot()]=d;persistSaves();renderSlots();toast('⬆ Imported')}catch(e){toast('❌ Invalid file')}};r.readAsText(f);inp.value=''}
+function renderSlots(){const c=document.getElementById('slots');c.innerHTML='';for(let i=1;i<=8;i++){const d=document.createElement('div');d.className='slt'+(saves[i]?' has':'')+(i===activeSlot?' cur':'');d.title=saves[i]?'Slot '+i+' — '+saves[i].date:'Slot '+i+' (empty)';d.onclick=()=>{activeSlot=i;document.getElementById('aslot').value=i;renderSlots()};if(saves[i]?.thumb){const img=document.createElement('img');img.src=saves[i].thumb;img.className='sthumb';d.appendChild(img)}const sn=document.createElement('span');sn.className='sn';sn.textContent=i+(i===8?'A':'');d.appendChild(sn);c.appendChild(d)}}
 function setAutoSave(s){clearAutoSave();const v=parseInt(s);if(!v)return;autoSaveTimer=setInterval(()=>{if(!emuLoaded)return;const p=getSlot();document.getElementById('aslot').value=8;saveSlot();document.getElementById('aslot').value=p;activeSlot=p},v*1000)}
 function clearAutoSave(){clearInterval(autoSaveTimer);autoSaveTimer=null}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SCREENSHOT + GALLERY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-async function doShot(){
-  const cv=document.querySelector('#game canvas');if(!cv){toast('❌ No canvas found');return}
-  try{
-    const url=cv.toDataURL('image/png');
-    if(db){const id=await dbAdd('shots',{rom:curRomName,url,date:new Date().toLocaleString()});shots.push({id,url,date:new Date().toLocaleString()})}
-    else shots.push({id:Date.now(),url,date:new Date().toLocaleString()});
-    const a=document.createElement('a');a.download=(curRomName||'shot')+'_'+Date.now()+'.png';a.href=url;a.click();
-    const f=document.getElementById('flash');f.classList.add('go');setTimeout(()=>f.classList.remove('go'),130);
-    document.getElementById('st-sh').textContent=shots.length;
-    toast('📸 Screenshot saved!');
-    if(document.getElementById('esc-overlay').classList.contains('open'))renderGallery();
-  }catch(e){toast('Screenshot failed')}
-}
+/* ━━━━━━━━━━━━━━━━ SCREENSHOT ━━━━━━━━━━━━━━━━ */
+async function doShot(){const cv=document.querySelector('#game canvas');if(!cv){toast('❌ No canvas found');return}try{const url=cv.toDataURL('image/png');if(db){const id=await dbAdd('shots',{rom:curRomName,url,date:new Date().toLocaleString()});shots.push({id,url})}else shots.push({id:Date.now(),url});const a=document.createElement('a');a.download=(curRomName||'shot')+'_'+Date.now()+'.png';a.href=url;a.click();const f=document.getElementById('flash');f.classList.add('go');setTimeout(()=>f.classList.remove('go'),130);document.getElementById('st-sh').textContent=shots.length;toast('📸 Screenshot saved!')}catch(e){toast('Screenshot failed')}}
 async function refreshGallery(){if(db){try{shots=await dbIdx('shots','rom',curRomName)}catch(e){}}document.getElementById('st-sh').textContent=shots.length}
-function renderGallery(){
-  const g=document.getElementById('gal-grid');
-  if(!shots.length){g.innerHTML='<div style="grid-column:span 4;text-align:center;padding:14px;font-family:var(--mo);font-size:10px;color:var(--tm)">Press F12 in-game to capture!</div>';return}
-  g.innerHTML='';
-  [...shots].reverse().forEach(s=>{
-    const d=document.createElement('div');d.className='gal-thumb';
-    d.innerHTML='<img src="'+(s.url||s.dataUrl)+'" loading="lazy"><button class="gal-del" onclick="event.stopPropagation();delShot('+s.id+')">✕</button>';
-    d.onclick=()=>openLb(s.url||s.dataUrl);g.appendChild(d);
-  });
-}
+function renderGallery(){const g=document.getElementById('gal-grid');if(!shots.length){g.innerHTML='<div style="grid-column:span 4;text-align:center;padding:14px;font-family:var(--mo);font-size:10px;color:var(--tm)">Press F12 in-game to capture!</div>';return}g.innerHTML='';[...shots].reverse().forEach(s=>{const d=document.createElement('div');d.className='gt';d.innerHTML='<img src="'+(s.url||s.dataUrl)+'" loading="lazy"><button class="gt-del" onclick="event.stopPropagation();delShot('+s.id+')">✕</button>';d.onclick=()=>openLb(s.url||s.dataUrl);g.appendChild(d)})}
 async function delShot(id){if(db)await dbDel('shots',id).catch(()=>{});shots=shots.filter(s=>s.id!==id);document.getElementById('st-sh').textContent=shots.length;renderGallery()}
-async function clearShots(){if(!confirm('Delete all screenshots for this game?'))return;if(db)for(const s of shots)await dbDel('shots',s.id).catch(()=>{});shots=[];document.getElementById('st-sh').textContent=0;renderGallery()}
+async function clearShots(){if(!confirm('Delete all screenshots?'))return;if(db)for(const s of shots)await dbDel('shots',s.id).catch(()=>{});shots=[];document.getElementById('st-sh').textContent=0;renderGallery()}
 function openLb(url){document.getElementById('lb-img').src=url;document.getElementById('lightbox').classList.add('open')}
 function closeLb(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-img').src=''}
 function dlShot(){const a=document.createElement('a');a.href=document.getElementById('lb-img').src;a.download=(curRomName||'shot')+'_'+Date.now()+'.png';a.click()}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   FULLSCREEN — properly centered
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ FULLSCREEN ━━━━━━━━━━━━━━━━ */
 function toggleFS(){
   if(document.fullscreenElement||document.webkitFullscreenElement){
     (document.exitFullscreen||document.webkitExitFullscreen).call(document);return;
@@ -970,92 +902,57 @@ function toggleFS(){
 function onFSChange(){
   const isFS=!!(document.fullscreenElement||document.webkitFullscreenElement);
   document.getElementById('btn-fs').classList.toggle('on',isFS);
-  const game=document.getElementById('game');
   const gframe=document.getElementById('gframe');
-  if(isFS){
-    // Use a rAF to get the real screen size after the browser has expanded
-    requestAnimationFrame(()=>{
+  requestAnimationFrame(()=>{
+    if(isFS){
       const sw=window.screen.width,sh=window.screen.height;
-      // GBA is 3:2 — find the largest size that fits
       let gw,gh;
-      if(sw/sh >= 1.5){ gh=sh; gw=Math.floor(sh*1.5); }
-      else{ gw=sw; gh=Math.floor(sw/1.5); }
-      game.style.width=gw+'px';game.style.height=gh+'px';
-      // Center the gframe inside the 100vw/100vh black wrap
-      gframe.style.borderRadius='0';gframe.style.boxShadow='none';
+      if(sw/sh>=1.5){gh=sh;gw=Math.floor(gh*1.5)}else{gw=sw;gh=Math.floor(gw/1.5)}
       gframe.style.width=gw+'px';gframe.style.height=gh+'px';
-    });
-  }else{
-    game.style.width='480px';game.style.height='320px';
-    gframe.style.cssText='';
-  }
+      gframe.style.borderRadius='0';gframe.style.boxShadow='none';
+    }else{
+      gframe.style.cssText='';
+      sizeGame();
+    }
+  });
 }
-['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(ev=>document.addEventListener(ev,onFSChange));
+['fullscreenchange','webkitfullscreenchange','mozfullscreenchange'].forEach(ev=>document.addEventListener(ev,onFSChange));
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   DISPLAY
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function setFilter(f){const fr=document.getElementById('gframe');fr.className=fr.className.replace(/cf-\S+/g,'').trim();if(f&&f!=='none')fr.classList.add('cf-'+f);document.getElementById('filter-sel').value=f||'none';localStorage.setItem('gbame_filter',f||'none')}
-function setBright(v){const n=parseInt(v);document.getElementById('bval').textContent=n+'%';const g=document.getElementById('game');const ex=(g.style.filter||'').replace(/brightness\([^)]+\)/g,'').trim();g.style.filter=n!==100?(ex+' brightness('+n/100+')').trim():ex;localStorage.setItem('gbame_bright',n)}
+/* ━━━━━━━━━━━━━━━━ DISPLAY ━━━━━━━━━━━━━━━━ */
+function setFilter(f){const ga=document.getElementById('game-area');ga.className='game-area';if(f&&f!=='none')ga.classList.add('cf-'+f);document.getElementById('filter-sel').value=f||'none';localStorage.setItem('gbame_filter',f||'none')}
+function setBright(v){const n=parseInt(v);document.getElementById('bval').textContent=n+'%';const g=document.getElementById('gframe');const ex=(g.style.filter||'').replace(/brightness\([^)]+\)/g,'').trim();g.style.filter=n!==100?(ex+' brightness('+n/100+')').trim():ex;localStorage.setItem('gbame_bright',n)}
 function toggleScanlines(on){document.getElementById('gframe').classList.toggle('scl-on',on);localStorage.setItem('gbame_scl',on?'1':'0')}
 function toggleTouch(on){document.getElementById('touch-ctrl').style.display=on?'block':'none';localStorage.setItem('gbame_touch',on?'1':'0')}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   KEY MAPPING
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function renderKM(){
-  const g=document.getElementById('kmg');if(!g)return;g.innerHTML='';
-  BTN_ORDER.forEach(btn=>{
-    const row=document.createElement('div');row.className='km-row'+(editingKey===btn?' ed':'');
-    row.innerHTML='<span class="km-btn-lbl">'+btn+'</span><span class="km-key"><span class="km-badge">'+(editingKey===btn?'…':kname(keys[btn]||DEF_KEYS[btn]))+'</span></span>';
-    row.onclick=()=>startRemap(btn,row);g.appendChild(row);
-  });
-}
+/* ━━━━━━━━━━━━━━━━ KEY MAPPING ━━━━━━━━━━━━━━━━ */
+function renderKM(){const g=document.getElementById('kmg');if(!g)return;g.innerHTML='';BTN_ORDER.forEach(btn=>{const row=document.createElement('div');row.className='km-row'+(editingKey===btn?' ed':'');row.innerHTML='<span class="km-btn-lbl">'+btn+'</span><span class="km-key"><span class="km-badge">'+(editingKey===btn?'…':kname(keys[btn]||DEF_KEYS[btn]))+'</span></span>';row.onclick=()=>startRemap(btn,row);g.appendChild(row)})}
 function startRemap(btn,row){if(editingKey===btn){editingKey=null;renderKM();return}document.querySelectorAll('.km-row.ed').forEach(r=>r.classList.remove('ed'));editingKey=btn;row.classList.add('ed');row.querySelector('.km-badge').textContent='…'}
 function resetKeys(){keys={...DEF_KEYS};saveKeys();keysChanged=false;editingKey=null;renderKM();document.getElementById('km-notice').style.display='none';toast('🔄 Keys reset')}
 async function applyKeysNow(){if(!emuLoaded){toast('No game running');return}toast('♻️ Reloading with new keys…');const name=curRomName;setTimeout(async()=>{if(db){const roms=await dbIdx('roms','name',name);if(roms.length){loadRomDB(roms[0].id);return}}toast('❌ ROM not in library — drag and drop again')},200);keysChanged=false;document.getElementById('km-notice').style.display='none'}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   CHEATS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ CHEATS ━━━━━━━━━━━━━━━━ */
 function loadCheats(){try{cheats=JSON.parse(localStorage.getItem('gbame_ch_'+curRomName)||'[]')}catch(e){cheats=[]}}
 function saveCheats(){localStorage.setItem('gbame_ch_'+curRomName,JSON.stringify(cheats))}
 function renderCheats(){const el=document.getElementById('cheat-list');if(!el)return;if(!cheats.length){el.innerHTML='<div style="font-family:var(--mo);font-size:10px;color:var(--tm);text-align:center;padding:8px">No cheats added</div>';return}el.innerHTML=cheats.map((c,i)=>'<div class="chi"><input type="checkbox" class="chi-en" '+(c.on?'checked':'')+' onchange="cheats['+i+'].on=this.checked;saveCheats()"><span class="chi-nm" title="'+c.code+'">'+c.name+'</span><button class="chi-del" onclick="cheats.splice('+i+',1);saveCheats();renderCheats()">✕</button></div>').join('')}
-function addCheat(){const n=document.getElementById('ch-name').value.trim(),c=document.getElementById('ch-code').value.trim();if(!n||!c){toast('❌ Enter a name and code');return}cheats.push({name:n,code:c,on:true});saveCheats();renderCheats();document.getElementById('ch-name').value='';document.getElementById('ch-code').value='';toast('✅ Cheat: '+n)}
+function addCheat(){const n=document.getElementById('ch-name').value.trim(),c=document.getElementById('ch-code').value.trim();if(!n||!c){toast('❌ Enter name and code');return}cheats.push({name:n,code:c,on:true});saveCheats();renderCheats();document.getElementById('ch-name').value='';document.getElementById('ch-code').value='';toast('✅ Cheat: '+n)}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   SESSION TIMER
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ SESSION TIMER ━━━━━━━━━━━━━━━━ */
 function startSessTimer(){sessStart=Date.now();clearInterval(sessInterval);sessInterval=setInterval(()=>{const e=Math.floor((Date.now()-sessStart)/1000);const h=String(Math.floor(e/3600)).padStart(2,'0'),m=String(Math.floor((e%3600)/60)).padStart(2,'0'),s=String(e%60).padStart(2,'0');const t=h+':'+m+':'+s;document.getElementById('stimer').textContent=t;document.getElementById('st-sess').textContent=t;document.getElementById('st-pt').textContent=fmtPT(getPT(curRomName)+e)},1000)}
 function stopSessTimer(){if(sessStart){addPT(curRomName,Math.floor((Date.now()-sessStart)/1000));sessStart=null}clearInterval(sessInterval);sessInterval=null}
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   TOUCH CONTROLS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ TOUCH ━━━━━━━━━━━━━━━━ */
 function simKey(kc,down){const ev=new KeyboardEvent(down?'keydown':'keyup',{keyCode:kc,which:kc,bubbles:true,cancelable:true});const t=document.querySelector('#game canvas')||document.getElementById('game');t.dispatchEvent(ev);document.dispatchEvent(ev)}
-const TOUCH_MAP={'t-up':'UP','t-down':'DOWN','t-left':'LEFT','t-right':'RIGHT','t-a':'A','t-b':'B','t-sel':'SELECT','t-sta':'START','t-l':'L','t-r':'R'};
-Object.entries(TOUCH_MAP).forEach(([id,btn])=>{
-  const el=document.getElementById(id);if(!el)return;
-  const getKC=()=>keys[btn]||DEF_KEYS[btn];
-  el.addEventListener('touchstart',e=>{e.preventDefault();simKey(getKC(),true);el.classList.add('down');if(navigator.vibrate)navigator.vibrate(8)},{passive:false});
-  el.addEventListener('touchend',e=>{e.preventDefault();simKey(getKC(),false);el.classList.remove('down')},{passive:false});
-  el.addEventListener('mousedown',()=>{simKey(getKC(),true);el.classList.add('down')});
-  el.addEventListener('mouseup',()=>{simKey(getKC(),false);el.classList.remove('down')});
-});
+const TMAP={'t-up':'UP','t-down':'DOWN','t-left':'LEFT','t-right':'RIGHT','t-a':'A','t-b':'B','t-sel':'SELECT','t-sta':'START','t-l':'L','t-r':'R'};
+Object.entries(TMAP).forEach(([id,btn])=>{const el=document.getElementById(id);if(!el)return;const kc=()=>keys[btn]||DEF_KEYS[btn];el.addEventListener('touchstart',e=>{e.preventDefault();simKey(kc(),true);el.classList.add('dn');if(navigator.vibrate)navigator.vibrate(8)},{passive:false});el.addEventListener('touchend',e=>{e.preventDefault();simKey(kc(),false);el.classList.remove('dn')},{passive:false});el.addEventListener('mousedown',()=>{simKey(kc(),true);el.classList.add('dn')});el.addEventListener('mouseup',()=>{simKey(kc(),false);el.classList.remove('dn')})});
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   KEYBOARD SHORTCUTS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ KEYBOARD ━━━━━━━━━━━━━━━━ */
 let holdFF=false,holdRW=false;
 document.addEventListener('keydown',e=>{
   if(editingKey&&escOpen){
     e.preventDefault();e.stopPropagation();
     const kc=e.keyCode||e.which;
-    if(kc===27){editingKey=null;renderKM();return} // ESC cancels remap
-    keys[editingKey]=kc;saveKeys();keysChanged=true;
-    const prev=editingKey;editingKey=null;renderKM();
-    document.getElementById('km-notice').style.display='';
-    toast('✅ '+prev+' → '+kname(kc));return;
+    if(kc===27){editingKey=null;renderKM();return}
+    keys[editingKey]=kc;saveKeys();keysChanged=true;const prev=editingKey;editingKey=null;renderKM();document.getElementById('km-notice').style.display='';toast('✅ '+prev+' → '+kname(kc));return;
   }
   if(e.code==='Escape'){
     e.preventDefault();
@@ -1063,7 +960,7 @@ document.addEventListener('keydown',e=>{
     if(escOpen)closeEsc();else if(emuLoaded)openEsc();
     return;
   }
-  if(escOpen)return; // block game shortcuts while ESC menu open
+  if(escOpen)return;
   if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName))return;
   if(e.code==='KeyP'&&!e.ctrlKey){togglePause();return}
   if(e.code==='KeyM'&&!e.ctrlKey){toggleMute();return}
@@ -1080,16 +977,14 @@ document.addEventListener('keydown',e=>{
   if(emuLoaded&&!e.ctrlKey&&!e.altKey&&!e.metaKey){const d=parseInt(e.key);if(!isNaN(d)&&d>=1&&d<=8){activeSlot=d;document.getElementById('aslot').value=d;renderSlots();toast('💾 Slot '+d);return}}
   if(e.altKey){const sm={'1':1,'2':2,'3':4,'4':0.5,'5':0.25};if(sm[e.key]){e.preventDefault();setSpeed(sm[e.key]);return}}
   if(e.code==='Space'&&!holdFF&&emuLoaded&&!e.ctrlKey){e.preventDefault();holdFF=true;setFF(true);return}
-  if(e.code==='BracketLeft'&&!holdRW&&emuLoaded){holdRW=true;startRewind();return}
+  if(e.code==='BracketLeft'&&!holdRW&&emuLoaded){holdRW=true;startRW();return}
 });
 document.addEventListener('keyup',e=>{
   if(e.code==='Space'&&holdFF){holdFF=false;setFF(false)}
-  if(e.code==='BracketLeft'&&holdRW){holdRW=false;stopRewind()}
+  if(e.code==='BracketLeft'&&holdRW){holdRW=false;stopRW()}
 });
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   VISIBILITY / MUTE
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ VISIBILITY ━━━━━━━━━━━━━━━━ */
 document.addEventListener('visibilitychange',()=>{
   if(!emuLoaded)return;
   if(document.getElementById('mutef-tog')?.checked){
@@ -1097,19 +992,18 @@ document.addEventListener('visibilitychange',()=>{
   }
 });
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   RESTORE SETTINGS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ RESTORE SETTINGS ━━━━━━━━━━━━━━━━ */
 function restoreSettings(){
-  const scl=localStorage.getItem('gbame_scl')==='1';document.getElementById('scl-tog').checked=scl;if(scl)toggleScanlines(true);
+  const scl=localStorage.getItem('gbame_scl')==='1';document.getElementById('scl-tog').checked=scl;if(scl)document.getElementById('gframe')?.classList.add('scl-on');
   const touch=localStorage.getItem('gbame_touch')==='1'||('ontouchstart' in window&&window.innerWidth<768);document.getElementById('touch-tog').checked=touch;toggleTouch(touch);
-  const bright=parseInt(localStorage.getItem('gbame_bright')||'100');document.getElementById('bright-sl').value=bright;setBright(bright);
+  const bright=parseInt(localStorage.getItem('gbame_bright')||'100');document.getElementById('bright-sl').value=bright;if(bright!==100)setBright(bright);
   const filter=localStorage.getItem('gbame_filter')||'none';setFilter(filter);
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   INIT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* ━━━━━━━━━━━━━━━━ TOAST ━━━━━━━━━━━━━━━━ */
+function toast(msg){const s=document.getElementById('toasts');const t=document.createElement('div');t.className='ti';t.textContent=msg;s.appendChild(t);requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},2800)}
+
+/* ━━━━━━━━━━━━━━━━ INIT ━━━━━━━━━━━━━━━━ */
 async function init(){
   loadKeys();
   await openDB().catch(e=>console.warn('IndexedDB unavailable:',e));
