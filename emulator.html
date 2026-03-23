@@ -1,0 +1,1760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>GBA.ME — Browser GBA Emulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05050f;
+    --surface: #0d0d1a;
+    --surface2: #12122a;
+    --border: #1e1e3a;
+    --accent: #7c3aed;
+    --accent2: #a855f7;
+    --neon: #c084fc;
+    --green: #22d3ee;
+    --red: #f43f5e;
+    --amber: #f59e0b;
+    --text: #e2e8f0;
+    --text-muted: #64748b;
+    --text-dim: #94a3b8;
+    --pixel: 'Press Start 2P', monospace;
+    --mono: 'Share Tech Mono', monospace;
+    --sans: 'Exo 2', sans-serif;
+    --glow: 0 0 20px rgba(168,85,247,0.4), 0 0 40px rgba(168,85,247,0.15);
+    --glow-green: 0 0 20px rgba(34,211,238,0.4), 0 0 40px rgba(34,211,238,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    height: 100%;
+    overflow-x: hidden;
+  }
+
+  /* ──────────────────── NOISE OVERLAY ──────────────────── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+
+  /* ──────────────────── LANDING ──────────────────── */
+  #landing {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 40px 20px;
+  }
+
+  .logo-area {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .logo-gba {
+    width: 220px; height: 130px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+
+  /* SVG GBA icon is inline in HTML */
+
+  .logo-title {
+    font-family: var(--pixel);
+    font-size: clamp(16px, 4vw, 28px);
+    color: var(--neon);
+    text-shadow: 0 0 30px rgba(192,132,252,0.8), 0 0 60px rgba(168,85,247,0.4);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+
+  .logo-sub {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .drop-zone {
+    width: 100%;
+    max-width: 520px;
+    border: 2px dashed var(--border);
+    border-radius: 16px;
+    padding: 48px 32px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--surface);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .drop-zone::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(124,58,237,0.08) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .drop-zone:hover, .drop-zone.drag-over {
+    border-color: var(--accent2);
+    box-shadow: var(--glow);
+  }
+
+  .drop-zone:hover::before, .drop-zone.drag-over::before { opacity: 1; }
+
+  .drop-zone.drag-over { border-style: solid; background: rgba(124,58,237,0.08); }
+
+  .drop-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+    filter: drop-shadow(0 0 12px rgba(168,85,247,0.6));
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  .drop-text {
+    font-family: var(--pixel);
+    font-size: 10px;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    line-height: 1.8;
+  }
+
+  .drop-hint {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+  }
+
+  .browse-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    font-family: var(--pixel);
+    font-size: 9px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 24px rgba(124,58,237,0.4);
+    transition: all 0.2s;
+  }
+
+  .browse-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(124,58,237,0.6);
+  }
+
+  #file-input { display: none; }
+
+  /* Recent ROMs */
+  .recent-section {
+    width: 100%; max-width: 520px;
+    margin-top: 32px;
+  }
+
+  .recent-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 4px;
+  }
+
+  .recent-list {
+    display: flex; flex-direction: column; gap: 8px;
+  }
+
+  .recent-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .recent-item:hover {
+    border-color: var(--accent);
+    background: var(--surface2);
+  }
+
+  .recent-icon { font-size: 18px; }
+
+  .recent-name {
+    flex: 1;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+
+  .recent-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+  }
+
+  /* Default keys reference */
+  .controls-ref {
+    width: 100%; max-width: 520px;
+    margin-top: 28px;
+    padding: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .controls-ref-title {
+    font-family: var(--pixel);
+    font-size: 8px;
+    color: var(--green);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+
+  .keys-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+  }
+
+  .key-row {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--text-dim);
+  }
+
+  .key-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 28px; height: 22px; padding: 0 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent2);
+    white-space: nowrap;
+  }
+
+  .key-label { color: var(--text-muted); }
+
+  /* ──────────────────── EMULATOR SCREEN ──────────────────── */
+  #emulator-screen {
+    display: none;
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    flex-direction: column;
+    background: var(--bg);
+  }
+
+  /* Header */
+  .emu-header {
+    display: flex; align-items: center;
+    padding: 12px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    gap: 16px;
+    flex-shrink: 0;
+    position: sticky; top: 0; z-index: 100;
+  }
+
+  .emu-logo {
+    font-family: var(--pixel);
+    font-size: 9px;
+    color: var(--neon);
+    text-shadow: 0 0 12px rgba(192,132,252,0.6);
+    white-space: nowrap;
+  }
+
+  .emu-game-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    flex: 1;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    padding: 0 8px;
+    opacity: 0.85;
+  }
+
+  .header-btn {
+    display: flex; align-items: center; gap: 6px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: var(--sans);
+    font-size: 12px; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .header-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+  .header-btn.active { border-color: var(--accent2); color: var(--accent2); background: rgba(168,85,247,0.1); }
+  .header-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+  .header-btn.back-btn { color: var(--text-muted); }
+  .header-btn.back-btn:hover { color: var(--red); border-color: var(--red); }
+
+  /* Main layout */
+  .emu-body {
+    display: flex; flex: 1;
+    padding: 16px;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Game container */
+  .game-wrap {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .game-frame {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px var(--border), 0 0 40px rgba(124,58,237,0.2), 0 20px 60px rgba(0,0,0,0.8);
+    transition: box-shadow 0.3s;
+  }
+
+  .game-frame:hover { box-shadow: 0 0 0 2px var(--accent), var(--glow), 0 20px 60px rgba(0,0,0,0.8); }
+
+  #game {
+    display: block;
+    width: 480px;
+    height: 320px;
+    background: #000;
+  }
+
+  /* Scanlines toggle */
+  .scanlines-on #game::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px);
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* Controls bar */
+  .controls-bar {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    justify-content: center;
+    max-width: 560px;
+  }
+
+  .ctrl-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: 10px 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--sans);
+    font-size: 10px; font-weight: 500;
+    min-width: 58px;
+  }
+
+  .ctrl-btn svg { width: 18px; height: 18px; }
+  .ctrl-btn:hover { border-color: var(--accent2); color: var(--accent2); background: var(--surface2); }
+  .ctrl-btn.active { border-color: var(--green); color: var(--green); background: rgba(34,211,238,0.08); }
+  .ctrl-btn.danger:hover { border-color: var(--red); color: var(--red); }
+
+  /* Speed control */
+  .speed-strip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 12px;
+  }
+
+  .speed-label {
+    font-size: 10px; font-family: var(--mono);
+    color: var(--text-muted);
+    margin-right: 4px;
+  }
+
+  .speed-btn {
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .speed-btn:hover { background: var(--surface2); color: var(--text); }
+  .speed-btn.active { background: var(--accent); color: white; border-color: var(--accent2); box-shadow: 0 0 10px rgba(168,85,247,0.4); }
+
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    display: flex; flex-direction: column; gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .sidebar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .sidebar-card-title {
+    font-family: var(--pixel);
+    font-size: 7px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  /* Save state slots */
+  .state-slots {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+  }
+
+  .state-slot {
+    aspect-ratio: 1.5;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: var(--pixel);
+    font-size: 7px;
+    color: var(--text-muted);
+    gap: 4px;
+  }
+
+  .state-slot:hover { border-color: var(--accent2); color: var(--accent2); }
+  .state-slot.has-save { border-color: var(--green); }
+  .state-slot.has-save .slot-num { color: var(--green); }
+
+  .slot-num { font-size: 8px; }
+  .slot-thumb {
+    width: 100%; height: 60%;
+    object-fit: cover;
+    position: absolute; top: 0; left: 0;
+  }
+
+  .slot-actions {
+    display: flex; gap: 4px; justify-content: center;
+    margin-top: 10px;
+  }
+
+  .slot-action-btn {
+    flex: 1; padding: 7px 4px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-family: var(--sans); font-size: 11px;
+    cursor: pointer; transition: all 0.2s;
+  }
+
+  .slot-action-btn:hover.save-action { border-color: var(--accent2); color: var(--accent2); }
+  .slot-action-btn:hover.load-action { border-color: var(--green); color: var(--green); }
+
+  /* Volume */
+  .volume-row {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .volume-icon { font-size: 16px; cursor: pointer; }
+
+  input[type="range"] {
+    -webkit-appearance: none;
+    flex: 1; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    background: var(--accent2);
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(168,85,247,0.6);
+    cursor: pointer;
+  }
+
+  input[type="range"].green-range::-webkit-slider-thumb { background: var(--green); box-shadow: 0 0 8px rgba(34,211,238,0.6); }
+
+  .vol-value {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    min-width: 28px;
+    text-align: right;
+  }
+
+  /* Key mapping display */
+  .key-map-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  .key-map-row {
+    display: flex; align-items: center; gap: 6px;
+    padding: 5px 8px;
+    background: var(--surface2);
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .key-map-row:hover { border-color: var(--accent); }
+  .key-map-row.editing { border-color: var(--amber); background: rgba(245,158,11,0.08); }
+
+  .km-gba {
+    font-family: var(--pixel);
+    font-size: 6px;
+    color: var(--accent2);
+    min-width: 34px;
+  }
+
+  .km-key {
+    flex: 1;
+    display: flex; justify-content: flex-end;
+  }
+
+  .km-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 26px; height: 20px; padding: 0 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--text-dim);
+  }
+
+  .editing .km-badge { border-color: var(--amber); color: var(--amber); animation: blink 0.8s infinite; }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .km-hint {
+    font-size: 9px; font-family: var(--mono);
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  /* Touch Controls */
+  .touch-controls {
+    display: none;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    padding: 16px;
+    background: linear-gradient(transparent, rgba(5,5,15,0.95));
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .touch-layout {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    max-width: 500px; margin: 0 auto;
+    pointer-events: all;
+  }
+
+  .dpad {
+    display: grid; grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(3, 48px);
+    gap: 2px;
+  }
+
+  .dpad-btn {
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(13,13,26,0.9);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: background 0.1s;
+  }
+
+  .dpad-btn:active { background: rgba(124,58,237,0.3); border-color: var(--accent2); }
+  .dpad-center { background: rgba(5,5,15,0.5); border-color: transparent; cursor: default; }
+  .dpad-center:active { background: rgba(5,5,15,0.5); border-color: transparent; }
+
+  .touch-middle {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+
+  .touch-start-sel {
+    display: flex; gap: 12px;
+  }
+
+  .touch-system-btn {
+    padding: 8px 16px;
+    background: rgba(13,13,26,0.9);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text-muted);
+    font-family: var(--mono);
+    font-size: 10px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .touch-system-btn:active { background: rgba(124,58,237,0.3); }
+
+  .touch-lr {
+    display: flex; gap: 8px;
+  }
+
+  .touch-lr-btn {
+    padding: 8px 20px;
+    background: rgba(13,13,26,0.9);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .touch-lr-btn:active { background: rgba(124,58,237,0.3); }
+
+  .abxy-pad {
+    position: relative; width: 120px; height: 120px;
+  }
+
+  .abxy-btn {
+    position: absolute;
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    border: 2px solid;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--pixel);
+    font-size: 8px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    transition: all 0.1s;
+  }
+
+  .btn-a { top: 35px; right: 0; border-color: var(--red); color: var(--red); background: rgba(244,63,94,0.1); }
+  .btn-b { bottom: 0; left: 40px; border-color: var(--amber); color: var(--amber); background: rgba(245,158,11,0.1); }
+  .btn-a:active { background: rgba(244,63,94,0.4); }
+  .btn-b:active { background: rgba(245,158,11,0.4); }
+
+  /* ──────────────────── LOADING ──────────────────── */
+  #loading-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 24px;
+  }
+
+  .loading-pixel {
+    font-family: var(--pixel);
+    font-size: 14px;
+    color: var(--neon);
+    text-shadow: var(--glow);
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+  .loading-bar-wrap {
+    width: 280px; height: 8px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .loading-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--neon));
+    border-radius: 4px;
+    animation: load 2s ease infinite;
+    box-shadow: 0 0 12px rgba(168,85,247,0.6);
+  }
+
+  @keyframes load {
+    0% { width: 5%; }
+    50% { width: 80%; }
+    100% { width: 95%; }
+  }
+
+  .loading-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+  }
+
+  /* ──────────────────── MODAL ──────────────────── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 460px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.8), var(--glow);
+  }
+
+  .modal-title {
+    font-family: var(--pixel);
+    font-size: 9px;
+    color: var(--neon);
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .modal-close {
+    position: absolute; top: 20px; right: 20px;
+    background: none; border: none;
+    color: var(--text-muted); font-size: 20px;
+    cursor: pointer; line-height: 1;
+  }
+
+  .modal-close:hover { color: var(--red); }
+
+  /* Screenshot flash */
+  .flash {
+    position: fixed; inset: 0; z-index: 400;
+    background: white;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s;
+  }
+
+  .flash.go { opacity: 0.7; }
+
+  /* Notification toast */
+  .toast {
+    position: fixed; bottom: 24px; right: 24px; z-index: 500;
+    padding: 12px 20px;
+    background: var(--surface2);
+    border: 1px solid var(--accent2);
+    border-radius: 10px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--neon);
+    box-shadow: var(--glow);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    pointer-events: none;
+    max-width: 280px;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    #game { width: 100vw; height: calc(100vw * (2/3)); max-width: 480px; max-height: 320px; }
+    .sidebar { width: 100%; }
+    .emu-body { padding: 8px; gap: 8px; }
+    .touch-controls { display: block; }
+    .controls-bar { gap: 5px; }
+    .ctrl-btn { padding: 8px 10px; min-width: 48px; font-size: 9px; }
+    .emu-header { padding: 8px 12px; flex-wrap: wrap; }
+    .emu-logo { font-size: 7px; }
+  }
+
+  @media (max-width: 900px) {
+    .sidebar { width: 100%; max-width: 560px; }
+  }
+
+  /* EmulatorJS container overrides */
+  #game canvas, #game video { display: block; width: 100% !important; height: 100% !important; }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+  /* Settings toggle rows */
+  .setting-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .setting-row:last-child { border-bottom: none; }
+  .setting-label { font-size: 13px; color: var(--text-dim); }
+  .setting-label small { display: block; font-size: 10px; color: var(--text-muted); margin-top: 2px; font-family: var(--mono); }
+
+  .toggle {
+    position: relative; width: 40px; height: 22px;
+    flex-shrink: 0;
+  }
+  .toggle input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider {
+    position: absolute; inset: 0;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .toggle-slider::before {
+    content: '';
+    position: absolute; left: 2px; top: 2px;
+    width: 16px; height: 16px;
+    background: var(--text-muted);
+    border-radius: 50%;
+    transition: all 0.2s;
+  }
+  .toggle input:checked + .toggle-slider { background: var(--accent); border-color: var(--accent2); }
+  .toggle input:checked + .toggle-slider::before { transform: translateX(18px); background: white; }
+</style>
+</head>
+<body>
+
+<!-- ──────────────── LANDING ──────────────── -->
+<div id="landing">
+  <div class="logo-area">
+    <!-- Inline GBA SVG -->
+    <svg class="logo-gba" viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 24px;">
+      <defs>
+        <radialGradient id="bodyGrad" cx="50%" cy="50%" r="60%">
+          <stop offset="0%" stop-color="#1e1e3a"/>
+          <stop offset="100%" stop-color="#0a0a1a"/>
+        </radialGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <!-- Body -->
+      <rect x="10" y="20" width="200" height="95" rx="20" fill="url(#bodyGrad)" stroke="#2d2d5a" stroke-width="1.5"/>
+      <!-- Screen bezel -->
+      <rect x="65" y="28" width="90" height="65" rx="6" fill="#050510" stroke="#1e1e3a" stroke-width="1"/>
+      <!-- Screen (glowing) -->
+      <rect x="68" y="31" width="84" height="59" rx="4" fill="#0a1628"/>
+      <rect x="68" y="31" width="84" height="59" rx="4" fill="url(#screenGrad)" opacity="0.6"/>
+      <defs>
+        <linearGradient id="screenGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#22d3ee" stop-opacity="0.1"/>
+        </linearGradient>
+      </defs>
+      <!-- Screen shine -->
+      <rect x="70" y="33" width="30" height="8" rx="2" fill="white" opacity="0.04"/>
+      <!-- Pixel art on screen (simple icon) -->
+      <rect x="98" y="50" width="6" height="6" fill="#a855f7" filter="url(#glow)"/>
+      <rect x="106" y="46" width="6" height="6" fill="#a855f7" filter="url(#glow)"/>
+      <rect x="114" y="50" width="6" height="6" fill="#a855f7" filter="url(#glow)"/>
+      <rect x="106" y="54" width="6" height="6" fill="#7c3aed" filter="url(#glow)"/>
+      <!-- D-pad -->
+      <rect x="22" y="47" width="10" height="30" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
+      <rect x="16" y="53" width="22" height="18" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
+      <circle cx="27" cy="62" r="3" fill="#2d2d5a"/>
+      <!-- A/B Buttons -->
+      <circle cx="182" cy="55" r="8" fill="#7c3aed" stroke="#a855f7" stroke-width="1" filter="url(#glow)"/>
+      <circle cx="164" cy="65" r="8" fill="#22d3ee" stroke="#67e8f9" stroke-width="1" opacity="0.8"/>
+      <text x="182" y="59" text-anchor="middle" fill="white" font-size="7" font-family="monospace" font-weight="bold">A</text>
+      <text x="164" y="69" text-anchor="middle" fill="white" font-size="7" font-family="monospace" font-weight="bold">B</text>
+      <!-- Start/Select -->
+      <rect x="92" y="97" width="18" height="6" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
+      <rect x="112" y="97" width="18" height="6" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
+      <text x="101" y="101.5" text-anchor="middle" fill="#64748b" font-size="4" font-family="monospace">SEL</text>
+      <text x="121" y="101.5" text-anchor="middle" fill="#64748b" font-size="4" font-family="monospace">STA</text>
+      <!-- L/R Shoulders -->
+      <rect x="10" y="12" width="40" height="12" rx="6" fill="#12122a" stroke="#1e1e3a" stroke-width="1"/>
+      <rect x="170" y="12" width="40" height="12" rx="6" fill="#12122a" stroke="#1e1e3a" stroke-width="1"/>
+      <text x="30" y="20" text-anchor="middle" fill="#7c3aed" font-size="7" font-family="monospace" font-weight="bold">L</text>
+      <text x="190" y="20" text-anchor="middle" fill="#7c3aed" font-size="7" font-family="monospace" font-weight="bold">R</text>
+    </svg>
+    <div class="logo-title">GBA.ME</div>
+    <div class="logo-sub">Browser Game Boy Advance Emulator</div>
+  </div>
+
+  <div class="drop-zone" id="drop-zone">
+    <span class="drop-icon">🎮</span>
+    <div class="drop-text">Drop your .gba / .gbc / .gb ROM here</div>
+    <div class="drop-hint">Only play ROMs you legally own</div>
+    <button class="browse-btn" onclick="document.getElementById('file-input').click()">Browse File</button>
+    <input type="file" id="file-input" accept=".gba,.gbc,.gb,.zip">
+  </div>
+
+  <div class="recent-section" id="recent-section" style="display:none">
+    <div class="recent-title">⏱ Recent</div>
+    <div class="recent-list" id="recent-list"></div>
+  </div>
+
+  <div class="controls-ref">
+    <div class="controls-ref-title">Default Key Bindings</div>
+    <div class="keys-grid">
+      <div class="key-row"><span class="key-badge">← → ↑ ↓</span><span class="key-label">D-Pad</span></div>
+      <div class="key-row"><span class="key-badge">X</span><span class="key-label">A Button</span></div>
+      <div class="key-row"><span class="key-badge">Z</span><span class="key-label">B Button</span></div>
+      <div class="key-row"><span class="key-badge">A</span><span class="key-label">L Trigger</span></div>
+      <div class="key-row"><span class="key-badge">S</span><span class="key-label">R Trigger</span></div>
+      <div class="key-row"><span class="key-badge">Enter</span><span class="key-label">Start</span></div>
+      <div class="key-row"><span class="key-badge">BkSpc</span><span class="key-label">Select</span></div>
+      <div class="key-row"><span class="key-badge">Space</span><span class="key-label">Fast Fwd</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────── EMULATOR SCREEN ──────────────── -->
+<div id="emulator-screen">
+
+  <header class="emu-header">
+    <div class="emu-logo">GBA.ME</div>
+    <div class="emu-game-name" id="game-title">—</div>
+
+    <button class="header-btn" onclick="openModal('keys-modal')" title="Key Mapping">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg>
+      Keys
+    </button>
+
+    <button class="header-btn" id="settings-btn" onclick="openModal('settings-modal')" title="Settings">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg>
+      Settings
+    </button>
+
+    <button class="header-btn back-btn" onclick="goToLanding()" title="Load New ROM">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      New ROM
+    </button>
+  </header>
+
+  <div class="emu-body">
+    <div class="game-wrap">
+
+      <!-- Speed bar -->
+      <div class="speed-strip">
+        <span class="speed-label">SPEED</span>
+        <button class="speed-btn" data-speed="0.5" onclick="setSpeed(0.5)">0.5×</button>
+        <button class="speed-btn active" data-speed="1" onclick="setSpeed(1)">1×</button>
+        <button class="speed-btn" data-speed="2" onclick="setSpeed(2)">2×</button>
+        <button class="speed-btn" data-speed="4" onclick="setSpeed(4)">4×</button>
+        <button class="speed-btn" data-speed="8" onclick="setSpeed(8)">8×</button>
+      </div>
+
+      <!-- Game frame -->
+      <div class="game-frame" id="game-frame">
+        <div id="game"></div>
+      </div>
+
+      <!-- Main controls bar -->
+      <div class="controls-bar">
+
+        <button class="ctrl-btn" id="pause-btn" onclick="togglePause()" title="Pause/Resume (P)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>
+          Pause
+        </button>
+
+        <button class="ctrl-btn" onclick="resetGame()" title="Reset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.6"/></svg>
+          Reset
+        </button>
+
+        <button class="ctrl-btn" onclick="takeScreenshot()" title="Screenshot (F12)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          Shot
+        </button>
+
+        <button class="ctrl-btn" id="fs-btn" onclick="toggleFullscreen()" title="Fullscreen (F11)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+          Full
+        </button>
+
+        <button class="ctrl-btn danger" onclick="confirmReset()" title="Hard Reset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          HReset
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+      <!-- Save States -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">💾 Save States</div>
+        <div class="state-slots" id="state-slots">
+          <!-- Slots 1–8 generated by JS -->
+        </div>
+        <div class="slot-actions" style="margin-top:12px">
+          <button class="slot-action-btn save-action" onclick="saveToActive()">Save to Slot</button>
+          <button class="slot-action-btn load-action" onclick="loadFromActive()">Load Slot</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:10px;">
+          <span style="font-family:var(--mono);font-size:10px;color:var(--text-muted);">Active slot:</span>
+          <select id="active-slot" style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;color:var(--text-dim);font-family:var(--mono);font-size:11px;padding:4px 8px;cursor:pointer;flex:1;">
+            <option value="1">Slot 1</option>
+            <option value="2">Slot 2</option>
+            <option value="3">Slot 3</option>
+            <option value="4">Slot 4</option>
+            <option value="5">Slot 5</option>
+            <option value="6">Slot 6</option>
+            <option value="7">Slot 7</option>
+            <option value="8">Slot 8</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Volume -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">🔊 Volume</div>
+        <div class="volume-row">
+          <span class="volume-icon" onclick="toggleMute()" title="Mute">🔊</span>
+          <input type="range" id="volume-slider" min="0" max="100" value="100" oninput="setVolume(this.value)">
+          <span class="vol-value" id="vol-display">100</span>
+        </div>
+      </div>
+
+      <!-- Key mapping quick view -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-title">🎮 Controls <span style="font-size:7px;color:var(--text-muted);margin-left:6px;">(click to remap)</span></div>
+        <div class="key-map-grid" id="key-map-grid"></div>
+        <div class="km-hint">Click any row, then press a key to remap</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────── TOUCH CONTROLS ──────────────── -->
+<div class="touch-controls" id="touch-controls">
+  <div class="touch-layout">
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="touch-lr">
+        <button class="touch-lr-btn" id="touch-l">L</button>
+        <button class="touch-lr-btn" id="touch-r">R</button>
+      </div>
+      <div class="dpad">
+        <div></div>
+        <button class="dpad-btn" id="touch-up">↑</button>
+        <div></div>
+        <button class="dpad-btn" id="touch-left">←</button>
+        <div class="dpad-btn dpad-center"></div>
+        <button class="dpad-btn" id="touch-right">→</button>
+        <div></div>
+        <button class="dpad-btn" id="touch-down">↓</button>
+        <div></div>
+      </div>
+    </div>
+    <div class="touch-middle">
+      <div class="touch-start-sel">
+        <button class="touch-system-btn" id="touch-sel">SELECT</button>
+        <button class="touch-system-btn" id="touch-sta">START</button>
+      </div>
+    </div>
+    <div class="abxy-pad">
+      <button class="abxy-btn btn-a" id="touch-a">A</button>
+      <button class="abxy-btn btn-b" id="touch-b">B</button>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────── LOADING OVERLAY ──────────────── -->
+<div id="loading-overlay">
+  <div class="loading-pixel">Loading ROM...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-sub" id="loading-sub">Initializing emulator core</div>
+</div>
+
+<!-- ──────────────── KEY MAPPING MODAL ──────────────── -->
+<div class="modal-overlay" id="keys-modal">
+  <div class="modal">
+    <div class="modal-title">🎮 Key Mapping</div>
+    <button class="modal-close" onclick="closeModal('keys-modal')">✕</button>
+    <p style="font-size:12px;color:var(--text-muted);margin-bottom:16px;font-family:var(--mono);line-height:1.7;">Click a row then press any key to remap. Changes are saved instantly.</p>
+    <div class="key-map-grid" id="modal-key-map-grid" style="margin-bottom:16px;"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button onclick="resetKeysToDefault()" style="flex:1;padding:10px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text-dim);font-family:var(--sans);font-size:12px;cursor:pointer;">Reset to Default</button>
+      <button onclick="closeModal('keys-modal')" style="flex:1;padding:10px;background:var(--accent);border:none;border-radius:8px;color:white;font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,0.4);">Done</button>
+    </div>
+  </div>
+</div>
+
+<!-- ──────────────── SETTINGS MODAL ──────────────── -->
+<div class="modal-overlay" id="settings-modal">
+  <div class="modal">
+    <div class="modal-title">⚙️ Settings</div>
+    <button class="modal-close" onclick="closeModal('settings-modal')">✕</button>
+
+    <div class="setting-row">
+      <div class="setting-label">Scanlines <small>CRT scanline effect</small></div>
+      <label class="toggle"><input type="checkbox" id="scanlines-toggle" onchange="toggleScanlines(this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">Touch Controls <small>On-screen gamepad (mobile)</small></div>
+      <label class="toggle"><input type="checkbox" id="touch-toggle" onchange="toggleTouchControls(this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">Rewind <small>Hold [ to rewind gameplay</small></div>
+      <label class="toggle"><input type="checkbox" id="rewind-toggle" checked><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">Mute on Focus Loss <small>Mute when tab is hidden</small></div>
+      <label class="toggle"><input type="checkbox" id="mute-focus-toggle" checked><span class="toggle-slider"></span></label>
+    </div>
+    <div class="setting-row">
+      <div class="setting-label">Integer Scaling <small>Sharp pixel-perfect display</small></div>
+      <label class="toggle"><input type="checkbox" id="integer-scale-toggle" onchange="toggleIntegerScale(this.checked)"><span class="toggle-slider"></span></label>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="sidebar-card-title" style="margin-bottom:10px;">Display Size</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
+        <button class="speed-btn active" onclick="setGameSize(480,320,this)">480×320</button>
+        <button class="speed-btn" onclick="setGameSize(640,426,this)">640×426</button>
+        <button class="speed-btn" onclick="setGameSize(720,480,this)">720×480</button>
+        <button class="speed-btn" onclick="setGameSize(960,640,this)">960×640</button>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button onclick="clearAllData()" style="width:100%;padding:10px;background:rgba(244,63,94,0.1);border:1px solid var(--red);border-radius:8px;color:var(--red);font-family:var(--sans);font-size:12px;cursor:pointer;">Clear All Saved Data & Recent ROMs</button>
+    </div>
+  </div>
+</div>
+
+<!-- Screenshot flash -->
+<div class="flash" id="flash"></div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<!-- ──────────────── SCRIPTS ──────────────── -->
+<script>
+// ─────────────── STATE ───────────────
+let emulatorLoaded = false;
+let currentRomName = '';
+let currentRomBlob = null;
+let activeSlot = 1;
+let isPaused = false;
+let isMuted = false;
+let currentSpeed = 1;
+let editingKeyRow = null;
+let saves = {}; // slot -> {thumb, date}
+
+// Default key bindings: GBA button name -> key code string
+const DEFAULT_KEYS = {
+  'A':      'KeyX',
+  'B':      'KeyZ',
+  'L':      'KeyA',
+  'R':      'KeyS',
+  'UP':     'ArrowUp',
+  'DOWN':   'ArrowDown',
+  'LEFT':   'ArrowLeft',
+  'RIGHT':  'ArrowRight',
+  'START':  'Enter',
+  'SELECT': 'Backspace',
+};
+
+// Labels for display
+const BUTTON_LABELS = ['A','B','L','R','UP','DOWN','LEFT','RIGHT','START','SELECT'];
+
+let keyBindings = {};
+
+function loadKeyBindings() {
+  try {
+    const saved = localStorage.getItem('gbame_keys');
+    keyBindings = saved ? JSON.parse(saved) : { ...DEFAULT_KEYS };
+  } catch { keyBindings = { ...DEFAULT_KEYS }; }
+}
+
+function saveKeyBindings() {
+  localStorage.setItem('gbame_keys', JSON.stringify(keyBindings));
+}
+
+function keyDisplayName(code) {
+  const map = {
+    'ArrowUp':'↑','ArrowDown':'↓','ArrowLeft':'←','ArrowRight':'→',
+    'Enter':'Enter','Backspace':'BkSpc','Space':'Space','Tab':'Tab','Escape':'Esc',
+    'ShiftLeft':'L⇧','ShiftRight':'R⇧','ControlLeft':'L⌃','AltLeft':'L⌥',
+    'NumpadEnter':'Num⏎',
+  };
+  if (map[code]) return map[code];
+  if (code.startsWith('Key')) return code.slice(3);
+  if (code.startsWith('Digit')) return code.slice(5);
+  if (code.startsWith('Numpad')) return 'N' + code.slice(6);
+  if (code.startsWith('F')) return code;
+  return code.slice(0, 6);
+}
+
+// ─────────────── RECENT ROMS ───────────────
+function getRecent() {
+  try { return JSON.parse(localStorage.getItem('gbame_recent') || '[]'); } catch { return []; }
+}
+
+function addRecent(name) {
+  let list = getRecent();
+  list = list.filter(r => r.name !== name);
+  list.unshift({ name, date: Date.now() });
+  if (list.length > 5) list = list.slice(0, 5);
+  localStorage.setItem('gbame_recent', JSON.stringify(list));
+}
+
+function renderRecent() {
+  const list = getRecent();
+  const sec = document.getElementById('recent-section');
+  const ul = document.getElementById('recent-list');
+  if (!list.length) { sec.style.display = 'none'; return; }
+  sec.style.display = '';
+  ul.innerHTML = list.map(r => `
+    <div class="recent-item" title="${r.name}">
+      <span class="recent-icon">🎮</span>
+      <span class="recent-name">${r.name}</span>
+      <span class="recent-date">${timeAgo(r.date)}</span>
+    </div>
+  `).join('');
+}
+
+function timeAgo(ts) {
+  const s = Math.floor((Date.now() - ts) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+// ─────────────── FILE HANDLING ───────────────
+const dropZone = document.getElementById('drop-zone');
+const fileInput = document.getElementById('file-input');
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) handleFile(file);
+});
+
+fileInput.addEventListener('change', e => {
+  if (e.target.files[0]) handleFile(e.target.files[0]);
+});
+
+function handleFile(file) {
+  const name = file.name.replace(/\.[^.]+$/, '');
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (!['gba','gbc','gb','zip'].includes(ext)) {
+    showToast('❌ Unsupported file type. Use .gba, .gbc, .gb, or .zip');
+    return;
+  }
+  currentRomName = name;
+  currentRomBlob = file;
+  addRecent(file.name);
+  loadEmulator(file);
+}
+
+// ─────────────── EMULATOR INIT ───────────────
+function loadEmulator(file) {
+  showLoading();
+  const blobUrl = URL.createObjectURL(file);
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  let core = 'mgba'; // mGBA for GBA, also handles GBC/GB
+  if (ext === 'gb' || ext === 'gbc') core = 'gambatte';
+
+  // Set EmulatorJS globals before loading script
+  window.EJS_player = '#game';
+  window.EJS_core = core;
+  window.EJS_gameUrl = blobUrl;
+  window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
+  window.EJS_startOnLoaded = true;
+  window.EJS_rewindEnabled = document.getElementById('rewind-toggle').checked;
+  window.EJS_rewindGranularity = 2;
+  window.EJS_volume = parseInt(document.getElementById('volume-slider').value) / 100;
+  window.EJS_backgroundColor = '#000000';
+
+  // Configure default controls from our key bindings
+  window.EJS_defaultOptions = {
+    'shader': 'none',
+  };
+
+  window.EJS_onGameStart = function() {
+    emulatorLoaded = true;
+    hideLoading();
+    showEmulator();
+    showToast('🎮 Game started!');
+
+    // Apply volume
+    setTimeout(() => setVolume(document.getElementById('volume-slider').value), 500);
+  };
+
+  window.EJS_onLoadState = function() { showToast('📂 State loaded'); };
+  window.EJS_onSaveState = function() { showToast('💾 State saved'); };
+
+  // Remove old emulator instance if any
+  const old = document.querySelector('script[data-ejs]');
+  if (old) old.remove();
+
+  // Clear #game div
+  document.getElementById('game').innerHTML = '';
+  emulatorLoaded = false;
+
+  // Load EmulatorJS
+  const script = document.createElement('script');
+  script.src = 'https://cdn.emulatorjs.org/stable/data/loader.js';
+  script.dataset.ejs = '1';
+  script.onerror = () => {
+    hideLoading();
+    showToast('❌ Failed to load emulator. Check your internet connection.');
+  };
+  document.body.appendChild(script);
+
+  // Timeout fallback
+  setTimeout(() => {
+    if (!emulatorLoaded) {
+      hideLoading();
+      showEmulator();
+    }
+  }, 15000);
+}
+
+// ─────────────── UI STATE ───────────────
+function showLoading() {
+  document.getElementById('loading-overlay').style.display = 'flex';
+  document.getElementById('landing').style.display = 'none';
+  document.getElementById('emulator-screen').style.display = 'none';
+}
+
+function hideLoading() {
+  document.getElementById('loading-overlay').style.display = 'none';
+}
+
+function showEmulator() {
+  document.getElementById('emulator-screen').style.display = 'flex';
+  document.getElementById('emulator-screen').style.flexDirection = 'column';
+  document.getElementById('game-title').textContent = currentRomName;
+  renderStateSlots();
+}
+
+function goToLanding() {
+  if (!confirm('Exit current game? Unsaved progress will be lost.')) return;
+  document.getElementById('emulator-screen').style.display = 'none';
+  document.getElementById('landing').style.display = 'flex';
+  renderRecent();
+  // Clean up emulator
+  document.getElementById('game').innerHTML = '';
+  const s = document.querySelector('script[data-ejs]');
+  if (s) s.remove();
+  emulatorLoaded = false;
+  isPaused = false;
+}
+
+// ─────────────── CONTROLS ───────────────
+function togglePause() {
+  if (!emulatorLoaded || !window.EJS_emulator) return;
+  try {
+    if (isPaused) {
+      window.EJS_emulator.play();
+      isPaused = false;
+      document.getElementById('pause-btn').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="4" width="4" height="16" fill="currentColor"/><rect x="14" y="4" width="4" height="16" fill="currentColor"/></svg>Pause`;
+      showToast('▶️ Resumed');
+    } else {
+      window.EJS_emulator.pause();
+      isPaused = true;
+      document.getElementById('pause-btn').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3" fill="currentColor"/></svg>Resume`;
+      showToast('⏸ Paused');
+    }
+  } catch(e) { showToast('Pause not available yet'); }
+}
+
+function resetGame() {
+  if (!emulatorLoaded || !window.EJS_emulator) return;
+  try { window.EJS_emulator.restart(); showToast('🔄 Game reset'); }
+  catch(e) { showToast('Reset: ' + e.message); }
+}
+
+function confirmReset() {
+  if (confirm('Hard reset — this will clear all in-game state. Continue?')) resetGame();
+}
+
+function setSpeed(speed) {
+  currentSpeed = speed;
+  document.querySelectorAll('.speed-btn').forEach(b => b.classList.toggle('active', parseFloat(b.dataset.speed) === speed));
+  if (!emulatorLoaded || !window.EJS_emulator) return;
+  try { window.EJS_emulator.gameManager.setSpeed(speed); }
+  catch(e) {
+    try { window.EJS_emulator.setSpeed(speed); } catch {}
+  }
+  showToast(`⚡ Speed: ${speed}×`);
+}
+
+function setVolume(val) {
+  const v = parseInt(val);
+  document.getElementById('vol-display').textContent = v;
+  document.getElementById('volume-slider').value = v;
+  const icon = v === 0 ? '🔇' : v < 50 ? '🔉' : '🔊';
+  document.querySelector('.volume-icon').textContent = icon;
+  if (window.EJS_emulator) {
+    try { window.EJS_emulator.setVolume(v / 100); } catch {
+      try { window.EJS_emulator.volume = v / 100; } catch {}
+    }
+  }
+}
+
+function toggleMute() {
+  isMuted = !isMuted;
+  setVolume(isMuted ? 0 : 100);
+  document.getElementById('volume-slider').value = isMuted ? 0 : 100;
+}
+
+function takeScreenshot() {
+  const canvas = document.querySelector('#game canvas');
+  if (!canvas) { showToast('❌ No game running'); return; }
+  try {
+    const link = document.createElement('a');
+    link.download = (currentRomName || 'screenshot') + '_' + Date.now() + '.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    // Flash effect
+    const f = document.getElementById('flash');
+    f.classList.add('go');
+    setTimeout(() => f.classList.remove('go'), 150);
+    showToast('📸 Screenshot saved!');
+  } catch(e) { showToast('Screenshot failed (CORS?)'); }
+}
+
+function toggleFullscreen() {
+  const frame = document.getElementById('game-frame');
+  if (!document.fullscreenElement) {
+    frame.requestFullscreen().catch(e => showToast('Fullscreen denied'));
+    document.getElementById('fs-btn').classList.add('active');
+  } else {
+    document.exitFullscreen();
+    document.getElementById('fs-btn').classList.remove('active');
+  }
+}
+
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement)
+    document.getElementById('fs-btn').classList.remove('active');
+});
+
+// ─────────────── SAVE STATES ───────────────
+function renderStateSlots() {
+  const container = document.getElementById('state-slots');
+  container.innerHTML = '';
+  for (let i = 1; i <= 8; i++) {
+    const div = document.createElement('div');
+    div.className = 'state-slot' + (saves[i] ? ' has-save' : '');
+    div.title = `Slot ${i}` + (saves[i] ? ` — ${saves[i].date}` : ' (empty)');
+    div.onclick = () => {
+      document.querySelectorAll('.state-slot').forEach(s => s.style.outline = '');
+      div.style.outline = '2px solid var(--accent2)';
+      document.getElementById('active-slot').value = i;
+      activeSlot = i;
+    };
+    if (saves[i] && saves[i].thumb) {
+      const img = document.createElement('img');
+      img.src = saves[i].thumb;
+      img.className = 'slot-thumb';
+      div.appendChild(img);
+    }
+    div.innerHTML += `<span class="slot-num">${i}</span>`;
+    container.appendChild(div);
+  }
+}
+
+function getActiveSlot() {
+  return parseInt(document.getElementById('active-slot').value) || 1;
+}
+
+function saveToActive() {
+  const slot = getActiveSlot();
+  if (!emulatorLoaded || !window.EJS_emulator) { showToast('No game running'); return; }
+  try {
+    window.EJS_emulator.gameManager.downloadState(); // or saveState
+  } catch {}
+  try {
+    const canvas = document.querySelector('#game canvas');
+    const thumb = canvas ? canvas.toDataURL('image/jpeg', 0.5) : null;
+    saves[slot] = { date: new Date().toLocaleString(), thumb };
+    localStorage.setItem('gbame_saves_' + currentRomName, JSON.stringify(saves));
+    renderStateSlots();
+    showToast(`💾 Saved to slot ${slot}`);
+  } catch(e) { showToast('Save failed'); }
+}
+
+function loadFromActive() {
+  const slot = getActiveSlot();
+  if (!saves[slot]) { showToast(`Slot ${slot} is empty`); return; }
+  if (!emulatorLoaded || !window.EJS_emulator) { showToast('No game running'); return; }
+  try {
+    window.EJS_emulator.gameManager.uploadState();
+    showToast(`📂 Loaded slot ${slot}`);
+  } catch { showToast('Load state: use the emulator menu (☰)'); }
+}
+
+function saveActiveSlotChanged() {
+  activeSlot = getActiveSlot();
+}
+
+// Load saves for current ROM
+function loadSaves() {
+  try {
+    const s = localStorage.getItem('gbame_saves_' + currentRomName);
+    saves = s ? JSON.parse(s) : {};
+  } catch { saves = {}; }
+}
+
+// ─────────────── KEY MAPPING ───────────────
+function renderKeyMap(gridId) {
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  BUTTON_LABELS.forEach(btn => {
+    const row = document.createElement('div');
+    row.className = 'key-map-row';
+    row.dataset.btn = btn;
+    row.innerHTML = `<span class="km-gba">${btn}</span><span class="km-key"><span class="km-badge">${keyDisplayName(keyBindings[btn] || DEFAULT_KEYS[btn] || '')}</span></span>`;
+    row.onclick = () => startRemap(btn, row, gridId);
+    grid.appendChild(row);
+  });
+}
+
+function startRemap(btn, row, gridId) {
+  // Clear other editing states in same grid
+  document.querySelectorAll(`#${gridId} .key-map-row.editing`).forEach(r => {
+    if (r !== row) r.classList.remove('editing');
+  });
+  // Also sync the other grid
+  const otherGridId = gridId === 'key-map-grid' ? 'modal-key-map-grid' : 'key-map-grid';
+
+  if (editingKeyRow === btn) {
+    editingKeyRow = null;
+    row.classList.remove('editing');
+    return;
+  }
+  editingKeyRow = btn;
+  row.classList.add('editing');
+  row.querySelector('.km-badge').textContent = '...';
+}
+
+function resetKeysToDefault() {
+  keyBindings = { ...DEFAULT_KEYS };
+  saveKeyBindings();
+  renderKeyMap('key-map-grid');
+  renderKeyMap('modal-key-map-grid');
+  showToast('🔄 Keys reset to default');
+}
+
+document.addEventListener('keydown', e => {
+  // Remap handling
+  if (editingKeyRow) {
+    e.preventDefault();
+    e.stopPropagation();
+    keyBindings[editingKeyRow] = e.code;
+    saveKeyBindings();
+    renderKeyMap('key-map-grid');
+    renderKeyMap('modal-key-map-grid');
+    editingKeyRow = null;
+    showToast(`✅ ${editingKeyRow} → ${keyDisplayName(e.code)}`);
+    return;
+  }
+
+  // Keyboard shortcuts (when emulator running)
+  if (e.code === 'KeyP' && !e.ctrlKey) { togglePause(); return; }
+  if (e.code === 'F12') { e.preventDefault(); takeScreenshot(); return; }
+  if (e.code === 'F11') { e.preventDefault(); toggleFullscreen(); return; }
+  if (e.code === 'F5') { e.preventDefault(); resetGame(); return; }
+  // Speed shortcuts
+  if (e.code === 'Digit1' && e.altKey) setSpeed(1);
+  if (e.code === 'Digit2' && e.altKey) setSpeed(2);
+  if (e.code === 'Digit4' && e.altKey) setSpeed(4);
+});
+
+// ─────────────── SETTINGS ───────────────
+function toggleScanlines(on) {
+  document.getElementById('game-frame').classList.toggle('scanlines-on', on);
+  localStorage.setItem('gbame_scanlines', on ? '1' : '0');
+}
+
+function toggleTouchControls(on) {
+  document.getElementById('touch-controls').style.display = on ? 'block' : 'none';
+  localStorage.setItem('gbame_touch', on ? '1' : '0');
+}
+
+function toggleIntegerScale(on) {
+  const game = document.getElementById('game');
+  game.style.imageRendering = on ? 'pixelated' : 'auto';
+  const canvas = document.querySelector('#game canvas');
+  if (canvas) canvas.style.imageRendering = on ? 'pixelated' : 'auto';
+  localStorage.setItem('gbame_intscale', on ? '1' : '0');
+}
+
+function setGameSize(w, h, btn) {
+  document.getElementById('game').style.width = w + 'px';
+  document.getElementById('game').style.height = h + 'px';
+  document.querySelectorAll('.settings-modal .speed-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+}
+
+function clearAllData() {
+  if (confirm('This will clear all save states, recent ROMs, and settings. Continue?')) {
+    Object.keys(localStorage).filter(k => k.startsWith('gbame_')).forEach(k => localStorage.removeItem(k));
+    saves = {};
+    renderStateSlots();
+    renderRecent();
+    showToast('🗑️ All data cleared');
+  }
+}
+
+// ─────────────── MODALS ───────────────
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  if (id === 'keys-modal') renderKeyMap('modal-key-map-grid');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  editingKeyRow = null;
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) m.classList.remove('open'); });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+
+// ─────────────── TOAST ───────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─────────────── TOUCH CONTROLS ───────────────
+// Map touch button IDs to keyboard keys
+const touchKeyMap = {
+  'touch-up': 'ArrowUp', 'touch-down': 'ArrowDown',
+  'touch-left': 'ArrowLeft', 'touch-right': 'ArrowRight',
+  'touch-a': 'KeyX', 'touch-b': 'KeyZ',
+  'touch-sel': 'Backspace', 'touch-sta': 'Enter',
+  'touch-l': 'KeyA', 'touch-r': 'KeyS',
+};
+
+function simulateKey(code, down) {
+  const type = down ? 'keydown' : 'keyup';
+  const e = new KeyboardEvent(type, { code, key: code, bubbles: true, cancelable: true });
+  const gameEl = document.querySelector('#game canvas') || document.getElementById('game');
+  gameEl.dispatchEvent(e);
+  document.dispatchEvent(e);
+  window.dispatchEvent(e);
+}
+
+Object.entries(touchKeyMap).forEach(([id, code]) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('touchstart', e => { e.preventDefault(); simulateKey(code, true); }, { passive: false });
+  el.addEventListener('touchend', e => { e.preventDefault(); simulateKey(code, false); }, { passive: false });
+  el.addEventListener('mousedown', () => simulateKey(code, true));
+  el.addEventListener('mouseup', () => simulateKey(code, false));
+});
+
+// ─────────────── VISIBILITY / FOCUS ───────────────
+document.addEventListener('visibilitychange', () => {
+  if (!window.EJS_emulator) return;
+  if (document.getElementById('mute-focus-toggle').checked) {
+    try {
+      if (document.hidden) window.EJS_emulator.setVolume(0);
+      else setVolume(document.getElementById('volume-slider').value);
+    } catch {}
+  }
+});
+
+// ─────────────── INIT ───────────────
+function init() {
+  loadKeyBindings();
+  renderKeyMap('key-map-grid');
+  renderRecent();
+
+  // Restore settings
+  const scanlines = localStorage.getItem('gbame_scanlines') === '1';
+  document.getElementById('scanlines-toggle').checked = scanlines;
+  toggleScanlines(scanlines);
+
+  const touch = localStorage.getItem('gbame_touch') === '1' || ('ontouchstart' in window);
+  document.getElementById('touch-toggle').checked = touch;
+  toggleTouchControls(touch);
+
+  const intscale = localStorage.getItem('gbame_intscale') === '1';
+  document.getElementById('integer-scale-toggle').checked = intscale;
+  if (intscale) toggleIntegerScale(true);
+
+  // Auto-detect mobile
+  if ('ontouchstart' in window && window.innerWidth < 768) {
+    document.getElementById('touch-toggle').checked = true;
+    toggleTouchControls(true);
+  }
+
+  document.getElementById('active-slot').addEventListener('change', saveActiveSlotChanged);
+
+  // Render save slots (empty on start)
+  renderStateSlots();
+}
+
+init();
+</script>
+</body>
+</html>
