@@ -1,57 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>GBA.ME</title>
-<meta name="theme-color" content="#05050f">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="GBA.ME">
+<meta name="theme-color" content="#07071a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&family=Exo+2:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS ── */
 :root{
-  --bg:#05050f;--s1:#0d0d1a;--s2:#12122a;--s3:#1a1a35;
-  --bd:#1e1e3a;--bd2:#2d2d55;
+  --bg:#07071a;--s1:#0e0e24;--s2:#15152e;--s3:#1e1e3a;
+  --bd:#252545;--bd2:#35355a;
   --ac:#7c3aed;--ac2:#a855f7;--neon:#c084fc;
   --gr:#22d3ee;--rd:#f43f5e;--am:#f59e0b;
   --tx:#e2e8f0;--tm:#64748b;--td:#94a3b8;
-  --px:'Press Start 2P',monospace;
-  --mo:'Share Tech Mono',monospace;
-  --fn:'Exo 2',sans-serif;
-  --glow:0 0 20px rgba(168,85,247,.4),0 0 40px rgba(168,85,247,.15);
-}
-[data-theme="light"]{
-  --bg:#f0f0f8;--s1:#fff;--s2:#f5f5fd;--s3:#ebebf8;
-  --bd:#dcdcf0;--bd2:#c8c8e8;--tx:#1e1e3a;--tm:#7070a0;--td:#505080;
+  --px:"Press Start 2P",monospace;
+  --mo:"Share Tech Mono",monospace;
+  --fn:"Exo 2",sans-serif;
+  --glow:0 0 20px rgba(168,85,247,.45),0 0 40px rgba(168,85,247,.18);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--tx);font-family:var(--fn);min-height:100%;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}
+html,body{background:var(--bg);color:var(--tx);font-family:var(--fn);min-height:100%}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px}
-::-webkit-scrollbar-thumb:hover{background:var(--ac)}
 
 /* ── BUTTONS ── */
-.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--bd);
-  border-radius:8px;background:transparent;color:var(--td);font-family:var(--fn);font-size:12px;
-  font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border:1px solid var(--bd);
+  border-radius:8px;background:transparent;color:var(--td);font-family:var(--fn);
+  font-size:12px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
 .btn:hover{border-color:var(--ac2);color:var(--ac2);background:rgba(168,85,247,.07)}
-.btn.on{border-color:var(--ac2);color:var(--ac2);background:rgba(168,85,247,.11)}
-.btn.gn{border-color:var(--gr);color:var(--gr);background:rgba(34,211,238,.07)}
-.btn.rd-h:hover{border-color:var(--rd);color:var(--rd);background:rgba(244,63,94,.07)}
+.btn.on{border-color:var(--ac2);color:var(--ac2);background:rgba(168,85,247,.12)}
+.btn.gon{border-color:var(--gr);color:var(--gr);background:rgba(34,211,238,.07)}
 .btn.solid{background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:none;
   box-shadow:0 4px 20px rgba(124,58,237,.35)}
 .btn.solid:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(124,58,237,.55)}
 .btn svg{width:14px;height:14px;flex-shrink:0}
+.btn.danger:hover{border-color:var(--rd);color:var(--rd);background:rgba(244,63,94,.07)}
 
 /* ── TOGGLE ── */
 .tog{position:relative;width:40px;height:22px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0}
 .tog-sl{position:absolute;inset:0;background:var(--s2);border:1px solid var(--bd);
   border-radius:11px;cursor:pointer;transition:all .2s}
-.tog-sl::before{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;
+.tog-sl::before{content:"";position:absolute;left:2px;top:2px;width:16px;height:16px;
   background:var(--tm);border-radius:50%;transition:all .2s}
 .tog input:checked+.tog-sl{background:var(--ac);border-color:var(--ac2)}
 .tog input:checked+.tog-sl::before{transform:translateX(18px);background:#fff}
@@ -59,435 +52,312 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opa
 /* ── RANGE ── */
 input[type=range]{-webkit-appearance:none;flex:1;height:4px;background:var(--bd);border-radius:2px;outline:none;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--ac2);border-radius:50%;box-shadow:0 0 8px rgba(168,85,247,.6);cursor:pointer}
-input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8px rgba(34,211,238,.6)}
+input[type=range].gr::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8px rgba(34,211,238,.6)}
 
-/* ── MODAL ── */
-.mo{display:none;position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.78);
-  backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:16px}
-.mo.open{display:flex}
-.mc{background:var(--s1);border:1px solid var(--bd);border-radius:16px;padding:24px;
-  max-width:500px;width:100%;max-height:88vh;overflow-y:auto;position:relative;
-  box-shadow:0 40px 80px rgba(0,0,0,.8),var(--glow)}
-.mt{font-family:var(--px);font-size:9px;color:var(--neon);margin-bottom:16px;letter-spacing:1px}
-.mx{position:absolute;top:15px;right:15px;background:none;border:none;color:var(--tm);
-  font-size:18px;cursor:pointer;padding:4px}
-.mx:hover{color:var(--rd)}
-.mf{display:flex;gap:8px;margin-top:18px;padding-top:14px;border-top:1px solid var(--bd)}
-.mf .btn{flex:1;justify-content:center}
+/* ── SELECT / INPUT base ── */
+.sel,input.inp{padding:6px 10px;background:var(--s2);border:1px solid var(--bd);border-radius:7px;
+  color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;outline:none}
+.sel:focus,input.inp:focus{border-color:var(--ac)}
+input.inp{cursor:text}
 
-/* ── CARD ── */
-.card{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px}
-.ct{font-family:var(--px);font-size:7px;color:var(--tm);letter-spacing:1px;text-transform:uppercase;margin-bottom:11px}
-
-/* ── SETTING ROW ── */
-.sr{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--bd)}
-.sr:last-child{border-bottom:none}
-.sl{font-size:13px;color:var(--td)}
-.sl small{display:block;font-size:10px;color:var(--tm);margin-top:2px;font-family:var(--mo)}
-
-/* ── TOAST ── */
-#toasts{position:fixed;bottom:20px;right:20px;z-index:700;display:flex;flex-direction:column;
-  gap:7px;pointer-events:none;align-items:flex-end}
-.ti{padding:9px 16px;background:var(--s2);border:1px solid var(--bd2);border-radius:9px;
-  font-family:var(--mo);font-size:11px;color:var(--neon);box-shadow:var(--glow);
-  transform:translateX(130px);opacity:0;transition:all .25s ease;max-width:270px}
-.ti.show{transform:translateX(0);opacity:1}
-
-/* ── FLASH ── */
-#flash{position:fixed;inset:0;z-index:600;background:#fff;opacity:0;pointer-events:none;transition:opacity .1s}
-#flash.go{opacity:.7}
-
-/* ── ANIMS ── */
+/* ── ANIMATIONS ── */
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
-@keyframes loadbar{0%{width:5%}60%{width:80%}100%{width:96%}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+@keyframes loadbar{0%{width:5%}60%{width:82%}100%{width:96%}}
+@keyframes rwspin{from{transform:rotate(0)}to{transform:rotate(-360deg)}}
 
-/* ════════════════════════════════
+/* ══════════════════════════════
    LANDING
-════════════════════════════════ */
-#landing{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
-  align-items:center;padding:40px 20px;gap:22px}
-.logo-t{font-family:var(--px);font-size:clamp(18px,4vw,30px);color:var(--neon);
-  text-shadow:0 0 30px rgba(192,132,252,.8),0 0 60px rgba(168,85,247,.4);letter-spacing:3px;margin-bottom:7px;text-align:center}
+══════════════════════════════ */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+  padding:48px 20px;gap:24px;position:relative;z-index:1}
+.logo-t{font-family:var(--px);font-size:clamp(18px,4vw,32px);color:var(--neon);
+  text-shadow:0 0 30px rgba(192,132,252,.9),0 0 60px rgba(168,85,247,.4);
+  letter-spacing:4px;text-align:center;margin-bottom:6px}
 .logo-s{font-family:var(--mo);font-size:12px;color:var(--tm);letter-spacing:3px;text-align:center}
-.drop-z{width:100%;max-width:540px;border:2px dashed var(--bd);border-radius:16px;padding:40px 28px;
-  text-align:center;cursor:pointer;background:var(--s1);transition:all .25s;position:relative;overflow:hidden}
-.drop-z::before{content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at center,rgba(124,58,237,.09) 0%,transparent 70%);
+.dropz{width:100%;max-width:520px;border:2px dashed var(--bd2);border-radius:16px;
+  padding:44px 32px;text-align:center;cursor:pointer;background:var(--s1);transition:all .25s;
+  position:relative;overflow:hidden}
+.dropz::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,rgba(124,58,237,.1) 0%,transparent 70%);
   opacity:0;transition:opacity .3s}
-.drop-z:hover,.drop-z.dov{border-color:var(--ac2);box-shadow:var(--glow)}
-.drop-z:hover::before,.drop-z.dov::before{opacity:1}
-.drop-z.dov{border-style:solid;background:rgba(124,58,237,.07)}
-.drop-ico{font-size:42px;margin-bottom:12px;display:block;
-  filter:drop-shadow(0 0 12px rgba(168,85,247,.6));animation:float 3s ease-in-out infinite}
-.drop-txt{font-family:var(--px);font-size:9px;color:var(--ac2);margin-bottom:9px;line-height:2}
+.dropz:hover,.dropz.dov{border-color:var(--ac2);box-shadow:var(--glow)}
+.dropz:hover::before,.dropz.dov::before{opacity:1}
+.dropz.dov{border-style:solid;background:rgba(124,58,237,.08)}
+.drop-ico{font-size:44px;display:block;margin-bottom:14px;
+  filter:drop-shadow(0 0 12px rgba(168,85,247,.7));animation:float 3s ease-in-out infinite}
+.drop-txt{font-family:var(--px);font-size:9px;color:var(--ac2);line-height:2;margin-bottom:8px}
 .drop-hint{font-size:11px;color:var(--tm);font-family:var(--mo)}
 #fi{display:none}
-
-/* Library */
-.lib-sec{width:100%;max-width:860px}
-.lib-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.lib{width:100%;max-width:820px}
+.lib-hdr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
 .lib-ttl{font-family:var(--mo);font-size:11px;color:var(--tm);letter-spacing:3px;text-transform:uppercase}
-.lib-search{flex:1;min-width:110px;max-width:180px;padding:6px 10px;background:var(--s1);
-  border:1px solid var(--bd);border-radius:7px;color:var(--tx);font-family:var(--mo);font-size:12px;outline:none}
-.lib-search:focus{border-color:var(--ac)}
-.lib-sort{padding:6px 9px;background:var(--s1);border:1px solid var(--bd);border-radius:7px;
-  color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;outline:none}
-.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.lc{background:var(--s1);border:1px solid var(--bd);border-radius:11px;overflow:hidden;
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.lc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;overflow:hidden;
   cursor:pointer;transition:all .2s;position:relative}
 .lc:hover{border-color:var(--ac2);box-shadow:var(--glow);transform:translateY(-2px)}
 .lc-cov{width:100%;aspect-ratio:3/2;overflow:hidden}
 .lc-cov img{width:100%;height:100%;object-fit:cover}
-.lc-info{padding:8px 9px}
-.lc-name{font-family:var(--mo);font-size:11px;color:var(--tx);white-space:nowrap;overflow:hidden;
-  text-overflow:ellipsis;margin-bottom:2px}
+.lc-info{padding:9px 10px}
+.lc-name{font-family:var(--mo);font-size:11px;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
 .lc-meta{font-size:10px;color:var(--tm);font-family:var(--mo)}
-.lc-pt{display:inline-block;margin-top:3px;padding:2px 5px;background:rgba(34,211,238,.1);
-  border:1px solid rgba(34,211,238,.3);border-radius:4px;font-size:9px;color:var(--gr);font-family:var(--mo)}
-.lc-del{position:absolute;top:5px;right:5px;width:20px;height:20px;border-radius:50%;
-  background:rgba(244,63,94,.18);border:1px solid var(--rd);color:var(--rd);font-size:10px;
-  cursor:pointer;display:none;align-items:center;justify-content:center}
+.lc-pt{font-size:9px;color:var(--gr);font-family:var(--mo)}
+.lc-del{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;
+  background:rgba(244,63,94,.2);border:1px solid var(--rd);color:var(--rd);
+  font-size:11px;cursor:pointer;display:none;align-items:center;justify-content:center}
 .lc:hover .lc-del{display:flex}
-
-/* Recent strip */
-.rec-strip{width:100%;max-width:540px;display:flex;flex-direction:column;gap:6px}
-.ri{display:flex;align-items:center;gap:10px;padding:9px 13px;background:var(--s1);
-  border:1px solid var(--bd);border-radius:9px;cursor:pointer;transition:all .18s}
-.ri:hover{border-color:var(--ac);background:var(--s2)}
-.ri-n{flex:1;font-family:var(--mo);font-size:12px;color:var(--tx);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ri-d{font-size:10px;color:var(--tm);font-family:var(--mo)}
-
-/* Key ref card on landing */
-.cref{width:100%;max-width:540px;padding:16px;background:var(--s1);border:1px solid var(--bd);border-radius:12px}
-.kg{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
-.kr{display:flex;align-items:center;gap:7px;font-size:10px;font-family:var(--mo);color:var(--td)}
-.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:19px;
-  padding:0 5px;background:var(--s2);border:1px solid var(--bd);border-radius:4px;
+.kref-card{width:100%;max-width:520px;padding:18px;background:var(--s1);border:1px solid var(--bd);border-radius:12px}
+.kref-card-ttl{font-family:var(--px);font-size:7px;color:var(--gr);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.kg{display:grid;grid-template-columns:1fr 1fr;gap:5px 16px}
+.kr{display:flex;align-items:center;gap:8px;font-size:10px;font-family:var(--mo);color:var(--td)}
+.kbd{display:inline-flex;align-items:center;justify-content:center;min-width:28px;height:20px;
+  padding:0 6px;background:var(--s2);border:1px solid var(--bd2);border-radius:4px;
   font-family:var(--mo);font-size:9px;color:var(--ac2);white-space:nowrap}
 
-/* ════════════════════════════════
+/* ══════════════════════════════
    EMULATOR SCREEN
-════════════════════════════════ */
-#emu{display:none;position:relative;z-index:1;min-height:100vh;flex-direction:column;background:var(--bg)}
+══════════════════════════════ */
+#emu{display:none;min-height:100vh;flex-direction:column}
+.eh{display:flex;align-items:center;padding:10px 16px;background:var(--s1);
+  border-bottom:1px solid var(--bd);gap:10px;flex-shrink:0;position:sticky;top:0;z-index:100}
+.eh-logo{font-family:var(--px);font-size:9px;color:var(--neon);
+  text-shadow:0 0 12px rgba(192,132,252,.6);white-space:nowrap}
+.eh-name{font-family:var(--mo);font-size:13px;color:var(--tx);flex:1;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 6px;opacity:.8}
+.eh-status{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.stat-pill{font-family:var(--px);font-size:7px;padding:4px 9px;border-radius:5px;
+  border:1px solid var(--bd);color:var(--tm);background:var(--s2)}
+.stat-pill.rw{border-color:var(--gr);color:var(--gr);animation:pulse 1s infinite}
+.stimer{font-family:var(--px);font-size:7px;color:var(--td);padding:4px 8px;
+  background:var(--s2);border-radius:5px;border:1px solid var(--bd)}
+.eh-btns{display:flex;gap:6px;flex-shrink:0}
+.eh-btns .btn{padding:7px 12px;font-size:11px}
+.eb{display:flex;flex:1;padding:14px;gap:14px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
+.ecol{display:flex;flex-direction:column;align-items:center;gap:10px;flex-shrink:0}
 
-/* Header */
-.eh{display:flex;align-items:center;padding:9px 15px;background:var(--s1);
-  border-bottom:1px solid var(--bd);gap:9px;flex-shrink:0;position:sticky;top:0;z-index:100}
-.eh-logo{font-family:var(--px);font-size:9px;color:var(--neon);text-shadow:0 0 12px rgba(192,132,252,.6);white-space:nowrap;flex-shrink:0}
-.eh-gname{font-family:var(--mo);font-size:13px;color:var(--tx);flex:1;overflow:hidden;
-  text-overflow:ellipsis;white-space:nowrap;padding:0 5px;opacity:.82}
-.eh-inds{display:flex;align-items:center;gap:6px;flex-shrink:0}
-.ind{display:flex;align-items:center;gap:4px;font-family:var(--mo);font-size:9px;color:var(--tm);
-  padding:3px 7px;border-radius:5px;border:1px solid transparent}
-.ind.on{border-color:var(--gr);color:var(--gr);background:rgba(34,211,238,.07)}
-.ind.rec{border-color:var(--rd);color:var(--rd);background:rgba(244,63,94,.07);animation:blink 1s infinite}
-.ind .dot{width:5px;height:5px;border-radius:50%;background:currentColor}
-.stimer{font-family:var(--px);font-size:7px;color:var(--td);padding:4px 8px;background:var(--s2);border-radius:5px}
-.hbtns{display:flex;gap:5px;flex-shrink:0}
-
-/* Body */
-.eb{display:flex;flex:1;padding:11px;gap:11px;align-items:flex-start;justify-content:center;flex-wrap:wrap}
-
-/* Game wrap */
-.gw{display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0}
-
-/* Speed + filter strip */
-.tstrip{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:560px}
-.sgrp{display:flex;align-items:center;gap:3px;background:var(--s1);border:1px solid var(--bd);border-radius:9px;padding:5px 9px}
-.sgrp-lbl{font-size:9px;font-family:var(--mo);color:var(--tm);margin-right:3px}
+/* Speed + display strip */
+.top-strip{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;max-width:560px}
+.strip-grp{display:flex;align-items:center;gap:4px;background:var(--s1);
+  border:1px solid var(--bd);border-radius:10px;padding:6px 10px}
+.strip-lbl{font-family:var(--mo);font-size:9px;color:var(--tm);margin-right:6px;white-space:nowrap}
 .spd,.ftab{padding:4px 9px;border-radius:5px;border:1px solid transparent;background:transparent;
   color:var(--td);font-family:var(--mo);font-size:10px;cursor:pointer;transition:all .14s}
 .spd:hover,.ftab:hover{background:var(--s2);color:var(--tx)}
-.spd.on,.ftab.on{background:var(--ac);color:#fff;border-color:var(--ac2);box-shadow:0 0 9px rgba(168,85,247,.4)}
-
-/* Brightness strip */
-.brow{display:flex;align-items:center;gap:7px;padding:6px 10px;background:var(--s1);
-  border:1px solid var(--bd);border-radius:9px}
-.bval{font-family:var(--mo);font-size:10px;color:var(--tm);min-width:32px;text-align:right}
+.spd.on,.ftab.on{background:var(--ac);color:#fff;border-color:var(--ac2);box-shadow:0 0 10px rgba(168,85,247,.4)}
 
 /* Game frame */
+#fs-wrap{display:contents}
 .gframe{position:relative;border-radius:12px;overflow:hidden;
-  box-shadow:0 0 0 2px var(--bd),0 0 38px rgba(124,58,237,.18),0 18px 55px rgba(0,0,0,.7);transition:box-shadow .3s}
-.gframe:hover{box-shadow:0 0 0 2px var(--ac),var(--glow),0 18px 55px rgba(0,0,0,.7)}
-#game{display:block;width:480px;height:320px;background:#000}
+  box-shadow:0 0 0 2px var(--bd),0 0 40px rgba(124,58,237,.2),0 20px 60px rgba(0,0,0,.7);
+  transition:box-shadow .3s;background:#000}
+.gframe:hover{box-shadow:0 0 0 2px var(--ac2),var(--glow),0 20px 60px rgba(0,0,0,.7)}
+#game{display:block;width:480px;height:320px;background:#000;position:relative}
+#game>*{width:100%!important;height:100%!important}
 #game canvas,#game video{display:block;width:100%!important;height:100%!important}
 
-/* Game frame overlays */
-#scl-ov,#lcd-ov{position:absolute;inset:0;pointer-events:none;z-index:5;display:none}
-#scl-ov{background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.2) 2px,rgba(0,0,0,.2) 4px)}
-#lcd-ov{background:repeating-linear-gradient(0deg,rgba(0,0,0,.1) 0,rgba(0,0,0,.1) 1px,transparent 1px,transparent 4px),
-         repeating-linear-gradient(90deg,rgba(0,0,0,.1) 0,rgba(0,0,0,.1) 1px,transparent 1px,transparent 4px)}
-.scl-on #scl-ov{display:block}
-
-/* Color filters */
-.cf-warm #game{filter:sepia(.25) saturate(1.3) hue-rotate(-5deg)}
-.cf-cool #game{filter:hue-rotate(20deg) saturate(.9) brightness(1.05)}
-.cf-gameboy #game{filter:sepia(1) saturate(4) hue-rotate(68deg) brightness(.85) contrast(1.1)}
-.cf-gbp #game{filter:sepia(.5) saturate(.4) brightness(.95)}
-.cf-phosphor #game{filter:sepia(1) saturate(6) hue-rotate(88deg) brightness(1.1)}
-.cf-vhs #game{filter:saturate(.65) contrast(1.25) brightness(.88)}
-.cf-sepia #game{filter:sepia(.85)}
-.cf-gray #game{filter:grayscale(1)}
-.cf-invert #game{filter:invert(1) hue-rotate(180deg)}
-.cf-crt #game{filter:contrast(1.1) brightness(1.05)}
-.cf-crt::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:7;
+/* Color filters applied to #game */
+.cf-warm   #game{filter:sepia(.3) saturate(1.4) brightness(1.05) hue-rotate(-8deg)}
+.cf-cool   #game{filter:hue-rotate(20deg) saturate(.85) brightness(1.06)}
+.cf-gameboy #game{filter:sepia(1) saturate(4) hue-rotate(68deg) brightness(.83) contrast(1.15)}
+.cf-gbp    #game{filter:sepia(.5) saturate(.4) brightness(.95) contrast(1.05)}
+.cf-phosphor #game{filter:sepia(1) saturate(6) hue-rotate(88deg) brightness(1.1) contrast(1.2)}
+.cf-crt    #game{filter:contrast(1.12) brightness(1.04)}
+.cf-crt::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:9;
   background:radial-gradient(ellipse at center,transparent 60%,rgba(0,0,0,.55) 100%)}
+.cf-vhs    #game{filter:saturate(.6) contrast(1.3) brightness(.85)}
+.cf-gray   #game{filter:grayscale(1)}
+.cf-invert #game{filter:invert(1) hue-rotate(180deg)}
+.scl-on::before{content:"";position:absolute;inset:0;z-index:8;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.22) 2px,rgba(0,0,0,.22) 4px)}
 
-/* Integer scaling */
-.int-sc #game canvas,.int-sc #game video{image-rendering:pixelated!important}
+/* FULLSCREEN */
+#fs-wrap:fullscreen,#fs-wrap:-webkit-full-screen,#fs-wrap:-moz-full-screen{
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  width:100vw!important;height:100vh!important;background:#000!important}
+#fs-wrap:fullscreen .gframe,#fs-wrap:-webkit-full-screen .gframe,#fs-wrap:-moz-full-screen .gframe{
+  border-radius:0!important;box-shadow:none!important}
+#fs-wrap:fullscreen #game,#fs-wrap:-webkit-full-screen #game,#fs-wrap:-moz-full-screen #game{
+  width:min(100vw,calc(100vh * 1.5))!important;
+  height:min(100vh,calc(100vw / 1.5))!important}
+#fs-wrap:fullscreen #game canvas,#fs-wrap:fullscreen #game video,
+#fs-wrap:-webkit-full-screen #game canvas,#fs-wrap:-webkit-full-screen #game video{
+  width:100%!important;height:100%!important}
 
-/* Rotation */
-.rot-90 #game{transform:rotate(90deg)}
-.rot-180 #game{transform:rotate(180deg)}
-.rot-270 #game{transform:rotate(270deg)}
-
-/* ── FULLSCREEN ── */
-/* When gframe itself is the fullscreen element */
-.gframe:fullscreen,
-.gframe:-webkit-full-screen,
-.gframe:-moz-full-screen,
-.gframe:-ms-fullscreen {
-  width: 100vw !important;
-  height: 100vh !important;
-  border-radius: 0 !important;
-  background: #000 !important;
-  box-shadow: none !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: hidden !important;
-}
-.gframe:fullscreen #game,
-.gframe:-webkit-full-screen #game,
-.gframe:-moz-full-screen #game,
-.gframe:-ms-fullscreen #game {
-  /* Fill height, keep 3:2 GBA aspect ratio */
-  width: min(100vw, calc(100vh * 1.5)) !important;
-  height: min(100vh, calc(100vw / 1.5)) !important;
-  max-width: 100vw !important;
-  max-height: 100vh !important;
-}
-/* When fs-wrap is the fullscreen element */
-#fs-wrap:fullscreen,
-#fs-wrap:-webkit-full-screen,
-#fs-wrap:-moz-full-screen {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  background: #000 !important;
-}
-#fs-wrap:fullscreen .gframe,
-#fs-wrap:-webkit-full-screen .gframe,
-#fs-wrap:-moz-full-screen .gframe {
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  overflow: hidden !important;
-}
-#fs-wrap:fullscreen #game,
-#fs-wrap:-webkit-full-screen #game,
-#fs-wrap:-moz-full-screen #game {
-  width: min(100vw, calc(100vh * 1.5)) !important;
-  height: min(100vh, calc(100vw / 1.5)) !important;
-}
-#fs-wrap:fullscreen #game canvas,
-#fs-wrap:fullscreen #game video,
-#fs-wrap:-webkit-full-screen #game canvas,
-#fs-wrap:-webkit-full-screen #game video {
-  width: 100% !important;
-  height: 100% !important;
-}
-
-/* Controls bar */
-.cbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:560px}
-.cb{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 11px;
-  background:var(--s1);border:1px solid var(--bd);border-radius:9px;color:var(--td);cursor:pointer;
-  transition:all .18s;font-family:var(--fn);font-size:9px;font-weight:600;min-width:48px}
+/* Control row */
+.ctrl-row{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;max-width:560px}
+.cb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 13px;
+  background:var(--s1);border:1px solid var(--bd);border-radius:10px;color:var(--td);
+  cursor:pointer;transition:all .18s;font-family:var(--fn);font-size:9px;font-weight:600;min-width:52px}
 .cb svg{width:16px;height:16px}
 .cb:hover{border-color:var(--ac2);color:var(--ac2);background:var(--s2)}
 .cb.on{border-color:var(--gr);color:var(--gr);background:rgba(34,211,238,.07)}
-.cb.rec{border-color:var(--rd);color:var(--rd);animation:blink 1s infinite}
-.cb.dng:hover{border-color:var(--rd);color:var(--rd)}
+.cb.rw-on{border-color:var(--am);color:var(--am);background:rgba(245,158,11,.07)}
+.cb.danger:hover{border-color:var(--rd);color:var(--rd)}
 
-/* ════════════════════════════════
+/* ══════════════════════════════
    SIDEBAR
-════════════════════════════════ */
-.sidebar{width:256px;display:flex;flex-direction:column;gap:9px;flex-shrink:0}
-.stabs{display:flex;gap:3px;background:var(--s2);border-radius:9px;padding:3px;border:1px solid var(--bd)}
-.stab{flex:1;padding:6px 2px;border-radius:6px;border:none;background:transparent;color:var(--tm);
-  font-family:var(--px);font-size:5.5px;cursor:pointer;transition:all .14s;text-align:center}
-.stab.on{background:var(--ac);color:#fff;box-shadow:0 2px 10px rgba(124,58,237,.4)}
-.sp{display:none}
-.sp.on{display:block}
+══════════════════════════════ */
+.sidebar{width:264px;display:flex;flex-direction:column;gap:10px}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.card-ttl{font-family:var(--px);font-size:7px;color:var(--tm);letter-spacing:1px;
+  text-transform:uppercase;margin-bottom:12px}
 
-/* Save slots */
-.sslots{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:9px}
-.slt{aspect-ratio:1.5;background:var(--s2);border:1px solid var(--bd);border-radius:6px;
-  cursor:pointer;position:relative;overflow:hidden;transition:all .18s;display:flex;
-  flex-direction:column;align-items:center;justify-content:flex-end;font-family:var(--px);font-size:6px;color:var(--tm)}
+/* Tabs */
+.stabs{display:flex;gap:3px;background:var(--s2);border-radius:10px;padding:4px;border:1px solid var(--bd)}
+.stab{flex:1;padding:7px 4px;border-radius:7px;border:none;background:transparent;
+  color:var(--tm);font-family:var(--px);font-size:5.5px;cursor:pointer;
+  transition:all .15s;text-align:center}
+.stab.on{background:var(--ac);color:#fff;box-shadow:0 2px 10px rgba(124,58,237,.4)}
+.sp{display:none}.sp.on{display:block}
+
+/* Slots */
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:10px}
+.slt{aspect-ratio:1.5;background:var(--s2);border:1px solid var(--bd);border-radius:7px;
+  cursor:pointer;position:relative;overflow:hidden;transition:all .18s;
+  display:flex;align-items:flex-end;font-family:var(--px);font-size:6px;color:var(--tm)}
 .slt:hover{border-color:var(--ac2)}
-.slt.cur{border-color:var(--ac2);box-shadow:0 0 0 1px var(--ac)}
+.slt.cur{border-color:var(--ac2);box-shadow:0 0 0 1.5px var(--ac)}
 .slt.has{border-color:var(--gr)}
 .slt.has .sn{color:var(--gr)}
-.sn{padding:2px;z-index:2;background:rgba(0,0,0,.5);width:100%;text-align:center}
-.sthumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.7}
-.slab-row{display:flex;gap:4px;margin-bottom:7px}
-.slab-row input{flex:1;padding:5px 7px;background:var(--s2);border:1px solid var(--bd);
-  border-radius:6px;color:var(--tx);font-family:var(--mo);font-size:10px;outline:none}
-.slab-row input:focus{border-color:var(--ac)}
-.sacts{display:flex;gap:4px}
-.sacts .btn{flex:1;justify-content:center;font-size:10px;padding:6px 3px}
+.sn{padding:2px 0;z-index:2;background:rgba(0,0,0,.6);width:100%;text-align:center}
+.sthumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.65}
+.slot-acts{display:flex;gap:5px;margin-bottom:8px}
+.slot-acts .btn{flex:1;justify-content:center;font-size:10px;padding:7px 4px}
+.slot-sel{display:flex;align-items:center;gap:7px}
+.slot-sel span{font-family:var(--mo);font-size:10px;color:var(--tm)}
+.slot-sel .sel{flex:1}
+.divider{border:none;border-top:1px solid var(--bd);margin:12px 0}
 
 /* Volume */
-.vrow{display:flex;align-items:center;gap:7px}
-.vico{font-size:15px;cursor:pointer}
-.vval{font-family:var(--mo);font-size:11px;color:var(--tm);min-width:26px;text-align:right}
+.vol-row{display:flex;align-items:center;gap:8px}
+.vico{font-size:15px;cursor:pointer;flex-shrink:0}
+.vval{font-family:var(--mo);font-size:11px;color:var(--tm);min-width:28px;text-align:right}
 
 /* Key map */
-.kmg{display:grid;grid-template-columns:1fr 1fr;gap:3px}
-.kmr{display:flex;align-items:center;gap:5px;padding:4px 6px;background:var(--s2);
-  border-radius:5px;border:1px solid transparent;cursor:pointer;transition:all .13s}
-.kmr:hover{border-color:var(--ac)}
-.kmr.ed{border-color:var(--am);background:rgba(245,158,11,.07)}
-.kmr-btn{font-family:var(--px);font-size:6px;color:var(--ac2);min-width:34px}
-.kmkey{flex:1;display:flex;justify-content:flex-end}
-.kmbadge{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:18px;
-  padding:0 4px;background:var(--s1);border:1px solid var(--bd);border-radius:3px;
+.km-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.km-row{display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--s2);
+  border-radius:6px;border:1px solid transparent;cursor:pointer;transition:all .13s}
+.km-row:hover{border-color:var(--ac)}
+.km-row.ed{border-color:var(--am);background:rgba(245,158,11,.08)}
+.km-btn-lbl{font-family:var(--px);font-size:6px;color:var(--ac2);min-width:36px}
+.km-key{flex:1;display:flex;justify-content:flex-end}
+.km-badge{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:19px;
+  padding:0 5px;background:var(--s1);border:1px solid var(--bd2);border-radius:4px;
   font-family:var(--mo);font-size:9px;color:var(--td)}
-.ed .kmbadge{border-color:var(--am);color:var(--am);animation:blink .8s infinite}
-.km-hint{font-size:9px;font-family:var(--mo);color:var(--tm);text-align:center;margin-top:6px}
+.ed .km-badge{border-color:var(--am);color:var(--am);animation:blink .8s infinite}
+.km-hint{font-size:9px;font-family:var(--mo);color:var(--tm);text-align:center;margin-top:7px}
+
+/* Setting row */
+.sr{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--bd)}
+.sr:last-child{border-bottom:none}
+.sl{font-size:12px;color:var(--td)}
+.sl small{display:block;font-size:9px;color:var(--tm);margin-top:2px;font-family:var(--mo)}
+
+/* Bright row */
+.bright-row{display:flex;align-items:center;gap:8px}
+.bval{font-family:var(--mo);font-size:10px;color:var(--tm);min-width:30px;text-align:right}
+
+/* Stats */
+.stat-row{display:flex;justify-content:space-between;align-items:center;
+  padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px}
+.stat-row:last-child{border-bottom:none}
+.stat-k{font-family:var(--mo);color:var(--tm)}
+.stat-v{font-family:var(--px);font-size:7px;color:var(--neon)}
+
+/* Screenshot gallery */
+.gal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.gal-thumb{aspect-ratio:3/2;border-radius:5px;overflow:hidden;border:1px solid var(--bd);
+  cursor:pointer;position:relative}
+.gal-thumb img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
+.gal-thumb:hover img{transform:scale(1.07)}
+.gal-del{position:absolute;top:3px;right:3px;width:17px;height:17px;border-radius:50%;
+  background:rgba(244,63,94,.85);border:none;color:#fff;font-size:9px;
+  cursor:pointer;display:none;align-items:center;justify-content:center}
+.gal-thumb:hover .gal-del{display:flex}
 
 /* Cheats */
-.chlist{display:flex;flex-direction:column;gap:4px;max-height:160px;overflow-y:auto;margin-bottom:9px}
-.chi{display:flex;align-items:center;gap:5px;padding:5px 7px;background:var(--s2);
+.cheat-list{display:flex;flex-direction:column;gap:4px;max-height:150px;overflow-y:auto;margin-bottom:9px}
+.chi{display:flex;align-items:center;gap:6px;padding:5px 7px;background:var(--s2);
   border:1px solid var(--bd);border-radius:6px}
 .chi-en{width:13px;height:13px;cursor:pointer;accent-color:var(--ac)}
 .chi-nm{flex:1;font-family:var(--mo);font-size:10px;color:var(--td);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .chi-del{font-size:12px;cursor:pointer;color:var(--tm);border:none;background:none}
 .chi-del:hover{color:var(--rd)}
-.chform{display:flex;flex-direction:column;gap:5px}
-.chform input,.chform select{padding:6px 8px;background:var(--s2);border:1px solid var(--bd);
-  border-radius:6px;color:var(--tx);font-family:var(--mo);font-size:11px;outline:none}
-.chform input:focus{border-color:var(--ac)}
 
-/* Stats */
-.str{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--bd);font-size:11px}
-.str:last-child{border-bottom:none}
-.stk{font-family:var(--mo);color:var(--tm)}
-.stv{font-family:var(--px);font-size:7px;color:var(--neon)}
-
-/* Gallery */
-.galg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
-.gt{aspect-ratio:3/2;border-radius:4px;overflow:hidden;border:1px solid var(--bd);cursor:pointer;position:relative}
-.gt img{width:100%;height:100%;object-fit:cover;transition:transform .2s}
-.gt:hover img{transform:scale(1.06)}
-.gt-del{position:absolute;top:3px;right:3px;width:17px;height:17px;border-radius:50%;
-  background:rgba(244,63,94,.85);border:none;color:#fff;font-size:9px;cursor:pointer;display:none;align-items:center;justify-content:center}
-.gt:hover .gt-del{display:flex}
-.galem{text-align:center;padding:18px;font-family:var(--mo);font-size:10px;color:var(--tm)}
-
-/* ════════════════════════════════
+/* ══════════════════════════════
    TOUCH CONTROLS
-════════════════════════════════ */
-#touch-ctrl{display:none;position:fixed;bottom:0;left:0;right:0;padding:10px;
-  background:linear-gradient(transparent,rgba(5,5,15,.95));z-index:50;pointer-events:none}
-.tl{display:flex;align-items:flex-end;justify-content:space-between;max-width:500px;margin:0 auto;pointer-events:all}
-.dpad{display:grid;grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px);gap:2px}
-.db{display:flex;align-items:center;justify-content:center;background:rgba(13,13,26,.9);
-  border:1px solid var(--bd);border-radius:6px;font-size:16px;cursor:pointer;
-  -webkit-tap-highlight-color:transparent;user-select:none;transition:background .1s}
-.db:active{background:rgba(124,58,237,.35)}
-.dpad-c{background:rgba(5,5,15,.5)!important;border-color:transparent!important;cursor:default}
-.tmid{display:flex;flex-direction:column;align-items:center;gap:8px}
-.tsys{display:flex;gap:10px}
-.tsb{padding:7px 12px;background:rgba(13,13,26,.9);border:1px solid var(--bd);border-radius:20px;
-  color:var(--tm);font-family:var(--mo);font-size:9px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
-.tsb:active{background:rgba(124,58,237,.3)}
-.tlr{display:flex;gap:6px}
-.tlrb{padding:7px 16px;background:rgba(13,13,26,.9);border:1px solid var(--bd);border-radius:7px;
-  color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
-.tlrb:active{background:rgba(124,58,237,.3)}
-.abxy{position:relative;width:120px;height:115px}
-.abxy-b{position:absolute;width:42px;height:42px;border-radius:50%;border:2px solid;
+══════════════════════════════ */
+#touch-ctrl{display:none;position:fixed;bottom:0;left:0;right:0;
+  padding:10px 12px 14px;background:linear-gradient(transparent,rgba(7,7,26,.97));
+  z-index:50;pointer-events:none}
+.tl{display:flex;align-items:flex-end;justify-content:space-between;
+  max-width:500px;margin:0 auto;pointer-events:all;gap:8px}
+.dpad{display:grid;grid-template-columns:repeat(3,50px);grid-template-rows:repeat(3,50px);gap:2px}
+.db{display:flex;align-items:center;justify-content:center;background:rgba(14,14,36,.92);
+  border:1px solid var(--bd);border-radius:7px;font-size:18px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none;transition:background .09s}
+.db:active,.db.down{background:rgba(124,58,237,.4);border-color:var(--ac2)}
+.dpad-c{background:rgba(7,7,26,.5)!important;border-color:transparent!important;cursor:default}
+.t-mid{display:flex;flex-direction:column;align-items:center;gap:8px}
+.t-sys{display:flex;gap:10px}
+.t-sys-btn{padding:7px 14px;background:rgba(14,14,36,.92);border:1px solid var(--bd);
+  border-radius:20px;color:var(--tm);font-family:var(--mo);font-size:9px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none}
+.t-sys-btn:active{background:rgba(124,58,237,.3)}
+.t-lr{display:flex;gap:6px}
+.t-lr-btn{padding:8px 18px;background:rgba(14,14,36,.92);border:1px solid var(--bd);
+  border-radius:8px;color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;user-select:none}
+.t-lr-btn:active{background:rgba(124,58,237,.3)}
+.abxy{position:relative;width:122px;height:116px}
+.abxy-btn{position:absolute;width:44px;height:44px;border-radius:50%;border:2px solid;
   display:flex;align-items:center;justify-content:center;font-family:var(--px);font-size:7px;
   cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none}
 .ab-a{top:32px;right:0;border-color:var(--rd);color:var(--rd);background:rgba(244,63,94,.12)}
 .ab-b{bottom:0;left:39px;border-color:var(--am);color:var(--am);background:rgba(245,158,11,.12)}
-.ab-a:active{background:rgba(244,63,94,.45)}
-.ab-b:active{background:rgba(245,158,11,.45)}
+.ab-a:active,.ab-a.down{background:rgba(244,63,94,.5)}
+.ab-b:active,.ab-b.down{background:rgba(245,158,11,.5)}
 
-/* ════════════════════════════════
-   LOADING OVERLAY
-════════════════════════════════ */
+/* ══════════════════════════════
+   LOADING / OVERLAY
+══════════════════════════════ */
 #loading{display:none;position:fixed;inset:0;z-index:300;background:var(--bg);
   flex-direction:column;align-items:center;justify-content:center;gap:20px}
 .lpx{font-family:var(--px);font-size:13px;color:var(--neon);text-shadow:var(--glow);animation:pulse 1.5s infinite}
 .lbw{width:260px;height:6px;background:var(--s2);border-radius:3px;overflow:hidden;border:1px solid var(--bd)}
-.lb{height:100%;background:linear-gradient(90deg,var(--ac),var(--neon));border-radius:3px;
-  animation:loadbar 2.2s ease infinite;box-shadow:0 0 12px rgba(168,85,247,.6)}
+.lba{height:100%;background:linear-gradient(90deg,var(--ac),var(--neon));border-radius:3px;
+  animation:loadbar 2.5s ease infinite;box-shadow:0 0 12px rgba(168,85,247,.6)}
 .lsub{font-family:var(--mo);font-size:10px;color:var(--tm);letter-spacing:2px}
 
-/* ════════════════════════════════
-   KEYBIND REFERENCE OVERLAY
-════════════════════════════════ */
-#kref{display:none;position:fixed;inset:0;z-index:450;background:rgba(0,0,0,.9);
-  backdrop-filter:blur(16px);flex-direction:column;align-items:center;justify-content:flex-start;
-  padding:24px;overflow-y:auto}
-#kref.open{display:flex}
-.kref-t{font-family:var(--px);font-size:11px;color:var(--neon);margin-bottom:20px;
-  text-shadow:var(--glow);text-align:center;margin-top:10px}
-.kref-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;width:100%;max-width:900px}
-.kref-sec{background:var(--s1);border:1px solid var(--bd);border-radius:11px;padding:14px}
-.kref-st{font-family:var(--px);font-size:7px;color:var(--ac2);margin-bottom:11px;letter-spacing:1px}
-.kref-r{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(30,30,58,.5);font-size:11px}
-.kref-r:last-child{border-bottom:none}
-.kref-k{min-width:58px}
-.kref-kbd{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:19px;
-  padding:0 5px;background:var(--s2);border:1px solid var(--bd2);border-radius:4px;
-  font-family:var(--mo);font-size:9px;color:var(--ac2)}
-.kref-d{color:var(--td);font-family:var(--mo)}
-.kref-close{margin-top:20px;margin-bottom:20px;padding:10px 30px;background:var(--ac);border:none;
-  border-radius:10px;color:#fff;font-family:var(--px);font-size:8px;cursor:pointer;
-  box-shadow:0 4px 20px rgba(124,58,237,.4);letter-spacing:1px}
-
-/* ════════════════════════════════
-   SCREENSHOT LIGHTBOX
-════════════════════════════════ */
-#lightbox{display:none;position:fixed;inset:0;z-index:550;background:rgba(0,0,0,.92);
-  backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:14px}
+/* Screenshot lightbox */
+#lightbox{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.9);
+  backdrop-filter:blur(12px);flex-direction:column;align-items:center;justify-content:center;gap:14px}
 #lightbox.open{display:flex}
 #lb-img{max-width:90vw;max-height:70vh;border-radius:8px;box-shadow:0 0 60px rgba(0,0,0,.8)}
 .lb-acts{display:flex;gap:8px}
 
-/* ════════════════════════════════
-   ONBOARDING
-════════════════════════════════ */
-#onboard{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,.88);
-  backdrop-filter:blur(16px);align-items:center;justify-content:center;padding:20px}
-#onboard.open{display:flex}
-.ob{background:var(--s1);border:1px solid var(--bd);border-radius:20px;padding:34px;
-  max-width:440px;width:100%;text-align:center;box-shadow:0 40px 80px rgba(0,0,0,.8),var(--glow)}
-.ob-em{font-size:46px;margin-bottom:14px}
-.ob-t{font-family:var(--px);font-size:10px;color:var(--neon);margin-bottom:12px;line-height:1.8}
-.ob-tx{font-size:13px;color:var(--td);line-height:1.7;margin-bottom:22px;font-family:var(--mo)}
-.ob-dots{display:flex;justify-content:center;gap:6px;margin-bottom:18px}
-.ob-dot{width:7px;height:7px;border-radius:50%;background:var(--bd2);transition:background .2s}
-.ob-dot.on{background:var(--ac2)}
-.ob-acts{display:flex;gap:10px;justify-content:center}
-.ob-skip{background:none;border:none;color:var(--tm);font-family:var(--mo);font-size:11px;cursor:pointer;padding:8px 14px;text-decoration:underline}
+/* ══════════════════════════════
+   TOAST / FLASH
+══════════════════════════════ */
+#toasts{position:fixed;bottom:20px;right:20px;z-index:800;display:flex;flex-direction:column;
+  gap:7px;pointer-events:none;align-items:flex-end}
+.ti{padding:9px 16px;background:var(--s2);border:1px solid var(--bd2);border-radius:9px;
+  font-family:var(--mo);font-size:11px;color:var(--neon);box-shadow:var(--glow);
+  transform:translateX(140px);opacity:0;transition:all .25s;max-width:280px}
+.ti.show{transform:translateX(0);opacity:1}
+#flash{position:fixed;inset:0;z-index:700;background:#fff;opacity:0;pointer-events:none;transition:opacity .08s}
+#flash.go{opacity:.65}
 
-/* ════════════════════════════════
+/* ══════════════════════════════
    RESPONSIVE
-════════════════════════════════ */
+══════════════════════════════ */
 @media(max-width:640px){
   #game{width:100vw!important;height:calc(100vw*(2/3))!important;max-width:480px;max-height:320px}
   .sidebar{width:100%;max-width:560px}
   .eb{padding:8px;gap:8px}
-  .eh{padding:7px 10px;flex-wrap:wrap}
-  .eh-logo{font-size:7px}
+  .eh{padding:8px 10px;flex-wrap:wrap}
   .stimer{display:none}
   #touch-ctrl{display:block}
 }
@@ -496,150 +366,113 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
 </head>
 <body>
 
-<!-- ════════════════════════════════
-     LANDING
-════════════════════════════════ -->
+<!-- ══════════ LANDING ══════════ -->
 <div id="landing">
-  <!-- Logo -->
-  <div style="text-align:center">
-    <svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;width:190px;margin:0 auto 18px">
-      <defs>
-        <radialGradient id="rg" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#1e1e3a"/><stop offset="100%" stop-color="#0a0a1a"/></radialGradient>
-        <filter id="fg"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c3aed" stop-opacity=".3"/><stop offset="100%" stop-color="#22d3ee" stop-opacity=".12"/></linearGradient>
-      </defs>
-      <rect x="10" y="20" width="200" height="95" rx="20" fill="url(#rg)" stroke="#2d2d5a" stroke-width="1.5"/>
-      <rect x="65" y="28" width="90" height="65" rx="6" fill="#050510" stroke="#1e1e3a" stroke-width="1"/>
-      <rect x="68" y="31" width="84" height="59" rx="4" fill="url(#sg)"/>
-      <rect x="70" y="33" width="28" height="7" rx="2" fill="white" opacity=".04"/>
-      <rect x="98" y="50" width="5" height="5" fill="#a855f7" filter="url(#fg)"/>
-      <rect x="105" y="46" width="5" height="5" fill="#a855f7" filter="url(#fg)"/>
-      <rect x="112" y="50" width="5" height="5" fill="#a855f7" filter="url(#fg)"/>
-      <rect x="105" y="54" width="5" height="5" fill="#7c3aed" filter="url(#fg)"/>
-      <rect x="22" y="47" width="10" height="30" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
-      <rect x="16" y="53" width="22" height="18" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
-      <circle cx="27" cy="62" r="3" fill="#2d2d5a"/>
-      <circle cx="182" cy="55" r="8" fill="#7c3aed" stroke="#a855f7" stroke-width="1" filter="url(#fg)"/>
-      <circle cx="164" cy="65" r="8" fill="#22d3ee" stroke="#67e8f9" stroke-width="1" opacity=".85"/>
-      <text x="182" y="59" text-anchor="middle" fill="white" font-size="7" font-family="monospace" font-weight="bold">A</text>
-      <text x="164" y="69" text-anchor="middle" fill="white" font-size="7" font-family="monospace" font-weight="bold">B</text>
-      <rect x="92" y="97" width="16" height="6" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
-      <rect x="112" y="97" width="16" height="6" rx="3" fill="#1a1a32" stroke="#2d2d5a" stroke-width="1"/>
-      <text x="100" y="101.5" text-anchor="middle" fill="#64748b" font-size="4" font-family="monospace">SEL</text>
-      <text x="120" y="101.5" text-anchor="middle" fill="#64748b" font-size="4" font-family="monospace">STA</text>
-      <rect x="10" y="12" width="38" height="11" rx="6" fill="#12122a" stroke="#1e1e3a" stroke-width="1"/>
-      <rect x="172" y="12" width="38" height="11" rx="6" fill="#12122a" stroke="#1e1e3a" stroke-width="1"/>
-      <text x="29" y="20" text-anchor="middle" fill="#7c3aed" font-size="6" font-family="monospace" font-weight="bold">L</text>
-      <text x="191" y="20" text-anchor="middle" fill="#7c3aed" font-size="6" font-family="monospace" font-weight="bold">R</text>
-    </svg>
-    <div class="logo-t">GBA.ME</div>
-    <div class="logo-s">Browser Game Boy Advance Emulator</div>
-  </div>
+  <svg viewBox="0 0 220 130" fill="none" xmlns="http://www.w3.org/2000/svg"
+       style="display:block;width:200px;margin-bottom:4px">
+    <defs>
+      <radialGradient id="rg"><stop offset="0%" stop-color="#1e1e3a"/><stop offset="100%" stop-color="#0a0a1a"/></radialGradient>
+      <filter id="gf"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#7c3aed" stop-opacity=".35"/><stop offset="100%" stop-color="#22d3ee" stop-opacity=".12"/></linearGradient>
+    </defs>
+    <rect x="10" y="20" width="200" height="95" rx="20" fill="url(#rg)" stroke="#2d2d5a" stroke-width="1.5"/>
+    <rect x="65" y="28" width="90" height="65" rx="6" fill="#050510" stroke="#1e1e3a"/>
+    <rect x="68" y="31" width="84" height="59" rx="4" fill="url(#sg)"/>
+    <rect x="70" y="33" width="28" height="7" rx="2" fill="white" opacity=".04"/>
+    <rect x="96" y="48" width="5" height="5" fill="#a855f7" filter="url(#gf)"/>
+    <rect x="103" y="44" width="5" height="5" fill="#a855f7" filter="url(#gf)"/>
+    <rect x="110" y="48" width="5" height="5" fill="#a855f7" filter="url(#gf)"/>
+    <rect x="103" y="52" width="5" height="5" fill="#7c3aed" filter="url(#gf)"/>
+    <rect x="22" y="47" width="10" height="30" rx="3" fill="#1a1a32" stroke="#2d2d5a"/>
+    <rect x="16" y="53" width="22" height="18" rx="3" fill="#1a1a32" stroke="#2d2d5a"/>
+    <circle cx="27" cy="62" r="3" fill="#2d2d5a"/>
+    <circle cx="182" cy="55" r="8" fill="#7c3aed" stroke="#a855f7" filter="url(#gf)"/>
+    <circle cx="164" cy="65" r="8" fill="#22d3ee" stroke="#67e8f9" opacity=".85"/>
+    <text x="182" y="59" text-anchor="middle" fill="white" font-size="7" font-family="monospace" font-weight="bold">A</text>
+    <text x="164" y="69" text-anchor="middle" fill="white" font-size="7" font-family="monospace" font-weight="bold">B</text>
+    <rect x="92" y="97" width="16" height="6" rx="3" fill="#1a1a32" stroke="#2d2d5a"/>
+    <rect x="112" y="97" width="16" height="6" rx="3" fill="#1a1a32" stroke="#2d2d5a"/>
+    <text x="100" y="101.5" text-anchor="middle" fill="#64748b" font-size="4" font-family="monospace">SEL</text>
+    <text x="120" y="101.5" text-anchor="middle" fill="#64748b" font-size="4" font-family="monospace">STA</text>
+    <rect x="10" y="12" width="38" height="11" rx="6" fill="#12122a" stroke="#1e1e3a"/>
+    <rect x="172" y="12" width="38" height="11" rx="6" fill="#12122a" stroke="#1e1e3a"/>
+    <text x="29" y="20" text-anchor="middle" fill="#7c3aed" font-size="6" font-family="monospace" font-weight="bold">L</text>
+    <text x="191" y="20" text-anchor="middle" fill="#7c3aed" font-size="6" font-family="monospace" font-weight="bold">R</text>
+  </svg>
 
-  <!-- Library -->
-  <div class="lib-sec" id="lib-sec" style="display:none">
+  <div class="logo-t">GBA.ME</div>
+  <div class="logo-s">Browser Game Boy Advance Emulator</div>
+
+  <div class="lib" id="lib" style="display:none">
     <div class="lib-hdr">
-      <div class="lib-ttl">📚 Library</div>
-      <input class="lib-search" id="lib-search" placeholder="Search ROMs…" oninput="filterLib()">
-      <select class="lib-sort" id="lib-sort" onchange="renderLib()">
-        <option value="date">Recent</option>
-        <option value="name">Name A–Z</option>
-        <option value="play">Playtime</option>
-      </select>
-      <button class="btn" onclick="document.getElementById('fi').click()">+ Add ROM</button>
+      <div class="lib-ttl">📚 Your Library</div>
+      <button class="btn" onclick="document.getElementById('fi').click()" style="margin-left:auto">+ Add ROM</button>
     </div>
     <div class="lib-grid" id="lib-grid"></div>
   </div>
 
-  <!-- Drop zone -->
-  <div class="drop-z" id="dropz">
+  <div class="dropz" id="dropz">
     <span class="drop-ico">🎮</span>
     <div class="drop-txt">Drop your .gba / .gbc / .gb ROM here</div>
     <div class="drop-hint">Only play ROMs you legally own</div>
-    <div style="display:flex;gap:10px;justify-content:center;margin-top:16px;flex-wrap:wrap">
+    <div style="margin-top:18px">
       <button class="btn solid" onclick="document.getElementById('fi').click()">Browse File</button>
-      <button class="btn" onclick="openOB()">📖 How it works</button>
     </div>
     <input type="file" id="fi" accept=".gba,.gbc,.gb,.zip">
   </div>
 
-  <!-- Recent strip -->
-  <div class="rec-strip" id="rec-strip" style="display:none">
-    <div style="font-family:var(--mo);font-size:10px;color:var(--tm);letter-spacing:3px;text-transform:uppercase;margin-bottom:5px">⏱ Recent</div>
-    <div id="rec-list"></div>
-  </div>
-
-  <!-- Key ref -->
-  <div class="cref">
-    <div class="ct" style="color:var(--gr)">Default Key Bindings — press ~ in-game for full reference</div>
-    <div class="kg">
-      <div class="kr"><span class="kbd">X</span> A Button</div>
-      <div class="kr"><span class="kbd">Z</span> B Button</div>
-      <div class="kr"><span class="kbd">A</span> L Trigger</div>
-      <div class="kr"><span class="kbd">S</span> R Trigger</div>
-      <div class="kr"><span class="kbd">Arrows</span> D-Pad</div>
-      <div class="kr"><span class="kbd">Enter</span> Start</div>
-      <div class="kr"><span class="kbd">BkSpc</span> Select</div>
-      <div class="kr"><span class="kbd">Space</span> Fast Fwd</div>
-      <div class="kr"><span class="kbd">F1</span> Quick Save</div>
-      <div class="kr"><span class="kbd">F3</span> Quick Load</div>
-      <div class="kr"><span class="kbd">[</span> Rewind (hold)</div>
-      <div class="kr"><span class="kbd">]</span> Frame Advance</div>
-    </div>
+  <div class="kref-card">
+    <div class="kref-card-ttl">Default Key Bindings — all remappable in the Keys tab</div>
+    <div class="kg" id="land-km"></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════
-     EMULATOR SCREEN
-════════════════════════════════ -->
+<!-- ══════════ EMULATOR ══════════ -->
 <div id="emu">
-  <!-- Header -->
   <header class="eh">
     <div class="eh-logo">GBA.ME</div>
-    <div class="eh-gname" id="gname">—</div>
-    <div class="eh-inds">
-      <div class="ind" id="ind-gpad" title="Gamepad"><span class="dot"></span>PAD</div>
-      <div class="ind rec" id="ind-rec" style="display:none"><span class="dot"></span>REC</div>
+    <div class="eh-name" id="gname">—</div>
+    <div class="eh-status">
+      <div class="stat-pill" id="pill-rw" style="display:none">⏪ REWIND</div>
       <div class="stimer" id="stimer">00:00:00</div>
     </div>
-    <div class="hbtns">
-      <button class="btn" onclick="showKref()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="3"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg>Keys
+    <div class="eh-btns">
+      <button class="btn" id="btn-fs" onclick="toggleFS()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+          <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+        </svg>Full
       </button>
-      <button class="btn" onclick="openM('m-settings')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32 1.41-1.41"/></svg>Settings
-      </button>
-      <button class="btn rd-h" onclick="goLanding()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Library
+      <button class="btn danger" onclick="goLanding()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>Library
       </button>
     </div>
   </header>
 
   <div class="eb">
-    <div class="gw">
-      <!-- Speed + filter -->
-      <div class="tstrip">
-        <div class="sgrp">
-          <span class="sgrp-lbl">SPEED</span>
+    <div class="ecol">
+      <!-- Speed + filter strips -->
+      <div class="top-strip">
+        <div class="strip-grp">
+          <span class="strip-lbl">SPEED</span>
           <button class="spd" data-s="0.25" onclick="setSpeed(0.25)">¼×</button>
           <button class="spd" data-s="0.5" onclick="setSpeed(0.5)">½×</button>
           <button class="spd on" data-s="1" onclick="setSpeed(1)">1×</button>
           <button class="spd" data-s="2" onclick="setSpeed(2)">2×</button>
           <button class="spd" data-s="4" onclick="setSpeed(4)">4×</button>
-          <button class="spd" data-s="8" onclick="setSpeed(8)">8×</button>
         </div>
-        <div class="sgrp">
-          <span class="sgrp-lbl">FILTER</span>
-          <select id="filter-sel" onchange="setFilter(this.value)" style="background:transparent;border:none;color:var(--td);font-family:var(--mo);font-size:10px;cursor:pointer;outline:none">
+        <div class="strip-grp">
+          <span class="strip-lbl">FILTER</span>
+          <select class="sel" id="filter-sel" onchange="setFilter(this.value)" style="border:none;background:transparent;color:var(--td)">
             <option value="none">None</option>
             <option value="warm">Warm</option>
             <option value="cool">Cool</option>
             <option value="gameboy">Game Boy</option>
             <option value="gbp">GBP Grey</option>
             <option value="phosphor">Phosphor</option>
-            <option value="sepia">Sepia</option>
             <option value="crt">CRT</option>
-            <option value="lcd">LCD Grid</option>
             <option value="vhs">VHS</option>
             <option value="gray">Greyscale</option>
             <option value="invert">Invert</option>
@@ -647,54 +480,32 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
         </div>
       </div>
 
-      <!-- Brightness -->
-      <div class="brow">
-        <span style="font-size:12px">🌙</span>
-        <input type="range" class="g" id="bright-sl" min="20" max="180" value="100" oninput="setBright(this.value)" title="Brightness (= / -)">
-        <span style="font-size:12px">☀️</span>
-        <span class="bval" id="bval">100%</span>
-      </div>
-
       <!-- Game frame -->
-      <div id="fs-wrap" style="display:contents">
-      <div class="gframe" id="gframe">
-        <div id="scl-ov"></div>
-        <div id="lcd-ov"></div>
-        <div id="game"></div>
-      </div>
+      <div id="fs-wrap">
+        <div class="gframe" id="gframe">
+          <div id="game"></div>
+        </div>
       </div>
 
-      <!-- Controls bar -->
-      <div class="cbar">
-        <button class="cb" id="cb-pause" onclick="togglePause()" title="Pause (P)">
+      <!-- Controls -->
+      <div class="ctrl-row">
+        <button class="cb" id="cb-pause" onclick="togglePause()" title="Pause / Resume (P)">
           <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Pause
         </button>
-        <button class="cb" onclick="frameAdv()" title="Frame Advance (])">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>Frame
+        <button class="cb" id="cb-ff" title="Fast Forward — hold Space">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 4 15 12 5 20 5 4"/><polygon points="13 4 23 12 13 20 13 4"/></svg>Fast Fwd
         </button>
-        <button class="cb" onclick="qSave()" title="Quick Save (F1)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>QSave
+        <button class="cb" id="cb-rw" title="Rewind — hold [">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="19 4 9 12 19 20 19 4"/><polygon points="11 4 1 12 11 20 11 4"/></svg>Rewind
         </button>
-        <button class="cb" onclick="qLoad()" title="Quick Load (F3)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>QLoad
+        <button class="cb" id="cb-frame" onclick="frameAdv()" title="Frame Advance (])">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4" fill="currentColor"/><line x1="19" y1="5" x2="19" y2="19"/></svg>Frame+1
         </button>
         <button class="cb" onclick="doShot()" title="Screenshot (F12)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>Shot
         </button>
-        <button class="cb" id="cb-rec" onclick="toggleRec()" title="Record Video (F8)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3" fill="currentColor"/><circle cx="12" cy="12" r="9"/></svg>Record
-        </button>
-        <button class="cb" id="cb-fs" onclick="toggleFS()" title="Fullscreen (F11)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>Full
-        </button>
-        <button class="cb" onclick="rotateScreen()" title="Rotate (R)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>Rotate
-        </button>
         <button class="cb" onclick="resetGame()" title="Reset (F5)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.6"/></svg>Reset
-        </button>
-        <button class="cb dng" onclick="if(confirm('Hard reset?'))resetGame()" title="Hard Reset">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>HReset
         </button>
       </div>
     </div>
@@ -702,92 +513,127 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
     <!-- SIDEBAR -->
     <div class="sidebar">
       <div class="stabs">
-        <button class="stab on" onclick="swtab('states',this)">States</button>
-        <button class="stab" onclick="swtab('keys',this)">Keys</button>
-        <button class="stab" onclick="swtab('cheats',this)">Cheats</button>
-        <button class="stab" onclick="swtab('stats',this)">Stats</button>
-        <button class="stab" onclick="swtab('gallery',this)">Gallery</button>
+        <button class="stab on" id="tab-states-btn" onclick="switchTab('states',this)">States</button>
+        <button class="stab" id="tab-keys-btn"   onclick="switchTab('keys',this)">Keys</button>
+        <button class="stab" id="tab-gallery-btn" onclick="switchTab('gallery',this)">Gallery</button>
+        <button class="stab" id="tab-extras-btn" onclick="switchTab('extras',this)">Extras</button>
       </div>
 
-      <!-- States tab -->
+      <!-- TAB: States -->
       <div class="card sp on" id="sp-states">
-        <div class="ct">💾 Save States</div>
-        <div class="sslots" id="sslots"></div>
-        <div class="slab-row">
-          <input id="slot-lbl" placeholder="Label this slot…" maxlength="24">
-          <button class="btn" onclick="setSlotLabel()" style="padding:5px 9px">✓</button>
+        <div class="card-ttl">💾 Save States</div>
+        <div class="slots" id="slots"></div>
+        <div class="slot-acts">
+          <button class="btn gon" onclick="saveSlot()" style="justify-content:center">Save (F1)</button>
+          <button class="btn" onclick="loadSlot()" style="justify-content:center">Load (F3)</button>
         </div>
-        <div class="sacts">
-          <button class="btn gn" onclick="saveSlot()">Save</button>
-          <button class="btn" onclick="loadSlot()">Load</button>
-          <button class="btn" onclick="exportState()" title="Export .gbamesave">⬇</button>
-          <button class="btn" onclick="document.getElementById('import-si').click()" title="Import state">⬆</button>
-        </div>
-        <input type="file" id="import-si" style="display:none" onchange="importState(this)">
-        <div style="display:flex;align-items:center;gap:6px;margin-top:9px">
-          <span style="font-family:var(--mo);font-size:10px;color:var(--tm)">Active slot:</span>
-          <select id="aslot" onchange="onSlotSel()" style="flex:1;padding:5px 7px;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;outline:none">
-            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
-            <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+        <div class="slot-sel" style="margin-top:8px">
+          <span>Slot:</span>
+          <select class="sel" id="aslot" onchange="onSlotChange()">
+            <option value="1">1</option><option value="2">2</option>
+            <option value="3">3</option><option value="4">4</option>
+            <option value="5">5</option><option value="6">6</option>
             <option value="7">7</option><option value="8">8 (Auto)</option>
           </select>
-          <button class="btn rd-h" onclick="clearSlot()" style="padding:5px 8px;font-size:10px">✕</button>
+          <button class="btn danger" onclick="clearSlot()" style="padding:5px 8px;font-size:10px">✕ Clear</button>
         </div>
-        <button class="btn" onclick="dlBatterySave()" style="width:100%;justify-content:center;margin-top:8px;font-size:10px">💾 Export Battery Save</button>
+        <div style="display:flex;gap:5px;margin-top:8px">
+          <button class="btn" onclick="exportState()" style="flex:1;justify-content:center;font-size:10px">⬇ Export</button>
+          <button class="btn" onclick="document.getElementById('imp-si').click()" style="flex:1;justify-content:center;font-size:10px">⬆ Import</button>
+        </div>
+        <input type="file" id="imp-si" style="display:none" onchange="importState(this)" accept=".gbamesave">
+        <hr class="divider">
+        <div class="card-ttl">🔊 Volume</div>
+        <div class="vol-row">
+          <span class="vico" id="vico" onclick="toggleMute()">🔊</span>
+          <input type="range" id="vol-sl" min="0" max="100" value="100" oninput="setVol(this.value)">
+          <span class="vval" id="vval">100</span>
+        </div>
       </div>
 
-      <!-- Keys tab -->
+      <!-- TAB: Keys -->
       <div class="card sp" id="sp-keys">
-        <div class="ct">🎮 Key Bindings <span style="font-size:6px;color:var(--tm)">(click to remap)</span></div>
-        <div class="kmg" id="kmg"></div>
-        <div class="km-hint">Click a row, press any key to remap</div>
-        <div style="display:flex;gap:5px;margin-top:11px">
-          <button class="btn" onclick="resetKeys()" style="flex:1;justify-content:center;font-size:10px">Reset Default</button>
-          <button class="btn" onclick="openM('m-gpad')" style="flex:1;justify-content:center;font-size:10px">🎮 Gamepad</button>
+        <div class="card-ttl">🎮 Key Bindings <span style="font-size:6px;color:var(--tm)">(click to remap)</span></div>
+        <div class="km-grid" id="kmg"></div>
+        <div class="km-hint">Click a row, then press any key to remap</div>
+        <div style="display:flex;gap:5px;margin-top:10px">
+          <button class="btn" onclick="resetKeys()" style="flex:1;justify-content:center;font-size:10px">↺ Reset Default</button>
+          <button class="btn solid" onclick="applyKeysNow()" style="flex:1;justify-content:center;font-size:10px">Apply Now</button>
         </div>
-        <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--bd)">
-          <div class="ct">🔊 Volume</div>
-          <div class="vrow">
-            <span class="vico" onclick="toggleMute()" id="vico">🔊</span>
-            <input type="range" id="vol-sl" min="0" max="100" value="100" oninput="setVol(this.value)">
-            <span class="vval" id="vval">100</span>
-          </div>
+        <div id="km-notice" style="display:none;margin-top:8px;padding:7px 10px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);border-radius:7px;font-family:var(--mo);font-size:9px;color:var(--am)">
+          Unsaved changes — click Apply Now to reload with new keys.
         </div>
       </div>
 
-      <!-- Cheats tab -->
-      <div class="card sp" id="sp-cheats">
-        <div class="ct">🃏 Cheat Codes</div>
-        <div class="chlist" id="chlist"><div style="font-family:var(--mo);font-size:10px;color:var(--tm);text-align:center;padding:10px">No cheats added</div></div>
-        <div class="chform">
-          <input id="ch-name" placeholder="Name (e.g. Infinite HP)" maxlength="40">
-          <input id="ch-code" placeholder="Code (e.g. 8202BC20 0063)" style="font-family:var(--mo)">
-          <select id="ch-type">
-            <option value="gs">GameShark / Action Replay</option>
-            <option value="cb">CodeBreaker</option>
-            <option value="gg">Game Genie</option>
-          </select>
-          <button class="btn solid" onclick="addCheat()" style="justify-content:center">Add Cheat</button>
-        </div>
-      </div>
-
-      <!-- Stats tab -->
-      <div class="card sp" id="sp-stats">
-        <div class="ct">📊 Stats</div>
-        <div class="str"><span class="stk">Session time</span><span class="stv" id="st-sess">00:00:00</span></div>
-        <div class="str"><span class="stk">Total playtime</span><span class="stv" id="st-pt">0m</span></div>
-        <div class="str"><span class="stk">Current speed</span><span class="stv" id="st-spd">1×</span></div>
-        <div class="str"><span class="stk">ROM size</span><span class="stv" id="st-sz">—</span></div>
-        <div class="str"><span class="stk">Save slots used</span><span class="stv" id="st-sv">0</span></div>
-        <div class="str"><span class="stk">Screenshots</span><span class="stv" id="st-sh">0</span></div>
-        <button class="btn" onclick="exportStats()" style="width:100%;justify-content:center;margin-top:10px;font-size:10px">Export Stats JSON</button>
-      </div>
-
-      <!-- Gallery tab -->
+      <!-- TAB: Gallery -->
       <div class="card sp" id="sp-gallery">
-        <div class="ct">📸 Screenshots</div>
-        <div class="galg" id="galg"><div class="galem">No screenshots yet.<br>Press F12 to capture!</div></div>
-        <button class="btn rd-h" onclick="clearShots()" style="width:100%;justify-content:center;margin-top:9px;font-size:10px">🗑 Clear All</button>
+        <div class="card-ttl">📸 Screenshots</div>
+        <div class="gal-grid" id="gal-grid">
+          <div style="grid-column:span 3;text-align:center;padding:16px;font-family:var(--mo);font-size:10px;color:var(--tm)">No screenshots yet.<br>Press F12 to capture!</div>
+        </div>
+        <button class="btn danger" onclick="clearShots()" style="width:100%;justify-content:center;margin-top:9px;font-size:10px">🗑 Clear All</button>
+      </div>
+
+      <!-- TAB: Extras -->
+      <div class="card sp" id="sp-extras">
+        <div class="card-ttl">⚙️ Extras</div>
+
+        <!-- Brightness -->
+        <div class="sr">
+          <div class="sl">Brightness<small>Adjust display brightness</small></div>
+        </div>
+        <div class="bright-row" style="margin-bottom:10px">
+          <span style="font-size:12px">🌙</span>
+          <input type="range" class="gr" id="bright-sl" min="20" max="180" value="100" oninput="setBright(this.value)">
+          <span style="font-size:12px">☀️</span>
+          <span class="bval" id="bval">100%</span>
+        </div>
+
+        <!-- Scanlines -->
+        <div class="sr">
+          <div class="sl">Scanlines<small>CRT scanline overlay</small></div>
+          <label class="tog"><input type="checkbox" id="scl-tog" onchange="toggleScanlines(this.checked)"><span class="tog-sl"></span></label>
+        </div>
+
+        <!-- Touch controls -->
+        <div class="sr">
+          <div class="sl">Touch Controls<small>On-screen gamepad</small></div>
+          <label class="tog"><input type="checkbox" id="touch-tog" onchange="toggleTouch(this.checked)"><span class="tog-sl"></span></label>
+        </div>
+
+        <!-- Auto-save -->
+        <div class="sr">
+          <div class="sl">Auto-Save<small>Save to slot 8 on timer</small></div>
+          <select class="sel" id="autosave-sel" onchange="setAutoSave(this.value)" style="font-size:10px">
+            <option value="0">Off</option>
+            <option value="60">1 min</option>
+            <option value="120">2 min</option>
+            <option value="300">5 min</option>
+          </select>
+        </div>
+
+        <!-- Mute on blur -->
+        <div class="sr">
+          <div class="sl">Mute on Tab Switch<small>Silence when tab is hidden</small></div>
+          <label class="tog"><input type="checkbox" id="mutef-tog" checked><span class="tog-sl"></span></label>
+        </div>
+
+        <!-- Stats -->
+        <hr class="divider" style="margin-top:4px">
+        <div class="card-ttl">📊 Stats</div>
+        <div class="stat-row"><span class="stat-k">Session</span><span class="stat-v" id="st-sess">00:00:00</span></div>
+        <div class="stat-row"><span class="stat-k">Total playtime</span><span class="stat-v" id="st-pt">0m</span></div>
+        <div class="stat-row"><span class="stat-k">ROM size</span><span class="stat-v" id="st-sz">—</span></div>
+        <div class="stat-row"><span class="stat-k">Rewind buffer</span><span class="stat-v" id="st-rw">0 / 120</span></div>
+        <div class="stat-row"><span class="stat-k">Screenshots</span><span class="stat-v" id="st-sh">0</span></div>
+
+        <!-- Cheats -->
+        <hr class="divider">
+        <div class="card-ttl">🃏 Cheat Codes</div>
+        <div class="cheat-list" id="cheat-list"></div>
+        <input class="inp" id="ch-name" placeholder="Cheat name" style="width:100%;margin-bottom:5px">
+        <input class="inp" id="ch-code" placeholder="Code (e.g. 8202BC20 0063)" style="width:100%;margin-bottom:5px;font-family:var(--mo)">
+        <button class="btn solid" onclick="addCheat()" style="width:100%;justify-content:center">Add Cheat</button>
       </div>
     </div>
   </div>
@@ -797,9 +643,9 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
 <div id="touch-ctrl">
   <div class="tl">
     <div style="display:flex;flex-direction:column;gap:8px">
-      <div class="tlr">
-        <button class="tlrb" id="t-l">L</button>
-        <button class="tlrb" id="t-r">R</button>
+      <div class="t-lr">
+        <button class="t-lr-btn" id="t-l">L</button>
+        <button class="t-lr-btn" id="t-r">R</button>
       </div>
       <div class="dpad">
         <div></div><button class="db" id="t-up">↑</button><div></div>
@@ -807,15 +653,15 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
         <div></div><button class="db" id="t-down">↓</button><div></div>
       </div>
     </div>
-    <div class="tmid">
-      <div class="tsys">
-        <button class="tsb" id="t-sel">SELECT</button>
-        <button class="tsb" id="t-sta">START</button>
+    <div class="t-mid">
+      <div class="t-sys">
+        <button class="t-sys-btn" id="t-sel">SELECT</button>
+        <button class="t-sys-btn" id="t-sta">START</button>
       </div>
     </div>
     <div class="abxy">
-      <button class="abxy-b ab-a" id="t-a">A</button>
-      <button class="abxy-b ab-b" id="t-b">B</button>
+      <button class="abxy-btn ab-a" id="t-a">A</button>
+      <button class="abxy-btn ab-b" id="t-b">B</button>
     </div>
   </div>
 </div>
@@ -823,859 +669,897 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
 <!-- LOADING -->
 <div id="loading">
   <div class="lpx">Loading ROM...</div>
-  <div class="lbw"><div class="lb"></div></div>
+  <div class="lbw"><div class="lba"></div></div>
   <div class="lsub" id="lsub">Initializing emulator core</div>
 </div>
 
-<!-- KEYBIND REFERENCE -->
-<div id="kref">
-  <div class="kref-t">⌨ GBA.ME — Full Keybind Reference</div>
-  <div class="kref-grid">
-    <div class="kref-sec">
-      <div class="kref-st">GBA Buttons (remappable in Keys tab)</div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-A">X</span></span><span class="kref-d">A Button</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-B">Z</span></span><span class="kref-d">B Button</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-L">A</span></span><span class="kref-d">L Trigger</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-R">S</span></span><span class="kref-d">R Trigger</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-UP">↑</span></span><span class="kref-d">D-Pad Up</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-DOWN">↓</span></span><span class="kref-d">D-Pad Down</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-LEFT">←</span></span><span class="kref-d">D-Pad Left</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-RIGHT">→</span></span><span class="kref-d">D-Pad Right</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-START">Enter</span></span><span class="kref-d">Start</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd" id="kr-SELECT">BkSpc</span></span><span class="kref-d">Select</span></div>
-    </div>
-    <div class="kref-sec">
-      <div class="kref-st">Emulator Controls</div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">P</span></span><span class="kref-d">Pause / Resume</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">Space</span></span><span class="kref-d">Fast Forward (hold)</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">[</span></span><span class="kref-d">Rewind (hold)</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">]</span></span><span class="kref-d">Frame Advance</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">M</span></span><span class="kref-d">Toggle Mute</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">T</span></span><span class="kref-d">Cycle Colour Filter</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">R (key)</span></span><span class="kref-d">Rotate Screen</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">F5</span></span><span class="kref-d">Reset Game</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">Alt+1…6</span></span><span class="kref-d">Speed presets</span></div>
-    </div>
-    <div class="kref-sec">
-      <div class="kref-st">Save / Load</div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">F1</span></span><span class="kref-d">Quick Save</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">F3</span></span><span class="kref-d">Quick Load</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">Ctrl+S</span></span><span class="kref-d">Quick Save (alt)</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">Ctrl+L</span></span><span class="kref-d">Quick Load (alt)</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">1–8</span></span><span class="kref-d">Select save slot</span></div>
-    </div>
-    <div class="kref-sec">
-      <div class="kref-st">Display & Media</div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">F11</span></span><span class="kref-d">Fullscreen</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">F12</span></span><span class="kref-d">Screenshot</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">F8</span></span><span class="kref-d">Toggle Video Record</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">=</span></span><span class="kref-d">Brightness Up</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">-</span></span><span class="kref-d">Brightness Down</span></div>
-      <div class="kref-r"><span class="kref-k"><span class="kref-kbd">~</span></span><span class="kref-d">Toggle This Screen</span></div>
-    </div>
-  </div>
-  <button class="kref-close" onclick="hideKref()">Close (or press ~)</button>
-</div>
-
-<!-- SCREENSHOT LIGHTBOX -->
+<!-- LIGHTBOX -->
 <div id="lightbox">
-  <img id="lb-img" src="" alt="Screenshot">
+  <img id="lb-img" src="" alt="">
   <div class="lb-acts">
-    <button class="btn" onclick="dlLbShot()">⬇ Download</button>
-    <button class="btn" onclick="shareLbShot()">🔗 Share</button>
-    <button class="btn rd-h" onclick="closeLb()">✕ Close</button>
+    <button class="btn" onclick="dlShot()">⬇ Download</button>
+    <button class="btn danger" onclick="closeLb()">✕ Close</button>
   </div>
 </div>
 
-<!-- ONBOARDING -->
-<div id="onboard">
-  <div class="ob">
-    <div class="ob-em" id="ob-em">🎮</div>
-    <div class="ob-t" id="ob-t">Welcome to GBA.ME</div>
-    <div class="ob-tx" id="ob-tx">Play your legally-obtained GBA, GBC and GB ROMs in the browser. No install, no server — fully private, fully local.</div>
-    <div class="ob-dots" id="ob-dots">
-      <div class="ob-dot on"></div><div class="ob-dot"></div><div class="ob-dot"></div><div class="ob-dot"></div>
-    </div>
-    <div class="ob-acts">
-      <button class="ob-skip" onclick="closeOB()">Skip</button>
-      <button class="btn solid" onclick="nextOB()">Next →</button>
-    </div>
-  </div>
-</div>
-
-<!-- SETTINGS MODAL -->
-<div class="mo" id="m-settings">
-  <div class="mc" style="max-width:520px">
-    <div class="mt">⚙️ Settings</div>
-    <button class="mx" onclick="closeM('m-settings')">✕</button>
-    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">
-      <button class="btn on" id="theme-btn" onclick="toggleTheme()">🌙 Dark</button>
-      <button class="btn" onclick="closeM('m-settings');openOB()">📖 Tour</button>
-    </div>
-    <div class="sr"><div class="sl">Scanlines<small>CRT scanline overlay</small></div>
-      <label class="tog"><input type="checkbox" id="scl-tog" onchange="toggleScanlines(this.checked)"><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">LCD Grid<small>Dot-matrix pixel grid</small></div>
-      <label class="tog"><input type="checkbox" id="lcd-tog" onchange="toggleLcd(this.checked)"><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">Integer Scaling<small>Sharp pixel-perfect output</small></div>
-      <label class="tog"><input type="checkbox" id="intsc-tog" onchange="toggleIntSc(this.checked)"><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">Touch Controls<small>On-screen gamepad</small></div>
-      <label class="tog"><input type="checkbox" id="touch-tog" onchange="toggleTouch(this.checked)"><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">Rewind<small>Hold [ to rewind (takes effect on next ROM load)</small></div>
-      <label class="tog"><input type="checkbox" id="rew-tog" checked><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">Mute on Focus Loss<small>Silence when tab is hidden</small></div>
-      <label class="tog"><input type="checkbox" id="mutef-tog" checked><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">Haptic Feedback<small>Vibrate on touch button press</small></div>
-      <label class="tog"><input type="checkbox" id="hap-tog" checked><span class="tog-sl"></span></label></div>
-    <div class="sr"><div class="sl">Auto-Save Interval</div>
-      <select id="autosave-sel" onchange="setAutoSave(this.value)" style="padding:5px 8px;background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--td);font-family:var(--mo);font-size:11px;cursor:pointer;outline:none">
-        <option value="0">Off</option><option value="1">1 min</option>
-        <option value="2">2 min</option><option value="5">5 min</option><option value="10">10 min</option>
-      </select>
-    </div>
-    <div style="margin-top:16px">
-      <div class="ct" style="margin-bottom:9px">Display Size</div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap" id="sz-btns">
-        <button class="spd on" onclick="setSize(480,320,this)">480×320</button>
-        <button class="spd" onclick="setSize(640,426,this)">640×426</button>
-        <button class="spd" onclick="setSize(720,480,this)">720×480</button>
-        <button class="spd" onclick="setSize(960,640,this)">960×640</button>
-      </div>
-    </div>
-    <div style="margin-top:14px">
-      <div class="ct" style="margin-bottom:9px">Aspect Ratio</div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap" id="asp-btns">
-        <button class="spd on" onclick="setAsp('native',this)">Native 3:2</button>
-        <button class="spd" onclick="setAsp('stretch',this)">Stretch</button>
-        <button class="spd" onclick="setAsp('4-3',this)">4:3 Cover</button>
-      </div>
-    </div>
-    <div style="margin-top:18px">
-      <button onclick="clearAll()" style="width:100%;padding:10px;background:rgba(244,63,94,.1);border:1px solid var(--rd);border-radius:8px;color:var(--rd);font-family:var(--fn);font-size:12px;cursor:pointer">🗑 Clear All Saved Data</button>
-    </div>
-  </div>
-</div>
-
-<!-- GAMEPAD MODAL -->
-<div class="mo" id="m-gpad">
-  <div class="mc">
-    <div class="mt">🕹 Gamepad Mapping</div>
-    <button class="mx" onclick="closeM('m-gpad')">✕</button>
-    <div id="gpad-status" style="font-family:var(--mo);font-size:11px;color:var(--tm);margin-bottom:14px;padding:10px;background:var(--s2);border-radius:8px;border:1px solid var(--bd)">No gamepad detected. Connect a controller and press any button.</div>
-    <div class="kmg" id="gpad-kmg"></div>
-    <div class="mf">
-      <button class="btn" onclick="resetGpad();closeM('m-gpad')" style="justify-content:center">Reset Default</button>
-      <button class="btn solid" onclick="closeM('m-gpad')" style="justify-content:center">Done</button>
-    </div>
-  </div>
-</div>
-
-<!-- FLASH + TOASTS -->
 <div id="flash"></div>
 <div id="toasts"></div>
 
-<!-- ════════════════════════════════
-     JAVASCRIPT
-════════════════════════════════ -->
 <script>
-/* ═══════════ STATE ═══════════ */
-let emuLoaded=false, romName='', romSize=0, activeSlot=1;
-let paused=false, muted=false, curSpeed=1;
-let editKRow=null, editGpadBtn=null;
-let saves={}, cheats=[], shots=[];
-let sessStart=null, sessInterval=null, autoSaveTimer=null;
-let gpadRAF=null, lastGpad={};
-let brightness=100, curFilter='none', curRot=0;
-let filterCycle=['none','warm','cool','gameboy','gbp','phosphor','sepia','crt','lcd','gray','vhs','invert'];
-let filterIdx=0;
-let recOn=false, mediaRec=null, recChunks=[];
-let obStep=0, deferredInstall=null;
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEY BINDINGS
+   keys[btn] = keyCode (number) — this is what
+   EJS_defaultOptions and keyboard events use.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const DEF_KEYS = {
+  A:88, B:90, L:65, R:83,
+  UP:38, DOWN:40, LEFT:37, RIGHT:39,
+  START:13, SELECT:8
+};
+// EJS libretro button IDs (mGBA core)
+const LR = { A:8, B:0, L:10, R:11, UP:4, DOWN:5, LEFT:6, RIGHT:7, START:3, SELECT:2 };
+const BTN_ORDER = ['A','B','L','R','UP','DOWN','LEFT','RIGHT','START','SELECT'];
+let keys = {};
+function loadKeys(){ try{ keys=JSON.parse(localStorage.getItem('gbame_keys')||'null')||{...DEF_KEYS} }catch{ keys={...DEF_KEYS} } }
+function saveKeys(){ localStorage.setItem('gbame_keys', JSON.stringify(keys)) }
+function kname(kc){
+  const m={88:'X',90:'Z',65:'A',83:'S',81:'Q',87:'W',69:'E',68:'D',70:'F',71:'G',
+    72:'H',74:'J',75:'K',76:'L',78:'N',77:'M',67:'C',86:'V',66:'B',
+    38:'↑',40:'↓',37:'←',39:'→',13:'Enter',8:'BkSpc',32:'Space',
+    9:'Tab',27:'Esc',16:'Shift',17:'Ctrl',18:'Alt',
+    112:'F1',113:'F2',114:'F3',115:'F4',116:'F5',
+    49:'1',50:'2',51:'3',52:'4',53:'5',54:'6',55:'7',56:'8',57:'9',48:'0',
+    96:'N0',97:'N1',98:'N2',99:'N3',100:'N4',101:'N5',102:'N6',103:'N7',104:'N8',105:'N9'};
+  return m[kc]||('?'+kc);
+}
+function buildEJSOpts(kb){
+  const o={};
+  for(const [btn,kc] of Object.entries(kb)){ const id=LR[btn]; if(id!==undefined) o['0-'+id]=kc; }
+  return o;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INDEXEDDB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 let db=null;
-
-/* ═══════════ KEY BINDINGS ═══════════ */
-const DEF_KEYS={A:'KeyX',B:'KeyZ',L:'KeyA',R:'KeyS',UP:'ArrowUp',DOWN:'ArrowDown',LEFT:'ArrowLeft',RIGHT:'ArrowRight',START:'Enter',SELECT:'Backspace'};
-const BTN_LBLS=['A','B','L','R','UP','DOWN','LEFT','RIGHT','START','SELECT'];
-let keys={};
-function loadKeys(){try{keys=JSON.parse(localStorage.getItem('gbame_keys')||'null')||{...DEF_KEYS}}catch{keys={...DEF_KEYS}}}
-function saveKeys(){localStorage.setItem('gbame_keys',JSON.stringify(keys))}
-function kdisp(c){const m={ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→',Enter:'Enter',Backspace:'BkSpc',Space:'Space',Escape:'Esc',ShiftLeft:'L⇧',ShiftRight:'R⇧',ControlLeft:'L⌃',ControlRight:'R⌃'};if(m[c])return m[c];if(c.startsWith('Key'))return c.slice(3);if(c.startsWith('Digit'))return c.slice(5);if(c.startsWith('Numpad'))return'N'+c.slice(6);return c.slice(0,7)}
-
-/* ═══════════ GAMEPAD BINDINGS ═══════════ */
-const DEF_GPAD={A:0,B:1,L:4,R:5,START:9,SELECT:8,UP:12,DOWN:13,LEFT:14,RIGHT:15};
-let gpad={};
-function loadGpad(){try{gpad=JSON.parse(localStorage.getItem('gbame_gpad')||'null')||{...DEF_GPAD}}catch{gpad={...DEF_GPAD}}}
-function saveGpad(){localStorage.setItem('gbame_gpad',JSON.stringify(gpad))}
-function resetGpad(){gpad={...DEF_GPAD};saveGpad();renderGpadMap();toast('🔄 Gamepad reset')}
-
-/* ═══════════ INDEXEDDB ═══════════ */
 function openDB(){
   return new Promise((res,rej)=>{
     const req=indexedDB.open('gbame',2);
     req.onupgradeneeded=e=>{
       const d=e.target.result;
-      if(!d.objectStoreNames.contains('roms')){const s=d.createObjectStore('roms',{keyPath:'id',autoIncrement:true});s.createIndex('name','name',{unique:false})}
-      if(!d.objectStoreNames.contains('shots')){const s=d.createObjectStore('shots',{keyPath:'id',autoIncrement:true});s.createIndex('rom','rom',{unique:false})}
+      if(!d.objectStoreNames.contains('roms')){ const s=d.createObjectStore('roms',{keyPath:'id',autoIncrement:true}); s.createIndex('name','name',{unique:false}); }
+      if(!d.objectStoreNames.contains('shots')){ const s=d.createObjectStore('shots',{keyPath:'id',autoIncrement:true}); s.createIndex('rom','rom',{unique:false}); }
     };
     req.onsuccess=e=>{db=e.target.result;res(db)};
     req.onerror=()=>rej(req.error);
   });
 }
-async function dbAdd(store,data){if(!db)return null;return new Promise(res=>{const tx=db.transaction(store,'readwrite');const req=tx.objectStore(store).add(data);req.onsuccess=()=>res(req.result);req.onerror=()=>res(null)})}
-async function dbGetAll(store){if(!db)return[];return new Promise(res=>{const tx=db.transaction(store,'readonly');const req=tx.objectStore(store).getAll();req.onsuccess=()=>res(req.result);req.onerror=()=>res([])})}
-async function dbGet(store,id){if(!db)return null;return new Promise(res=>{const tx=db.transaction(store,'readonly');const req=tx.objectStore(store).get(id);req.onsuccess=()=>res(req.result);req.onerror=()=>res(null)})}
-async function dbDel(store,id){if(!db)return;return new Promise(res=>{const tx=db.transaction(store,'readwrite');tx.objectStore(store).delete(id);tx.oncomplete=res})}
-async function dbByIndex(store,idx,val){if(!db)return[];return new Promise(res=>{const tx=db.transaction(store,'readonly');const req=tx.objectStore(store).index(idx).getAll(val);req.onsuccess=()=>res(req.result);req.onerror=()=>res([])})}
-async function saveRomDB(name,ext,size,blob){
-  if(!db)return;
-  const arr=await blob.arrayBuffer();
-  const existing=await dbByIndex('roms','name',name);
-  if(existing.length)return existing[0].id;
-  return dbAdd('roms',{name,ext,size,added:Date.now(),data:arr});
-}
-async function saveShot(rom,dataUrl){return dbAdd('shots',{rom,dataUrl,date:new Date().toLocaleString()})}
-async function getShots(rom){return dbByIndex('shots','rom',rom)}
+const dbOp=(store,mode,fn)=>new Promise((res,rej)=>{const tx=db.transaction(store,mode);fn(tx.objectStore(store),res,rej)});
+const dbAdd=(s,d)=>dbOp(s,'readwrite',(os,r,e)=>{const q=os.add(d);q.onsuccess=()=>r(q.result);q.onerror=e});
+const dbAll=(s)=>dbOp(s,'readonly',(os,r,e)=>{const q=os.getAll();q.onsuccess=()=>r(q.result);q.onerror=()=>r([])});
+const dbGet=(s,id)=>dbOp(s,'readonly',(os,r)=>{const q=os.get(id);q.onsuccess=()=>r(q.result);q.onerror=()=>r(null)});
+const dbDel=(s,id)=>dbOp(s,'readwrite',(os,r)=>{os.delete(id);r()});
+const dbIdx=(s,i,v)=>dbOp(s,'readonly',(os,r)=>{const q=os.index(i).getAll(v);q.onsuccess=()=>r(q.result);q.onerror=()=>r([])});
 
-/* ═══════════ PLAYTIME ═══════════ */
-function getPT(n){return parseInt(localStorage.getItem('gbame_pt_'+n)||'0')}
-function addPT(n,s){localStorage.setItem('gbame_pt_'+n,getPT(n)+Math.floor(s))}
-function fmtPT(s){if(!s)return'0m';const h=Math.floor(s/3600),m=Math.floor((s%3600)/60);return h?`${h}h ${m}m`:`${m}m`}
-function fmtSz(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(0)+'KB';return(b/1048576).toFixed(1)+'MB'}
-
-/* ═══════════ COVER ART ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   COVER ART GENERATOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function genCover(name){
   const h=name.split('').reduce((a,c)=>Math.imul(31,a)+c.charCodeAt(0)|0,0);
   const h1=Math.abs(h)%360,h2=Math.abs(h*137)%360,h3=Math.abs(h*79)%360;
   const init=name.replace(/[^a-zA-Z0-9]/g,'').slice(0,2).toUpperCase()||'??';
-  return'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 106"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="hsl(${h1},60%,18%)"/><stop offset="100%" stop-color="hsl(${h2},55%,12%)"/></linearGradient></defs><rect width="160" height="106" fill="url(#g)"/><circle cx="120" cy="20" r="40" fill="hsl(${h3},50%,25%)" opacity="0.4"/><circle cx="30" cy="90" r="30" fill="hsl(${h1},60%,20%)" opacity="0.3"/><text x="80" y="60" text-anchor="middle" dominant-baseline="middle" fill="hsl(${h2},80%,75%)" font-family="monospace" font-size="28" font-weight="bold" opacity="0.9">${init}</text><text x="80" y="84" text-anchor="middle" fill="hsl(${h1},40%,55%)" font-family="monospace" font-size="7" opacity="0.7">${name.slice(0,18)}</text></svg>`);
+  return'data:image/svg+xml,'+encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 106">'+
+    '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'+
+    '<stop offset="0%" stop-color="hsl('+h1+',60%,16%)"/>'+
+    '<stop offset="100%" stop-color="hsl('+h2+',55%,10%)"/></linearGradient></defs>'+
+    '<rect width="160" height="106" fill="url(#g)"/>'+
+    '<circle cx="120" cy="20" r="40" fill="hsl('+h3+',50%,22%)" opacity="0.45"/>'+
+    '<text x="80" y="62" text-anchor="middle" dominant-baseline="middle" '+
+    'fill="hsl('+h2+',80%,72%)" font-family="monospace" font-size="28" font-weight="bold" opacity="0.9">'+init+'</text>'+
+    '<text x="80" y="84" text-anchor="middle" fill="hsl('+h1+',40%,52%)" '+
+    'font-family="monospace" font-size="7" opacity="0.65">'+name.slice(0,18)+'</text></svg>');
 }
 
-/* ═══════════ LIBRARY ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PLAYTIME TRACKING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function getPT(n){ return parseInt(localStorage.getItem('gbame_pt_'+n)||'0') }
+function addPT(n,s){ localStorage.setItem('gbame_pt_'+n, getPT(n)+Math.floor(s)) }
+function fmtPT(s){ if(!s)return'0m'; const h=Math.floor(s/3600),m=Math.floor((s%3600)/60); return h?h+'h '+m+'m':m+'m' }
+function fmtSz(b){ if(b<1024)return b+'B'; if(b<1048576)return(b/1024).toFixed(0)+'KB'; return(b/1048576).toFixed(1)+'MB' }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   LIBRARY
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+async function saveRomToLib(name,ext,size,blob){
+  if(!db) return null;
+  const ex=await dbIdx('roms','name',name);
+  if(ex.length) return ex[0].id;
+  const arr=await blob.arrayBuffer();
+  return dbAdd('roms',{name,ext,size,added:Date.now(),data:arr});
+}
 async function renderLib(){
-  const roms=await dbGetAll('roms').catch(()=>[]);
-  const sort=document.getElementById('lib-sort').value;
-  const q=(document.getElementById('lib-search').value||'').toLowerCase();
-  const sec=document.getElementById('lib-sec');
+  if(!db) return;
+  const roms=await dbAll('roms');
+  const sec=document.getElementById('lib');
   const grid=document.getElementById('lib-grid');
-  if(!roms.length){sec.style.display='none';return}
+  if(!roms.length){ sec.style.display='none'; return; }
   sec.style.display='';
-  let list=roms.filter(r=>!q||r.name.toLowerCase().includes(q));
-  if(sort==='name')list.sort((a,b)=>a.name.localeCompare(b.name));
-  else if(sort==='play')list.sort((a,b)=>getPT(b.name)-getPT(a.name));
-  else list.sort((a,b)=>b.added-a.added);
+  roms.sort((a,b)=>b.added-a.added);
   grid.innerHTML='';
-  list.forEach(rom=>{
+  roms.forEach(rom=>{
     const pt=getPT(rom.name);
     const div=document.createElement('div');
     div.className='lc';
-    div.innerHTML=`<div class="lc-cov"><img src="${genCover(rom.name)}" alt="${rom.name}"></div>
-      <div class="lc-info"><div class="lc-name" title="${rom.name}">${rom.name}</div>
-      <div class="lc-meta">${fmtSz(rom.size)}</div>
-      ${pt?`<div class="lc-pt">${fmtPT(pt)}</div>`:''}</div>
-      <button class="lc-del" onclick="event.stopPropagation();delRom(${rom.id})" title="Remove">✕</button>`;
+    div.innerHTML=
+      '<div class="lc-cov"><img src="'+genCover(rom.name)+'" alt="'+rom.name+'"></div>'+
+      '<div class="lc-info"><div class="lc-name" title="'+rom.name+'">'+rom.name+'</div>'+
+      '<div class="lc-meta">'+fmtSz(rom.size)+'</div>'+
+      (pt?'<div class="lc-pt">'+fmtPT(pt)+'</div>':'')+
+      '</div>'+
+      '<button class="lc-del" onclick="event.stopPropagation();delRom('+rom.id+')" title="Remove">✕</button>';
     div.addEventListener('click',()=>loadRomDB(rom.id));
     grid.appendChild(div);
   });
 }
-function filterLib(){renderLib()}
-async function delRom(id){if(!confirm('Remove from library?'))return;await dbDel('roms',id);renderLib();toast('🗑 Removed')}
-async function loadRomDB(id){const r=await dbGet('roms',id);if(!r){toast('❌ ROM data missing');return}handleFile(new File([r.data],r.name+'.'+(r.ext||'gba')),false)}
-
-/* ═══════════ RECENT ═══════════ */
-function getRecent(){try{return JSON.parse(localStorage.getItem('gbame_recent')||'[]')}catch{return[]}}
-function addRecent(n){let l=getRecent().filter(r=>r.n!==n);l.unshift({n,d:Date.now()});if(l.length>6)l=l.slice(0,6);localStorage.setItem('gbame_recent',JSON.stringify(l))}
-function timeAgo(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago'}
-function renderRecent(){
-  const l=getRecent();const strip=document.getElementById('rec-strip');const ul=document.getElementById('rec-list');
-  if(!l.length){strip.style.display='none';return}
-  strip.style.display='flex';
-  ul.innerHTML=l.map(r=>`<div class="ri"><span>🎮</span><span class="ri-n">${r.n}</span><span class="ri-d">${timeAgo(r.d)}</span></div>`).join('');
+async function delRom(id){ if(!confirm('Remove from library?'))return; await dbDel('roms',id); renderLib(); toast('🗑 Removed') }
+async function loadRomDB(id){
+  const r=await dbGet('roms',id);
+  if(!r){ toast('❌ ROM not found'); return; }
+  handleFile(new File([r.data],r.name+'.'+(r.ext||'gba')),false);
 }
 
-/* ═══════════ FILE HANDLING ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FILE HANDLING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const dropz=document.getElementById('dropz');
-const fi=document.getElementById('fi');
+document.getElementById('fi').addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0])});
 dropz.addEventListener('dragover',e=>{e.preventDefault();dropz.classList.add('dov')});
 dropz.addEventListener('dragleave',()=>dropz.classList.remove('dov'));
-dropz.addEventListener('drop',e=>{e.preventDefault();dropz.classList.remove('dov');if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0])});
-fi.addEventListener('change',e=>{if(e.target.files[0])handleFile(e.target.files[0])});
-
+dropz.addEventListener('drop',e=>{
+  e.preventDefault();dropz.classList.remove('dov');
+  if(e.dataTransfer.files[0])handleFile(e.dataTransfer.files[0]);
+});
 async function handleFile(file,save=true){
   const ext=file.name.split('.').pop().toLowerCase();
-  if(!['gba','gbc','gb','zip'].includes(ext)){toast('❌ Use .gba, .gbc, .gb, or .zip');return}
-  romName=file.name.replace(/\.[^.]+$/,'');
-  romSize=file.size;
-  addRecent(file.name);
-  if(save)saveRomDB(romName,ext,file.size,file).catch(()=>{});
-  loadEmu(file,ext);
+  if(!['gba','gbc','gb','zip'].includes(ext)){ toast('❌ Use .gba, .gbc, .gb, or .zip'); return; }
+  curRomName=file.name.replace(/\.[^.]+$/,'');
+  curRomSize=file.size;
+  curRomExt=ext;
+  if(save&&db) saveRomToLib(curRomName,ext,file.size,file).then(()=>renderLib()).catch(()=>{});
+  startEmu(file,ext);
 }
 
-/* ═══════════ EMULATOR ═══════════ */
-function loadEmu(file,ext){
-  showLoading('Preparing '+romName+'…');
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   EMULATOR STATE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+let curRomName='',curRomSize=0,curRomExt='';
+let emuLoaded=false,paused=false,muted=false,curSpeed=1;
+let activeSlot=1,editingKey=null,keysChanged=false;
+let saves={};
+let shots=[];
+let cheats=[];
+let sessStart=null,sessInterval=null,autoSaveTimer=null;
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GET EMSCRIPTEN MODULE
+   EmulatorJS exposes the Emscripten module at
+   window.Module (set by the core loader).
+   We poll for it because it may not be ready
+   immediately after EJS_onGameStart fires.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function getEM(){
+  if(window.Module&&typeof window.Module._retro_serialize_size==='function') return window.Module;
+  const gm=window.EJS_emulator?.gameManager;
+  if(gm?.Module&&typeof gm.Module._retro_serialize_size==='function') return gm.Module;
+  return null;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   REWIND SYSTEM
+   Takes a serialized snapshot every 2s into a
+   ring buffer (max 120 = ~4 minutes of rewind).
+   On rewind key held: restores snapshots every
+   100ms stepping backwards through history.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const SNAP_MS=2000, SNAP_MAX=120, RW_STEP_MS=100;
+let rewindBuf=[], snapTimer=null, rewindTimer=null, isRewinding=false;
+
+function takeSnap(){
+  const em=getEM();
+  if(!em||paused||isRewinding) return;
+  try{
+    const sz=em._retro_serialize_size();
+    if(!sz) return;
+    const ptr=em._malloc(sz);
+    if(!em._retro_serialize(ptr,sz)){ em._free(ptr); return; }
+    const data=new Uint8Array(em.HEAPU8.buffer,ptr,sz).slice();
+    em._free(ptr);
+    rewindBuf.push(data);
+    if(rewindBuf.length>SNAP_MAX) rewindBuf.shift();
+    document.getElementById('st-rw').textContent=rewindBuf.length+' / '+SNAP_MAX;
+  }catch(e){}
+}
+function startSnap(){ clearInterval(snapTimer); snapTimer=setInterval(takeSnap,SNAP_MS) }
+function stopSnap(){ clearInterval(snapTimer); snapTimer=null }
+
+function startRewind(){
+  if(rewindBuf.length===0){ toast('No rewind history yet — play for a few seconds first'); return; }
+  if(isRewinding) return;
+  isRewinding=true;
+  stopSnap();
+  document.getElementById('pill-rw').style.display='';
+  document.getElementById('cb-rw').classList.add('rw-on');
+  // If paused resume so frames render
+  if(paused) try{ window.EJS_emulator?.play?.() }catch(e){}
+  rewindTimer=setInterval(()=>{
+    if(rewindBuf.length===0){ stopRewind(); return; }
+    const data=rewindBuf.pop();
+    document.getElementById('st-rw').textContent=rewindBuf.length+' / '+SNAP_MAX;
+    const em=getEM();
+    if(!em){ stopRewind(); return; }
+    try{
+      const ptr=em._malloc(data.length);
+      em.HEAPU8.set(data,ptr);
+      em._retro_unserialize(ptr,data.length);
+      em._free(ptr);
+    }catch(e){ stopRewind(); }
+  },RW_STEP_MS);
+}
+function stopRewind(){
+  if(!isRewinding) return;
+  clearInterval(rewindTimer); rewindTimer=null;
+  isRewinding=false;
+  document.getElementById('pill-rw').style.display='none';
+  document.getElementById('cb-rw').classList.remove('rw-on');
+  if(emuLoaded) startSnap();
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   START EMULATOR
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function startEmu(file,ext){
+  showLoading('Loading '+curRomName+'…');
+  stopSnap(); rewindBuf=[]; stopSessTimer();
   const url=URL.createObjectURL(file);
   const core=(ext==='gb'||ext==='gbc')?'gambatte':'mgba';
-  window.EJS_player='#game';window.EJS_core=core;window.EJS_gameUrl=url;
+
+  window.EJS_player='#game';
+  window.EJS_core=core;
+  window.EJS_gameUrl=url;
   window.EJS_pathtodata='https://cdn.emulatorjs.org/stable/data/';
   window.EJS_startOnLoaded=true;
-  window.EJS_rewindEnabled=document.getElementById('rew-tog').checked;
-  window.EJS_rewindGranularity=2;
   window.EJS_volume=parseInt(document.getElementById('vol-sl').value)/100;
-  window.EJS_backgroundColor='#000000';
-  window.EJS_onGameStart=()=>{
-    emuLoaded=true;hideLoading();showEmu();
-    startSessTimer();loadSaves();loadCheatList();renderSlots();refreshGallery();
-    setTimeout(()=>{setVol(document.getElementById('vol-sl').value);applySettings()},700);
-    toast('🎮 '+romName+' started!');
-    startGpad();
+  window.EJS_defaultOptions=buildEJSOpts(keys);
+  window.EJS_Buttons={
+    playPause:false,restart:false,mute:false,settings:false,fullscreen:false,
+    saveState:false,loadState:false,screenRecord:false,gamepad:false,cheat:false,
+    volume:false,quickSave:false,quickLoad:false,screenshot:false,cacheManager:false
   };
-  window.EJS_onLoadState=()=>toast('📂 State loaded');
-  window.EJS_onSaveState=()=>toast('💾 State saved');
+
+  window.EJS_onGameStart=function(){
+    emuLoaded=true;
+    hideLoading();
+    showEmuScreen();
+    loadSaves();
+    loadCheats();
+    renderSlots();
+    renderCheats();
+    setTimeout(()=>{ setVol(document.getElementById('vol-sl').value); },500);
+    startSnap();
+    startSessTimer();
+    keysChanged=false;
+    document.getElementById('km-notice').style.display='none';
+    toast('🎮 '+curRomName+' started!');
+  };
+
   document.querySelector('script[data-ejs]')?.remove();
   document.getElementById('game').innerHTML='';
-  emuLoaded=false;
+  emuLoaded=false; paused=false;
+
   const s=document.createElement('script');
-  s.src='https://cdn.emulatorjs.org/stable/data/loader.js';s.dataset.ejs='1';
-  s.onerror=()=>{hideLoading();toast('❌ Failed to load emulator. Check connection.')};
+  s.src='https://cdn.emulatorjs.org/stable/data/loader.js';
+  s.dataset.ejs='1';
+  s.onerror=()=>{ hideLoading(); toast('❌ Failed to load emulator. Check your connection.') };
   document.body.appendChild(s);
-  setTimeout(()=>{if(!emuLoaded){hideLoading();showEmu()}},16000);
+  setTimeout(()=>{ if(!emuLoaded){ hideLoading(); showEmuScreen(); } },18000);
 }
 
-/* ═══════════ UI TRANSITIONS ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   UI TRANSITIONS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function showLoading(msg){
   document.getElementById('loading').style.display='flex';
   document.getElementById('landing').style.display='none';
   document.getElementById('emu').style.display='none';
-  if(msg)document.getElementById('lsub').textContent=msg;
+  if(msg) document.getElementById('lsub').textContent=msg;
 }
-function hideLoading(){document.getElementById('loading').style.display='none'}
-function showEmu(){
-  document.getElementById('emu').style.display='flex';
-  document.getElementById('emu').style.flexDirection='column';
-  document.getElementById('gname').textContent=romName;
-  document.getElementById('st-sz').textContent=fmtSz(romSize);
+function hideLoading(){ document.getElementById('loading').style.display='none' }
+function showEmuScreen(){
+  document.getElementById('emu').style.cssText='display:flex;flex-direction:column';
+  document.getElementById('gname').textContent=curRomName;
+  document.getElementById('st-sz').textContent=fmtSz(curRomSize);
+  refreshGallery();
 }
 function goLanding(){
-  if(!confirm('Exit game? Unsaved progress will be lost.'))return;
-  stopSessTimer();stopGpad();stopRec();clearAutoSave();
+  if(!confirm('Exit game? Unsaved progress will be lost.')) return;
+  stopSnap(); stopSessTimer(); stopRewind(); clearAutoSave();
   document.getElementById('emu').style.display='none';
-  document.getElementById('landing').style.display='flex';
-  document.getElementById('landing').style.flexDirection='column';
+  document.getElementById('landing').style.cssText='display:flex;flex-direction:column';
   document.getElementById('game').innerHTML='';
   document.querySelector('script[data-ejs]')?.remove();
-  emuLoaded=false;paused=false;cheats=[];saves={};romName='';
-  renderRecent();renderLib();
+  emuLoaded=false; paused=false; rewindBuf=[];
+  saves={}; cheats=[];
+  renderLib();
 }
 
-/* ═══════════ GAME CONTROLS ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   GAME CONTROLS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function togglePause(){
-  if(!emuLoaded)return;
-  try{paused?window.EJS_emulator?.play?.():window.EJS_emulator?.pause?.()}catch{}
+  if(!emuLoaded) return;
   paused=!paused;
+  try{ paused?window.EJS_emulator?.pause():window.EJS_emulator?.play() }catch(e){}
+  if(paused){ stopSnap() }else{ startSnap() }
   const b=document.getElementById('cb-pause');
-  b.innerHTML=paused?`<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>Resume`:`<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Pause`;
-  b.classList.toggle('on',paused);
+  if(paused){
+    b.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>Resume';
+    b.classList.add('on');
+  }else{
+    b.innerHTML='<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>Pause';
+    b.classList.remove('on');
+  }
   toast(paused?'⏸ Paused':'▶️ Resumed');
 }
-function frameAdv(){if(!emuLoaded)return;try{window.EJS_emulator?.frameStep?.()}catch{if(!paused)togglePause()}toast('⏭ Frame advanced')}
-function resetGame(){if(!emuLoaded)return;try{window.EJS_emulator?.restart?.();toast('🔄 Reset')}catch(e){toast('Reset: '+e.message)}}
-let ffOn=false,rwOn=false;
-function setFF(on){if(ffOn===on)return;ffOn=on;try{if(on)window.EJS_emulator?.gameManager?.setSpeed?.(4);else window.EJS_emulator?.gameManager?.setSpeed?.(curSpeed)}catch{}}
-function setRW(on){if(rwOn===on)return;rwOn=on;try{window.EJS_emulator?.rewind?.(on)}catch{}}
-function setSpeed(v,silent=false){
-  curSpeed=v;
-  document.querySelectorAll('.spd').forEach(b=>b.classList.toggle('on',parseFloat(b.dataset.s)===v));
-  if(emuLoaded)try{window.EJS_emulator?.gameManager?.setSpeed?.(v)}catch{try{window.EJS_emulator?.setSpeed?.(v)}catch{}}
-  document.getElementById('st-spd').textContent=v+'×';
-  if(!silent)toast('⚡ '+v+'×');
+
+function resetGame(){
+  if(!emuLoaded) return;
+  try{ window.EJS_emulator?.restart?.(); rewindBuf=[]; toast('🔄 Reset'); }
+  catch(e){ toast('Reset: '+e.message) }
 }
+
+function frameAdv(){
+  if(!emuLoaded) return;
+  if(!paused) togglePause();
+  const em=getEM();
+  if(em){ try{ em._retro_run(); toast('⏭ +1 frame') }catch(e){ toast('Frame advance unavailable') } }
+  else toast('Frame advance: emulator module not ready');
+}
+
+let ffOn=false;
+function setFF(on){
+  if(ffOn===on) return; ffOn=on;
+  document.getElementById('cb-ff').classList.toggle('on',on);
+  if(!emuLoaded) return;
+  try{
+    if(on){ window.EJS_emulator?.gameManager?.setSpeed?.(4); }
+    else{ window.EJS_emulator?.gameManager?.setSpeed?.(curSpeed); }
+  }catch(e){}
+}
+
+function setSpeed(n,silent){
+  curSpeed=n;
+  document.querySelectorAll('.spd').forEach(b=>b.classList.toggle('on',parseFloat(b.dataset.s)===n));
+  if(!emuLoaded) return;
+  let ok=false;
+  try{ if(typeof window.EJS_emulator?.gameManager?.setSpeed==='function'){ window.EJS_emulator.gameManager.setSpeed(n); ok=true; } }catch(e){}
+  if(!ok) try{ if(typeof window.EJS_emulator?.setSpeed==='function'){ window.EJS_emulator.setSpeed(n); ok=true; } }catch(e){}
+  if(!silent) toast(ok?'⚡ Speed: '+n+'×':'⚡ '+n+'× (speed API unavailable)');
+}
+
 function setVol(v){
   const n=parseInt(v);
   document.getElementById('vval').textContent=n;
   document.getElementById('vol-sl').value=n;
   document.getElementById('vico').textContent=n===0?'🔇':n<50?'🔉':'🔊';
-  if(emuLoaded)try{window.EJS_emulator?.setVolume?.(n/100)}catch{}
+  if(emuLoaded) try{ window.EJS_emulator?.setVolume?.(n/100) }catch(e){}
 }
-function toggleMute(){muted=!muted;setVol(muted?0:100);document.getElementById('vol-sl').value=muted?0:100;toast(muted?'🔇 Muted':'🔊 Unmuted')}
+function toggleMute(){ muted=!muted; const v=muted?0:100; document.getElementById('vol-sl').value=v; setVol(v); toast(muted?'🔇 Muted':'🔊 Unmuted') }
 
-/* ═══════════ SAVE STATES ═══════════ */
-function loadSaves(){try{saves=JSON.parse(localStorage.getItem('gbame_sv_'+romName)||'{}')}catch{saves={}}}
-function persistSaves(){localStorage.setItem('gbame_sv_'+romName,JSON.stringify(saves))}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SAVE STATES (using libretro serialize)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function loadSaves(){ try{ saves=JSON.parse(localStorage.getItem('gbame_sv_'+curRomName)||'{}') }catch(e){ saves={} } }
+function persistSaves(){ localStorage.setItem('gbame_sv_'+curRomName,JSON.stringify(saves)) }
+function getSlot(){ return parseInt(document.getElementById('aslot').value)||1 }
+function onSlotChange(){ activeSlot=getSlot(); renderSlots() }
+function getThumb(){ try{ const c=document.querySelector('#game canvas'); return c?c.toDataURL('image/jpeg',.4):null }catch(e){ return null } }
+
+function saveSlot(){
+  if(!emuLoaded){ toast('No game running'); return; }
+  const slot=getSlot();
+  const em=getEM();
+  if(em){
+    try{
+      const sz=em._retro_serialize_size();
+      if(sz>0){
+        const ptr=em._malloc(sz);
+        if(em._retro_serialize(ptr,sz)){
+          const bytes=new Uint8Array(em.HEAPU8.buffer,ptr,sz).slice();
+          em._free(ptr);
+          // Convert to base64 in chunks to avoid call stack overflow
+          let b64='';
+          const chunk=8192;
+          for(let i=0;i<bytes.length;i+=chunk){
+            b64+=String.fromCharCode(...bytes.subarray(i,i+chunk));
+          }
+          b64=btoa(b64);
+          saves[slot]={b64,thumb:getThumb(),date:new Date().toLocaleString()};
+          persistSaves();
+          renderSlots();
+          toast('💾 Saved to slot '+slot);
+          return;
+        }
+        em._free(ptr);
+      }
+    }catch(e){ console.warn('Serialize failed:',e) }
+  }
+  toast('❌ Save state unavailable — the emulator module is still loading');
+}
+
+function loadSlot(){
+  if(!emuLoaded){ toast('No game running'); return; }
+  const slot=getSlot();
+  if(!saves[slot]){ toast('Slot '+slot+' is empty'); return; }
+  const em=getEM();
+  if(em&&saves[slot].b64){
+    try{
+      const bin=atob(saves[slot].b64);
+      const bytes=new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+      const ptr=em._malloc(bytes.length);
+      em.HEAPU8.set(bytes,ptr);
+      const ok=em._retro_unserialize(ptr,bytes.length);
+      em._free(ptr);
+      if(ok){ toast('📂 Loaded slot '+slot) }
+      else{ toast('❌ State load failed — may be from a different ROM') }
+      return;
+    }catch(e){ console.warn('Unserialize failed:',e) }
+  }
+  toast('❌ Load unavailable — emulator module still loading');
+}
+
+function clearSlot(){
+  const slot=getSlot();
+  if(!saves[slot]){ toast('Slot '+slot+' already empty'); return; }
+  delete saves[slot]; persistSaves(); renderSlots(); toast('🗑 Slot '+slot+' cleared');
+}
+
+function exportState(){
+  const slot=getSlot();
+  if(!saves[slot]){ toast('Slot '+slot+' is empty'); return; }
+  const json=JSON.stringify(saves[slot]);
+  const a=document.createElement('a');
+  a.href='data:application/json,'+encodeURIComponent(json);
+  a.download=curRomName+'_slot'+slot+'.gbamesave';
+  a.click();
+  toast('⬇ Exported slot '+slot);
+}
+
+function importState(inp){
+  const f=inp.files[0]; if(!f) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.b64){ toast('❌ Invalid save file'); return; }
+      saves[getSlot()]=data;
+      persistSaves(); renderSlots();
+      toast('⬆ Imported to slot '+getSlot());
+    }catch(e){ toast('❌ Invalid save file') }
+  };
+  reader.readAsText(f);
+  inp.value='';
+}
+
 function renderSlots(){
-  const c=document.getElementById('sslots');c.innerHTML='';
+  const c=document.getElementById('slots');
+  c.innerHTML='';
   for(let i=1;i<=8;i++){
     const d=document.createElement('div');
     d.className='slt'+(saves[i]?' has':'')+(i===activeSlot?' cur':'');
-    d.title='Slot '+i+(saves[i]?' — '+(saves[i].label||saves[i].date):'(empty)');
-    d.onclick=()=>{activeSlot=i;document.getElementById('aslot').value=i;renderSlots()};
-    if(saves[i]?.thumb){const img=document.createElement('img');img.src=saves[i].thumb;img.className='sthumb';d.appendChild(img)}
-    d.innerHTML+=`<span class="sn">${i}${i===8?'A':''}</span>`;
+    d.title=saves[i]?'Slot '+i+' — '+saves[i].date:'Slot '+i+' (empty)';
+    d.onclick=()=>{ activeSlot=i; document.getElementById('aslot').value=i; renderSlots(); };
+    if(saves[i]?.thumb){ const img=document.createElement('img'); img.src=saves[i].thumb; img.className='sthumb'; d.appendChild(img); }
+    const sn=document.createElement('span'); sn.className='sn'; sn.textContent=i+(i===8?' A':''); d.appendChild(sn);
     c.appendChild(d);
   }
-  document.getElementById('st-sv').textContent=Object.keys(saves).length;
 }
-function getAS(){return parseInt(document.getElementById('aslot').value)||1}
-function onSlotSel(){activeSlot=getAS();renderSlots()}
-function saveSlot(){
-  const sl=getAS();
-  if(!emuLoaded){toast('No game running');return}
-  try{window.EJS_emulator?.gameManager?.saveState?.()}catch{}
-  const cv=document.querySelector('#game canvas');
-  saves[sl]={date:new Date().toLocaleString(),thumb:cv?cv.toDataURL('image/jpeg',.45):null,label:document.getElementById('slot-lbl').value.trim()||null};
-  persistSaves();renderSlots();toast('💾 Saved to slot '+sl);
-}
-function loadSlot(){
-  const sl=getAS();if(!saves[sl]){toast('Slot '+sl+' empty');return}
-  if(!emuLoaded){toast('No game running');return}
-  try{window.EJS_emulator?.gameManager?.loadState?.();toast('📂 Loaded slot '+sl)}catch{toast('Load via emulator menu (☰)')}
-}
-function qSave(){document.getElementById('aslot').value=activeSlot;saveSlot()}
-function qLoad(){document.getElementById('aslot').value=activeSlot;loadSlot()}
-function setSlotLabel(){const sl=getAS();if(saves[sl]){saves[sl].label=document.getElementById('slot-lbl').value.trim()||null;persistSaves();renderSlots();toast('🏷 Label set')}else toast('Slot '+sl+' empty')}
-function clearSlot(){const sl=getAS();if(!saves[sl]){toast('Already empty');return}delete saves[sl];persistSaves();renderSlots();toast('🗑 Slot '+sl+' cleared')}
-function exportState(){const sl=getAS();if(!saves[sl]){toast('Slot empty');return}const a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(saves[sl]));a.download=romName+'_slot'+sl+'.gbamesave';a.click();toast('⬇ State exported')}
-function importState(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{try{saves[getAS()]=JSON.parse(e.target.result);persistSaves();renderSlots();toast('⬆ State imported')}catch{toast('❌ Invalid file')}};r.readAsText(f);inp.value=''}
-function dlBatterySave(){if(!emuLoaded){toast('No game running');return}try{window.EJS_emulator?.gameManager?.downloadSaveFiles?.();toast('💾 Battery save downloaded')}catch{toast('Use emulator menu (☰)')}}
-function setAutoSave(m){clearAutoSave();const v=parseInt(m);if(!v)return;autoSaveTimer=setInterval(()=>{if(!emuLoaded)return;const p=getAS();document.getElementById('aslot').value=8;saveSlot();document.getElementById('aslot').value=p},v*60000)}
-function clearAutoSave(){clearInterval(autoSaveTimer);autoSaveTimer=null}
 
-/* ═══════════ KEY MAP ═══════════ */
-function renderKM(){
-  const g=document.getElementById('kmg');g.innerHTML='';
-  BTN_LBLS.forEach(btn=>{
-    const r=document.createElement('div');r.className='kmr';r.dataset.b=btn;
-    r.innerHTML=`<span class="kmr-btn">${btn}</span><span class="kmkey"><span class="kmbadge">${kdisp(keys[btn]||DEF_KEYS[btn]||'')}</span></span>`;
-    r.onclick=()=>startRemap(btn,r);g.appendChild(r);
-  });
+function setAutoSave(secs){
+  clearAutoSave();
+  const s=parseInt(secs);
+  if(!s) return;
+  autoSaveTimer=setInterval(()=>{
+    if(!emuLoaded) return;
+    const prev=getSlot();
+    document.getElementById('aslot').value=8;
+    saveSlot();
+    document.getElementById('aslot').value=prev;
+    activeSlot=prev;
+  },s*1000);
 }
-function startRemap(btn,row){
-  document.querySelectorAll('.kmr.ed').forEach(r=>r.classList.remove('ed'));
-  if(editKRow===btn){editKRow=null;return}
-  editKRow=btn;row.classList.add('ed');row.querySelector('.kmbadge').textContent='…';
-}
-function resetKeys(){keys={...DEF_KEYS};saveKeys();renderKM();updateKrefDisplay();toast('🔄 Keys reset')}
-function updateKrefDisplay(){BTN_LBLS.forEach(b=>{const el=document.getElementById('kr-'+b);if(el)el.textContent=kdisp(keys[b]||DEF_KEYS[b]||'')})}
+function clearAutoSave(){ clearInterval(autoSaveTimer); autoSaveTimer=null }
 
-/* ═══════════ GAMEPAD ═══════════ */
-function renderGpadMap(){
-  const g=document.getElementById('gpad-kmg');if(!g)return;g.innerHTML='';
-  BTN_LBLS.forEach(btn=>{
-    const r=document.createElement('div');r.className='kmr';r.dataset.b=btn;
-    r.innerHTML=`<span class="kmr-btn">${btn}</span><span class="kmkey"><span class="kmbadge">${gpad[btn]!==undefined?'BTN'+gpad[btn]:'—'}</span></span>`;
-    r.onclick=()=>{
-      document.querySelectorAll('#gpad-kmg .kmr.ed').forEach(x=>x.classList.remove('ed'));
-      if(editGpadBtn===btn){editGpadBtn=null;return}
-      editGpadBtn=btn;r.classList.add('ed');r.querySelector('.kmbadge').textContent='…';
-      toast('Press gamepad button for '+btn);
-    };
-    g.appendChild(r);
-  });
-}
-function startGpad(){if(gpadRAF)return;gpadRAF=requestAnimationFrame(pollGpad)}
-function stopGpad(){if(gpadRAF)cancelAnimationFrame(gpadRAF);gpadRAF=null}
-const GTHRESH=0.5;
-function pollGpad(){
-  const pads=navigator.getGamepads?.();let any=false;
-  if(pads)for(const pad of pads){
-    if(!pad)continue;any=true;
-    if(editGpadBtn){
-      for(let i=0;i<pad.buttons.length;i++){
-        if(pad.buttons[i].pressed){
-          gpad[editGpadBtn]=i;saveGpad();renderGpadMap();
-          const b=editGpadBtn;editGpadBtn=null;
-          document.querySelectorAll('#gpad-kmg .kmr.ed').forEach(x=>x.classList.remove('ed'));
-          toast('✅ '+b+' → BTN'+i);break;
-        }
-      }
-    }
-    const prev=lastGpad[pad.index]||{buttons:[]};
-    for(const[gb,bi] of Object.entries(gpad)){
-      if(bi===undefined)continue;
-      const kc=keys[gb]||DEF_KEYS[gb];
-      const now=!!pad.buttons[bi]?.pressed,was=!!prev.buttons[bi]?.pressed;
-      if(now&&!was){simKey(kc,true);if(document.getElementById('hap-tog')?.checked&&navigator.vibrate)navigator.vibrate(8)}
-      else if(!now&&was)simKey(kc,false);
-    }
-    if(pad.axes.length>=2){
-      [['LEFT',0,-1],['RIGHT',0,1],['UP',1,-1],['DOWN',1,1]].forEach(([d,ax,dir])=>{
-        const now=pad.axes[ax]*dir>GTHRESH;
-        const was=(prev.axes||[])[ax]*dir>GTHRESH||false;
-        if(now!==was)simKey(keys[d]||DEF_KEYS[d],now);
-      });
-    }
-    lastGpad[pad.index]={buttons:pad.buttons.map(b=>({pressed:b.pressed})),axes:[...pad.axes]};
-  }
-  document.getElementById('ind-gpad').classList.toggle('on',any);
-  if(document.getElementById('gpad-status')&&any){
-    const p=[...(navigator.getGamepads()||[])].find(x=>x);
-    document.getElementById('gpad-status').textContent='✅ '+(p?.id?.slice(0,40)||'Gamepad')+' connected — click row then press button to remap';
-  }
-  gpadRAF=requestAnimationFrame(pollGpad);
-}
-window.addEventListener('gamepadconnected',e=>{toast('🎮 Gamepad: '+e.gamepad.id.slice(0,30));startGpad()});
-window.addEventListener('gamepaddisconnected',()=>toast('🎮 Gamepad disconnected'));
-
-/* ═══════════ TOUCH CONTROLS ═══════════ */
-const touchMap={'t-up':'ArrowUp','t-down':'ArrowDown','t-left':'ArrowLeft','t-right':'ArrowRight','t-a':'KeyX','t-b':'KeyZ','t-sel':'Backspace','t-sta':'Enter','t-l':'KeyA','t-r':'KeyS'};
-function simKey(code,down){
-  const ev=new KeyboardEvent(down?'keydown':'keyup',{code,key:code,bubbles:true,cancelable:true});
-  const t=document.querySelector('#game canvas')||document.getElementById('game');
-  t.dispatchEvent(ev);document.dispatchEvent(ev);
-}
-Object.entries(touchMap).forEach(([id,code])=>{
-  const el=document.getElementById(id);if(!el)return;
-  el.addEventListener('touchstart',e=>{e.preventDefault();simKey(code,true);if(document.getElementById('hap-tog')?.checked&&navigator.vibrate)navigator.vibrate(8)},{passive:false});
-  el.addEventListener('touchend',e=>{e.preventDefault();simKey(code,false)},{passive:false});
-  el.addEventListener('mousedown',()=>simKey(code,true));
-  el.addEventListener('mouseup',()=>simKey(code,false));
-});
-
-/* ═══════════ SCREENSHOT ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCREENSHOT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 async function doShot(){
-  const cv=document.querySelector('#game canvas');if(!cv){toast('❌ No canvas found');return}
+  const cv=document.querySelector('#game canvas');
+  if(!cv){ toast('❌ No canvas found'); return; }
   try{
     const url=cv.toDataURL('image/png');
-    const id=await saveShot(romName,url).catch(()=>null);
-    shots.push({id,dataUrl:url,date:new Date().toLocaleString()});
-    const a=document.createElement('a');a.download=(romName||'shot')+'_'+Date.now()+'.png';a.href=url;a.click();
-    const f=document.getElementById('flash');f.classList.add('go');setTimeout(()=>f.classList.remove('go'),150);
-    toast('📸 Screenshot saved!');refreshGallery();
+    // Save to DB
+    if(db){ const id=await dbAdd('shots',{rom:curRomName,url,date:new Date().toLocaleString()}); shots.push({id,url,date:new Date().toLocaleString()}); }
+    else shots.push({id:Date.now(),url,date:new Date().toLocaleString()});
+    // Download
+    const a=document.createElement('a');
+    a.download=(curRomName||'shot')+'_'+Date.now()+'.png'; a.href=url; a.click();
+    // Flash
+    const f=document.getElementById('flash');
+    f.classList.add('go'); setTimeout(()=>f.classList.remove('go'),130);
     document.getElementById('st-sh').textContent=shots.length;
-  }catch{toast('Screenshot failed')}
+    toast('📸 Screenshot saved!');
+    if(document.getElementById('sp-gallery').classList.contains('on')) renderGallery();
+  }catch(e){ toast('Screenshot failed') }
 }
 async function refreshGallery(){
-  shots=await getShots(romName).catch(()=>[]);
-  const g=document.getElementById('galg');if(!g)return;
-  if(!shots.length){g.innerHTML='<div class="galem">No screenshots yet.<br>Press F12 to capture!</div>';return}
+  if(db){ try{ shots=await dbIdx('shots','rom',curRomName) }catch(e){} }
+  document.getElementById('st-sh').textContent=shots.length;
+  if(document.getElementById('sp-gallery').classList.contains('on')) renderGallery();
+}
+function renderGallery(){
+  const g=document.getElementById('gal-grid');
+  if(!shots.length){
+    g.innerHTML='<div style="grid-column:span 3;text-align:center;padding:16px;font-family:var(--mo);font-size:10px;color:var(--tm)">No screenshots yet.<br>Press F12 to capture!</div>';
+    return;
+  }
   g.innerHTML='';
   [...shots].reverse().forEach(s=>{
-    const d=document.createElement('div');d.className='gt';
-    d.innerHTML=`<img src="${s.dataUrl}" loading="lazy"><button class="gt-del" onclick="event.stopPropagation();delShot(${s.id})">✕</button>`;
-    d.onclick=()=>openLb(s.dataUrl);g.appendChild(d);
+    const d=document.createElement('div'); d.className='gal-thumb';
+    d.innerHTML='<img src="'+(s.url||s.dataUrl)+'" loading="lazy">'+
+      '<button class="gal-del" onclick="event.stopPropagation();delShot('+s.id+')">✕</button>';
+    d.onclick=()=>openLb(s.url||s.dataUrl);
+    g.appendChild(d);
   });
 }
-async function delShot(id){await dbDel('shots',id).catch(()=>{});refreshGallery();toast('🗑 Deleted')}
+async function delShot(id){
+  if(db) await dbDel('shots',id).catch(()=>{});
+  shots=shots.filter(s=>s.id!==id);
+  document.getElementById('st-sh').textContent=shots.length;
+  renderGallery(); toast('🗑 Screenshot deleted');
+}
 async function clearShots(){
-  if(!confirm('Delete all screenshots for this game?'))return;
-  for(const s of shots)await dbDel('shots',s.id).catch(()=>{});
-  shots=[];refreshGallery();toast('🗑 Cleared');
+  if(!confirm('Delete all screenshots for this game?')) return;
+  if(db) for(const s of shots) await dbDel('shots',s.id).catch(()=>{});
+  shots=[]; document.getElementById('st-sh').textContent=0;
+  renderGallery(); toast('🗑 Cleared');
 }
-function openLb(url){document.getElementById('lb-img').src=url;document.getElementById('lightbox').classList.add('open')}
-function closeLb(){document.getElementById('lightbox').classList.remove('open');document.getElementById('lb-img').src=''}
-function dlLbShot(){const a=document.createElement('a');a.href=document.getElementById('lb-img').src;a.download=(romName||'shot')+'_'+Date.now()+'.png';a.click()}
-async function shareLbShot(){
-  const src=document.getElementById('lb-img').src;
-  if(navigator.share){try{const res=await fetch(src),blob=await res.blob(),file=new File([blob],'screenshot.png',{type:'image/png'});await navigator.share({files:[file],title:'GBA.ME Screenshot'});return}catch{}}
-  toast('Share not available in this browser');
-}
+function openLb(url){ document.getElementById('lb-img').src=url; document.getElementById('lightbox').classList.add('open') }
+function closeLb(){ document.getElementById('lightbox').classList.remove('open'); document.getElementById('lb-img').src='' }
+function dlShot(){ const a=document.createElement('a'); a.href=document.getElementById('lb-img').src; a.download=(curRomName||'shot')+'_'+Date.now()+'.png'; a.click() }
 
-/* ═══════════ VIDEO RECORDING ═══════════ */
-function toggleRec(){recOn?stopRec():startRec()}
-function startRec(){
-  const cv=document.querySelector('#game canvas');
-  if(!cv){toast('❌ No canvas');return}
-  if(!window.MediaRecorder){toast('❌ Recording not supported');return}
-  try{
-    const stream=cv.captureStream(30);
-    const opts=MediaRecorder.isTypeSupported('video/webm;codecs=vp9')?{mimeType:'video/webm;codecs=vp9'}:{mimeType:'video/webm'};
-    mediaRec=new MediaRecorder(stream,opts);
-    mediaRec.ondataavailable=e=>{if(e.data.size>0)recChunks.push(e.data)};
-    mediaRec.onstop=()=>{
-      const blob=new Blob(recChunks,{type:'video/webm'});
-      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=(romName||'rec')+'_'+Date.now()+'.webm';a.click();
-      recChunks=[];toast('🎬 Recording saved (.webm)');
-    };
-    recChunks=[];mediaRec.start(100);recOn=true;
-    document.getElementById('cb-rec').classList.add('rec');
-    document.getElementById('ind-rec').style.display='flex';
-    toast('🔴 Recording started');
-  }catch(e){toast('Recording failed: '+e.message)}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FULLSCREEN
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function toggleFS(){
+  if(document.fullscreenElement||document.webkitFullscreenElement){
+    (document.exitFullscreen||document.webkitExitFullscreen).call(document);
+    return;
+  }
+  const wrap=document.getElementById('fs-wrap');
+  const fn=wrap.requestFullscreen||wrap.webkitRequestFullscreen||wrap.mozRequestFullScreen;
+  if(fn){
+    fn.call(wrap).catch(()=>{
+      const gf=document.getElementById('gframe');
+      const fn2=gf.requestFullscreen||gf.webkitRequestFullscreen;
+      if(fn2) fn2.call(gf).catch(()=>toast('Fullscreen denied'));
+      else toast('Fullscreen denied');
+    });
+  } else toast('Fullscreen not supported');
 }
-function stopRec(){
-  if(!recOn)return;
-  if(mediaRec&&mediaRec.state!=='inactive')mediaRec.stop();
-  recOn=false;
-  document.getElementById('cb-rec').classList.remove('rec');
-  document.getElementById('ind-rec').style.display='none';
+function onFSChange(){
+  const isFS=!!(document.fullscreenElement||document.webkitFullscreenElement);
+  document.getElementById('btn-fs').classList.toggle('on',isFS);
+  const game=document.getElementById('game');
+  const gframe=document.getElementById('gframe');
+  if(isFS){
+    const vw=window.screen.width,vh=window.screen.height;
+    const w=Math.min(vw,Math.floor(vh*1.5));
+    const h=Math.min(vh,Math.floor(vw/1.5));
+    game.style.width=w+'px'; game.style.height=h+'px';
+    gframe.style.borderRadius='0'; gframe.style.boxShadow='none';
+  }else{
+    game.style.width='480px'; game.style.height='320px';
+    gframe.style.borderRadius=''; gframe.style.boxShadow='';
+  }
 }
+['fullscreenchange','webkitfullscreenchange','mozfullscreenchange','MSFullscreenChange'].forEach(ev=>document.addEventListener(ev,onFSChange));
 
-/* ═══════════ DISPLAY ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   DISPLAY — FILTER / BRIGHTNESS / SCANLINES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function setFilter(f){
   const fr=document.getElementById('gframe');
   fr.className=fr.className.replace(/cf-\S+/g,'').trim();
-  document.getElementById('lcd-ov').style.display='none';
-  if(f&&f!=='none'){if(f==='lcd')document.getElementById('lcd-ov').style.display='block';else fr.classList.add('cf-'+f)}
-  curFilter=f;document.getElementById('filter-sel').value=f;
-  filterIdx=filterCycle.indexOf(f);if(filterIdx<0)filterIdx=0;
-  localStorage.setItem('gbame_filter',f);
+  if(f&&f!=='none') fr.classList.add('cf-'+f);
+  document.getElementById('filter-sel').value=f||'none';
+  localStorage.setItem('gbame_filter',f||'none');
 }
-function cycleFilter(){filterIdx=(filterIdx+1)%filterCycle.length;const f=filterCycle[filterIdx];setFilter(f);toast('🎨 Filter: '+f)}
+
 function setBright(v){
-  brightness=parseInt(v);document.getElementById('bval').textContent=brightness+'%';
+  const n=parseInt(v);
+  document.getElementById('bval').textContent=n+'%';
   const g=document.getElementById('game');
   const existing=(g.style.filter||'').replace(/brightness\([^)]+\)/g,'').trim();
-  g.style.filter=(brightness!==100?(existing+' brightness('+brightness/100+')').trim():existing)||'';
-  localStorage.setItem('gbame_bright',brightness);
-}
-function adjBright(d){const n=Math.max(20,Math.min(180,brightness+d));document.getElementById('bright-sl').value=n;setBright(n)}
-function rotateScreen(){curRot=(curRot+90)%360;const f=document.getElementById('gframe');f.className=f.className.replace(/rot-\d+/g,'').trim();if(curRot>0)f.classList.add('rot-'+curRot);toast('↻ '+curRot+'°')}
-function toggleScanlines(on){document.getElementById('gframe').classList.toggle('scl-on',on);localStorage.setItem('gbame_scl',on?'1':'0')}
-function toggleLcd(on){if(curFilter!=='lcd')document.getElementById('lcd-ov').style.display=on?'block':'none';localStorage.setItem('gbame_lcd',on?'1':'0')}
-function toggleIntSc(on){document.getElementById('gframe').classList.toggle('int-sc',on);localStorage.setItem('gbame_intsc',on?'1':'0')}
-function toggleTouch(on){document.getElementById('touch-ctrl').style.display=on?'block':'none';localStorage.setItem('gbame_touch',on?'1':'0')}
-function setSize(w,h,btn){document.getElementById('game').style.width=w+'px';document.getElementById('game').style.height=h+'px';document.querySelectorAll('#sz-btns .spd').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on')}
-function setAsp(m,btn){const f=document.getElementById('gframe');f.className=f.className.replace(/asp-\S+/g,'').trim();if(m!=='native')f.classList.add('asp-'+m);document.querySelectorAll('#asp-btns .spd').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on')}
-function toggleFS(){
-  if(document.fullscreenElement){
-    document.exitFullscreen();
-    return;
-  }
-  // Always fullscreen the outer wrapper so we control sizing completely
-  const wrap=document.getElementById('fs-wrap');
-  const req=wrap.requestFullscreen||wrap.webkitRequestFullscreen||wrap.mozRequestFullScreen||wrap.msRequestFullscreen;
-  if(req){
-    req.call(wrap).catch(e=>{
-      // fallback: try the game frame directly
-      const f=document.getElementById('gframe');
-      const r2=f.requestFullscreen||f.webkitRequestFullscreen||f.mozRequestFullScreen||f.msRequestFullscreen;
-      if(r2)r2.call(f).catch(()=>toast('Fullscreen denied'));
-    });
-  } else {
-    toast('Fullscreen not supported in this browser');
-  }
+  g.style.filter=n!==100?(existing+' brightness('+n/100+')').trim():existing;
+  localStorage.setItem('gbame_bright',n);
 }
 
-function onFSChange(){
-  const btn=document.getElementById('cb-fs');
-  const wrap=document.getElementById('fs-wrap');
-  const gframe=document.getElementById('gframe');
-  const game=document.getElementById('game');
-  if(document.fullscreenElement){
-    btn?.classList.add('on');
-    // Force the game to fill the fullscreen container
-    wrap.style.width='100vw';
-    wrap.style.height='100vh';
-    wrap.style.background='#000';
-    wrap.style.display='flex';
-    wrap.style.alignItems='center';
-    wrap.style.justifyContent='center';
-    gframe.style.borderRadius='0';
-    gframe.style.boxShadow='none';
-    // Size #game to fill while preserving 3:2 aspect ratio
-    const vw=window.screen.width, vh=window.screen.height;
-    const fitW=Math.min(vw, vh*1.5);
-    const fitH=Math.min(vh, vw/1.5);
-    game.style.width=fitW+'px';
-    game.style.height=fitH+'px';
-  } else {
-    btn?.classList.remove('on');
-    // Restore normal sizes
-    wrap.style.cssText='';
-    gframe.style.borderRadius='';
-    gframe.style.boxShadow='';
-    // Restore game to whatever the user had set (default 480x320)
-    const szBtn=document.querySelector('#sz-btns .spd.on');
-    if(!szBtn){game.style.width='480px';game.style.height='320px';}
-  }
+function toggleScanlines(on){
+  document.getElementById('gframe').classList.toggle('scl-on',on);
+  localStorage.setItem('gbame_scl',on?'1':'0');
 }
 
-document.addEventListener('fullscreenchange', onFSChange);
-document.addEventListener('webkitfullscreenchange', onFSChange);
-document.addEventListener('mozfullscreenchange', onFSChange);
-document.addEventListener('MSFullscreenChange', onFSChange);
-function applySettings(){const cv=document.querySelector('#game canvas');if(cv&&document.getElementById('intsc-tog').checked)cv.style.imageRendering='pixelated'}
+function toggleTouch(on){
+  document.getElementById('touch-ctrl').style.display=on?'block':'none';
+  localStorage.setItem('gbame_touch',on?'1':'0');
+}
 
-/* ═══════════ CHEATS ═══════════ */
-function loadCheatList(){try{cheats=JSON.parse(localStorage.getItem('gbame_ch_'+romName)||'[]')}catch{cheats=[]}renderCheats()}
-function saveCheats(){localStorage.setItem('gbame_ch_'+romName,JSON.stringify(cheats))}
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEY MAPPING
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function renderKM(){
+  const g=document.getElementById('kmg');
+  if(!g) return;
+  g.innerHTML='';
+  BTN_ORDER.forEach(btn=>{
+    const row=document.createElement('div');
+    row.className='km-row'+(editingKey===btn?' ed':'');
+    row.innerHTML=
+      '<span class="km-btn-lbl">'+btn+'</span>'+
+      '<span class="km-key"><span class="km-badge">'+(editingKey===btn?'…':kname(keys[btn]||DEF_KEYS[btn]))+'</span></span>';
+    row.onclick=()=>startRemap(btn,row);
+    g.appendChild(row);
+  });
+  // Also update landing reference
+  const lk=document.getElementById('land-km');
+  if(lk) lk.innerHTML=BTN_ORDER.map(b=>'<div class="kr"><span class="kbd">'+kname(keys[b]||DEF_KEYS[b])+'</span>'+b+'</div>').join('');
+}
+
+function startRemap(btn,row){
+  if(editingKey===btn){ editingKey=null; renderKM(); return; }
+  document.querySelectorAll('.km-row.ed').forEach(r=>r.classList.remove('ed'));
+  editingKey=btn;
+  row.classList.add('ed');
+  row.querySelector('.km-badge').textContent='…';
+}
+
+function resetKeys(){
+  keys={...DEF_KEYS}; saveKeys(); keysChanged=false; editingKey=null;
+  renderKM();
+  document.getElementById('km-notice').style.display='none';
+  toast('🔄 Keys reset to default');
+}
+
+async function applyKeysNow(){
+  if(!emuLoaded){ toast('No game running'); return; }
+  toast('♻️ Reloading with new keys…');
+  const name=curRomName;
+  setTimeout(async()=>{
+    if(db){
+      const roms=await dbIdx('roms','name',name);
+      if(roms.length){ loadRomDB(roms[0].id); return; }
+    }
+    toast('❌ ROM not in library — drag and drop it again');
+  },200);
+  keysChanged=false;
+  document.getElementById('km-notice').style.display='none';
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CHEATS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function loadCheats(){ try{ cheats=JSON.parse(localStorage.getItem('gbame_ch_'+curRomName)||'[]') }catch(e){ cheats=[] } }
+function saveCheats(){ localStorage.setItem('gbame_ch_'+curRomName,JSON.stringify(cheats)) }
 function renderCheats(){
-  const el=document.getElementById('chlist');if(!el)return;
-  if(!cheats.length){el.innerHTML='<div style="font-family:var(--mo);font-size:10px;color:var(--tm);text-align:center;padding:10px">No cheats added</div>';return}
-  el.innerHTML=cheats.map((c,i)=>`<div class="chi"><input type="checkbox" class="chi-en" ${c.on?'checked':''} onchange="cheats[${i}].on=this.checked;saveCheats()"><span class="chi-nm" title="${c.code}">${c.name} <span style="color:var(--tm);font-size:9px">(${c.type})</span></span><button class="chi-del" onclick="cheats.splice(${i},1);saveCheats();renderCheats()">✕</button></div>`).join('');
+  const el=document.getElementById('cheat-list');
+  if(!el) return;
+  if(!cheats.length){ el.innerHTML='<div style="font-family:var(--mo);font-size:10px;color:var(--tm);text-align:center;padding:8px">No cheats added</div>'; return; }
+  el.innerHTML=cheats.map((c,i)=>
+    '<div class="chi">'+
+    '<input type="checkbox" class="chi-en" '+(c.on?'checked':'')+' onchange="cheats['+i+'].on=this.checked;saveCheats()">'+
+    '<span class="chi-nm" title="'+c.code+'">'+c.name+'</span>'+
+    '<button class="chi-del" onclick="cheats.splice('+i+',1);saveCheats();renderCheats()">✕</button>'+
+    '</div>').join('');
 }
 function addCheat(){
-  const n=document.getElementById('ch-name').value.trim(),c=document.getElementById('ch-code').value.trim(),t=document.getElementById('ch-type').value;
-  if(!n||!c){toast('❌ Enter name and code');return}
-  cheats.push({name:n,code:c,type:t,on:true});saveCheats();renderCheats();
-  document.getElementById('ch-name').value='';document.getElementById('ch-code').value='';
-  toast('✅ Cheat: '+n);
+  const n=document.getElementById('ch-name').value.trim();
+  const c=document.getElementById('ch-code').value.trim();
+  if(!n||!c){ toast('❌ Enter a name and code'); return; }
+  cheats.push({name:n,code:c,on:true});
+  saveCheats(); renderCheats();
+  document.getElementById('ch-name').value='';
+  document.getElementById('ch-code').value='';
+  toast('✅ Cheat added: '+n);
 }
 
-/* ═══════════ STATS ═══════════ */
-function exportStats(){
-  const d={game:romName,totalPlaytime:fmtPT(getPT(romName)),speed:curSpeed,slots:Object.keys(saves).length,screenshots:shots.length,cheats:cheats.length};
-  const a=document.createElement('a');a.href='data:application/json,'+encodeURIComponent(JSON.stringify(d,null,2));a.download=romName+'_stats.json';a.click();
-}
-
-/* ═══════════ SESSION TIMER ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SESSION TIMER + PLAYTIME
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function startSessTimer(){
-  sessStart=Date.now();clearInterval(sessInterval);
+  sessStart=Date.now();
+  clearInterval(sessInterval);
   sessInterval=setInterval(()=>{
     const e=Math.floor((Date.now()-sessStart)/1000);
     const h=String(Math.floor(e/3600)).padStart(2,'0');
     const m=String(Math.floor((e%3600)/60)).padStart(2,'0');
     const s=String(e%60).padStart(2,'0');
-    const t=`${h}:${m}:${s}`;
+    const t=h+':'+m+':'+s;
     document.getElementById('stimer').textContent=t;
     document.getElementById('st-sess').textContent=t;
-    document.getElementById('st-pt').textContent=fmtPT(getPT(romName)+e);
+    document.getElementById('st-pt').textContent=fmtPT(getPT(curRomName)+e);
   },1000);
 }
-function stopSessTimer(){if(sessStart){addPT(romName,Math.floor((Date.now()-sessStart)/1000));sessStart=null}clearInterval(sessInterval)}
+function stopSessTimer(){
+  if(sessStart){ addPT(curRomName,Math.floor((Date.now()-sessStart)/1000)); sessStart=null; }
+  clearInterval(sessInterval); sessInterval=null;
+}
 
-/* ═══════════ SIDEBAR TABS ═══════════ */
-function swtab(name,btn){
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOUCH CONTROLS
+   Dispatches keyboard events with the keyCode
+   values from our keys config so EJS reacts
+   to them exactly as real keyboard presses.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function simKey(kc, down){
+  const type=down?'keydown':'keyup';
+  const ev=new KeyboardEvent(type,{keyCode:kc,which:kc,bubbles:true,cancelable:true});
+  const target=document.querySelector('#game canvas')||document.getElementById('game');
+  target.dispatchEvent(ev);
+  document.dispatchEvent(ev);
+}
+
+// Map touch element ID → GBA button name (so we pull from current keys config)
+const TOUCH_MAP={
+  't-up':'UP','t-down':'DOWN','t-left':'LEFT','t-right':'RIGHT',
+  't-a':'A','t-b':'B','t-sel':'SELECT','t-sta':'START',
+  't-l':'L','t-r':'R'
+};
+Object.entries(TOUCH_MAP).forEach(([id,btn])=>{
+  const el=document.getElementById(id);
+  if(!el) return;
+  const getKC=()=>keys[btn]||DEF_KEYS[btn];
+  el.addEventListener('touchstart',e=>{
+    e.preventDefault(); simKey(getKC(),true);
+    el.classList.add('down');
+    if(navigator.vibrate) navigator.vibrate(8);
+  },{passive:false});
+  el.addEventListener('touchend',e=>{ e.preventDefault(); simKey(getKC(),false); el.classList.remove('down'); },{passive:false});
+  el.addEventListener('mousedown',()=>{ simKey(getKC(),true); el.classList.add('down'); });
+  el.addEventListener('mouseup',()=>{ simKey(getKC(),false); el.classList.remove('down'); });
+});
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SIDEBAR TABS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function switchTab(name,btn){
   document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.sp').forEach(p=>p.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById('sp-'+name).classList.add('on');
-  if(name==='gallery')refreshGallery();
-  if(name==='stats'){document.getElementById('st-sv').textContent=Object.keys(saves).length;document.getElementById('st-sh').textContent=shots.length}
+  if(name==='gallery') renderGallery();
 }
 
-/* ═══════════ MODALS ═══════════ */
-function openM(id){document.getElementById(id).classList.add('open');if(id==='m-gpad')renderGpadMap()}
-function closeM(id){document.getElementById(id).classList.remove('open');editGpadBtn=null}
-document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m){m.classList.remove('open');editGpadBtn=null}}));
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEYBOARD SHORTCUTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+let holdFF=false, holdRW=false;
 
-/* ═══════════ KEYBIND REFERENCE ═══════════ */
-function showKref(){document.getElementById('kref').classList.add('open');updateKrefDisplay()}
-function hideKref(){document.getElementById('kref').classList.remove('open')}
-
-/* ═══════════ THEME ═══════════ */
-function toggleTheme(){
-  const cur=document.documentElement.getAttribute('data-theme');
-  const next=cur==='dark'?'light':'dark';
-  document.documentElement.setAttribute('data-theme',next);
-  document.getElementById('theme-btn').textContent=next==='dark'?'🌙 Dark':'☀️ Light';
-  document.getElementById('theme-btn').classList.toggle('on',next==='dark');
-  localStorage.setItem('gbame_theme',next);
-}
-
-/* ═══════════ ONBOARDING ═══════════ */
-const OB=[
-  {em:'🎮',t:'Welcome to GBA.ME',tx:'Play your legally-obtained GBA, GBC and GB ROMs in the browser. No install, no server — fully private and local.'},
-  {em:'📚',t:'ROM Library',tx:'Your ROMs are saved in your browser via IndexedDB. The Library shows all your games with auto-generated cover art and playtime — no re-uploading needed!'},
-  {em:'⌨️',t:'Keyboard & Gamepad',tx:'Default: X=A, Z=B, A=L, S=R, Arrows=D-pad, Enter=Start, Backspace=Select. USB/Bluetooth gamepads auto-detect! Remap everything in the Keys tab.'},
-  {em:'⚡',t:'Power Features',tx:'F1=Quick Save, F3=Load, F12=Screenshot, F8=Record video, Space=Fast forward, [=Rewind, ]=Frame advance. Press ~ for the full keybind reference!'},
-];
-let obSt=0;
-function openOB(){obSt=0;renderOB();document.getElementById('onboard').classList.add('open')}
-function closeOB(){document.getElementById('onboard').classList.remove('open');localStorage.setItem('gbame_ob','1')}
-function nextOB(){if(obSt<OB.length-1){obSt++;renderOB()}else closeOB()}
-function renderOB(){
-  const s=OB[obSt];
-  document.getElementById('ob-em').textContent=s.em;
-  document.getElementById('ob-t').textContent=s.t;
-  document.getElementById('ob-tx').textContent=s.tx;
-  document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('on',i===obSt));
-  const nb=document.querySelector('#onboard .btn.solid');
-  if(nb)nb.textContent=obSt===OB.length-1?"Let's Play! 🎮":'Next →';
-}
-
-/* ═══════════ TOAST ═══════════ */
-function toast(msg){
-  const stack=document.getElementById('toasts');
-  const t=document.createElement('div');t.className='ti';t.textContent=msg;
-  stack.appendChild(t);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
-  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300)},2700);
-}
-
-/* ═══════════ CLEAR ALL ═══════════ */
-function clearAll(){
-  if(!confirm('Clear ALL data including ROM library? Cannot be undone.'))return;
-  Object.keys(localStorage).filter(k=>k.startsWith('gbame_')).forEach(k=>localStorage.removeItem(k));
-  if(db){db.close();indexedDB.deleteDatabase('gbame');db=null}
-  saves={};cheats={};shots=[];renderSlots();renderRecent();toast('🗑 All data cleared');
-  setTimeout(()=>location.reload(),1200);
-}
-
-/* ═══════════ KEYBOARD SHORTCUTS ═══════════ */
-let holdFF=false,holdRW=false;
 document.addEventListener('keydown',e=>{
-  if(editKRow){
-    e.preventDefault();e.stopPropagation();
-    keys[editKRow]=e.code;saveKeys();renderKM();updateKrefDisplay();
-    const prev=editKRow;editKRow=null;
-    document.querySelectorAll('.kmr.ed').forEach(r=>r.classList.remove('ed'));
-    toast('✅ '+prev+' → '+kdisp(e.code));return;
+  // Key remap capture
+  if(editingKey){
+    e.preventDefault(); e.stopPropagation();
+    const kc=e.keyCode||e.which;
+    keys[editingKey]=kc; saveKeys(); keysChanged=true;
+    const prev=editingKey; editingKey=null;
+    renderKM();
+    document.getElementById('km-notice').style.display='';
+    toast('✅ '+prev+' → '+kname(kc));
+    return;
   }
-  if(e.code==='Backquote'){e.preventDefault();document.getElementById('kref').classList.contains('open')?hideKref():showKref();return}
-  if(e.code==='KeyP'&&!e.ctrlKey&&!e.metaKey){togglePause();return}
-  if(e.code==='KeyM'&&!e.ctrlKey){toggleMute();return}
-  if(e.code==='KeyT'&&!e.ctrlKey&&emuLoaded){cycleFilter();return}
-  if(e.code==='KeyR'&&!e.ctrlKey&&emuLoaded){e.preventDefault();rotateScreen();return}
-  if(e.code==='F12'){e.preventDefault();doShot();return}
-  if(e.code==='F11'){e.preventDefault();toggleFS();return}
-  if(e.code==='F5'){e.preventDefault();resetGame();return}
-  if(e.code==='F1'){e.preventDefault();qSave();return}
-  if(e.code==='F3'){e.preventDefault();qLoad();return}
-  if(e.code==='F8'){e.preventDefault();toggleRec();return}
-  if(e.code==='BracketRight'&&emuLoaded){frameAdv();return}
-  if(e.code==='Equal'||e.code==='NumpadAdd'){adjBright(10);return}
-  if(e.code==='Minus'||e.code==='NumpadSubtract'){adjBright(-10);return}
+  // Emulator shortcuts (don't intercept when EJS has focus on inputs)
+  if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) return;
+
+  if(e.code==='KeyP'&&!e.ctrlKey&&!e.metaKey){ togglePause(); return; }
+  if(e.code==='KeyM'&&!e.ctrlKey){ toggleMute(); return; }
+  if(e.code==='F12'){ e.preventDefault(); doShot(); return; }
+  if(e.code==='F11'){ e.preventDefault(); toggleFS(); return; }
+  if(e.code==='F5') { e.preventDefault(); resetGame(); return; }
+  if(e.code==='F1') { e.preventDefault(); saveSlot(); return; }
+  if(e.code==='F3') { e.preventDefault(); loadSlot(); return; }
+  if(e.code==='BracketRight'&&emuLoaded){ frameAdv(); return; }
+  if(e.code==='Equal'||e.code==='NumpadAdd'){
+    const sl=document.getElementById('bright-sl');
+    const v=Math.min(180,parseInt(sl.value)+10); sl.value=v; setBright(v); return;
+  }
+  if(e.code==='Minus'||e.code==='NumpadSubtract'){
+    const sl=document.getElementById('bright-sl');
+    const v=Math.max(20,parseInt(sl.value)-10); sl.value=v; setBright(v); return;
+  }
   if(e.key==='Escape'){
-    document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open'));
-    if(document.getElementById('kref').classList.contains('open'))hideKref();
-    closeLb();return;
+    if(editingKey){ editingKey=null; renderKM(); }
+    if(document.getElementById('lightbox').classList.contains('open')) closeLb();
+    return;
   }
-  if((e.ctrlKey||e.metaKey)&&e.code==='KeyS'){e.preventDefault();qSave();return}
-  if((e.ctrlKey||e.metaKey)&&e.code==='KeyL'){e.preventDefault();qLoad();return}
+  if((e.ctrlKey||e.metaKey)&&e.code==='KeyS'){ e.preventDefault(); saveSlot(); return; }
+  if((e.ctrlKey||e.metaKey)&&e.code==='KeyL'){ e.preventDefault(); loadSlot(); return; }
+  // Select slot by number
   if(emuLoaded&&!e.ctrlKey&&!e.altKey&&!e.metaKey){
-    const d=parseInt(e.key);if(!isNaN(d)&&d>=1&&d<=8){activeSlot=d;document.getElementById('aslot').value=d;renderSlots();toast('💾 Slot '+d);return}
+    const d=parseInt(e.key);
+    if(!isNaN(d)&&d>=1&&d<=8){ activeSlot=d; document.getElementById('aslot').value=d; renderSlots(); toast('💾 Slot '+d+' selected'); return; }
   }
-  if(e.altKey){const spMap={'1':1,'2':2,'3':4,'4':8,'5':0.5,'6':0.25};if(spMap[e.key]){setSpeed(spMap[e.key]);return}}
-  if(e.code==='Space'&&!holdFF&&emuLoaded){e.preventDefault();holdFF=true;setFF(true);return}
-  if(e.code==='BracketLeft'&&!holdRW&&emuLoaded){holdRW=true;setRW(true);return}
+  // Alt+number for speed
+  if(e.altKey){
+    const sm={'1':1,'2':2,'3':4,'4':0.5,'5':0.25};
+    if(sm[e.key]){ e.preventDefault(); setSpeed(sm[e.key]); return; }
+  }
+  // Fast forward hold
+  if(e.code==='Space'&&!holdFF&&emuLoaded&&!e.ctrlKey){ e.preventDefault(); holdFF=true; setFF(true); return; }
+  // Rewind hold
+  if(e.code==='BracketLeft'&&!holdRW&&emuLoaded){ holdRW=true; startRewind(); return; }
 });
+
 document.addEventListener('keyup',e=>{
-  if(e.code==='Space'&&holdFF){holdFF=false;setFF(false);return}
-  if(e.code==='BracketLeft'&&holdRW){holdRW=false;setRW(false);return}
+  if(e.code==='Space'&&holdFF){ holdFF=false; setFF(false); }
+  if(e.code==='BracketLeft'&&holdRW){ holdRW=false; stopRewind(); }
 });
 
-/* ═══════════ VISIBILITY ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MUTE ON VISIBILITY CHANGE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 document.addEventListener('visibilitychange',()=>{
-  if(!emuLoaded)return;
+  if(!emuLoaded) return;
   if(document.getElementById('mutef-tog')?.checked){
-    try{if(document.hidden)window.EJS_emulator?.setVolume?.(0);else setVol(document.getElementById('vol-sl').value)}catch{}
+    try{
+      if(document.hidden) window.EJS_emulator?.setVolume?.(0);
+      else setVol(document.getElementById('vol-sl').value);
+    }catch(e){}
   }
 });
 
-/* ═══════════ SETTINGS RESTORE ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESTORE SETTINGS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function restoreSettings(){
-  const theme=localStorage.getItem('gbame_theme')||'dark';
-  document.documentElement.setAttribute('data-theme',theme);
-  document.getElementById('theme-btn').textContent=theme==='dark'?'🌙 Dark':'☀️ Light';
-  document.getElementById('theme-btn').classList.toggle('on',theme==='dark');
-
   const scl=localStorage.getItem('gbame_scl')==='1';
-  document.getElementById('scl-tog').checked=scl;toggleScanlines(scl);
-
-  const intsc=localStorage.getItem('gbame_intsc')==='1';
-  document.getElementById('intsc-tog').checked=intsc;if(intsc)document.getElementById('gframe').classList.add('int-sc');
+  document.getElementById('scl-tog').checked=scl;
+  if(scl) toggleScanlines(true);
 
   const touch=localStorage.getItem('gbame_touch')==='1'||('ontouchstart' in window&&window.innerWidth<768);
-  document.getElementById('touch-tog').checked=touch;toggleTouch(touch);
+  document.getElementById('touch-tog').checked=touch;
+  toggleTouch(touch);
 
   const bright=parseInt(localStorage.getItem('gbame_bright')||'100');
-  document.getElementById('bright-sl').value=bright;setBright(bright);
+  document.getElementById('bright-sl').value=bright;
+  setBright(bright);
 
   const filter=localStorage.getItem('gbame_filter')||'none';
   setFilter(filter);
 }
 
-/* ═══════════ PWA ═══════════ */
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e});
-
-/* ═══════════ INIT ═══════════ */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   INIT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 async function init(){
+  loadKeys();
   await openDB().catch(e=>console.warn('IndexedDB unavailable:',e));
-  loadKeys();loadGpad();
-  renderKM();renderGpadMap();
-  restoreSettings();updateKrefDisplay();
-  renderRecent();await renderLib();
-  if(!localStorage.getItem('gbame_ob'))setTimeout(openOB,700);
-  document.getElementById('aslot').addEventListener('change',onSlotSel);
-  const pads=navigator.getGamepads?.();if(pads&&[...pads].some(p=>p))startGpad();
+  renderKM();
+  renderSlots();
+  restoreSettings();
+  await renderLib();
+  document.getElementById('aslot').addEventListener('change',onSlotChange);
 }
 init();
 </script>
