@@ -243,6 +243,64 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
 .rot-180 #game{transform:rotate(180deg)}
 .rot-270 #game{transform:rotate(270deg)}
 
+/* ── FULLSCREEN ── */
+/* When gframe itself is the fullscreen element */
+.gframe:fullscreen,
+.gframe:-webkit-full-screen,
+.gframe:-moz-full-screen,
+.gframe:-ms-fullscreen {
+  width: 100vw !important;
+  height: 100vh !important;
+  border-radius: 0 !important;
+  background: #000 !important;
+  box-shadow: none !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+}
+.gframe:fullscreen #game,
+.gframe:-webkit-full-screen #game,
+.gframe:-moz-full-screen #game,
+.gframe:-ms-fullscreen #game {
+  /* Fill height, keep 3:2 GBA aspect ratio */
+  width: min(100vw, calc(100vh * 1.5)) !important;
+  height: min(100vh, calc(100vw / 1.5)) !important;
+  max-width: 100vw !important;
+  max-height: 100vh !important;
+}
+/* When fs-wrap is the fullscreen element */
+#fs-wrap:fullscreen,
+#fs-wrap:-webkit-full-screen,
+#fs-wrap:-moz-full-screen {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: #000 !important;
+}
+#fs-wrap:fullscreen .gframe,
+#fs-wrap:-webkit-full-screen .gframe,
+#fs-wrap:-moz-full-screen .gframe {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+#fs-wrap:fullscreen #game,
+#fs-wrap:-webkit-full-screen #game,
+#fs-wrap:-moz-full-screen #game {
+  width: min(100vw, calc(100vh * 1.5)) !important;
+  height: min(100vh, calc(100vw / 1.5)) !important;
+}
+#fs-wrap:fullscreen #game canvas,
+#fs-wrap:fullscreen #game video,
+#fs-wrap:-webkit-full-screen #game canvas,
+#fs-wrap:-webkit-full-screen #game video {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Controls bar */
 .cbar{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:560px}
 .cb{display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 11px;
@@ -598,10 +656,12 @@ input[type=range].g::-webkit-slider-thumb{background:var(--gr);box-shadow:0 0 8p
       </div>
 
       <!-- Game frame -->
+      <div id="fs-wrap" style="display:contents">
       <div class="gframe" id="gframe">
         <div id="scl-ov"></div>
         <div id="lcd-ov"></div>
         <div id="game"></div>
+      </div>
       </div>
 
       <!-- Controls bar -->
@@ -1364,11 +1424,63 @@ function toggleTouch(on){document.getElementById('touch-ctrl').style.display=on?
 function setSize(w,h,btn){document.getElementById('game').style.width=w+'px';document.getElementById('game').style.height=h+'px';document.querySelectorAll('#sz-btns .spd').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on')}
 function setAsp(m,btn){const f=document.getElementById('gframe');f.className=f.className.replace(/asp-\S+/g,'').trim();if(m!=='native')f.classList.add('asp-'+m);document.querySelectorAll('#asp-btns .spd').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on')}
 function toggleFS(){
-  const f=document.getElementById('gframe');
-  if(!document.fullscreenElement){f.requestFullscreen().catch(()=>toast('Fullscreen denied'));document.getElementById('cb-fs').classList.add('on')}
-  else{document.exitFullscreen();document.getElementById('cb-fs').classList.remove('on')}
+  if(document.fullscreenElement){
+    document.exitFullscreen();
+    return;
+  }
+  // Always fullscreen the outer wrapper so we control sizing completely
+  const wrap=document.getElementById('fs-wrap');
+  const req=wrap.requestFullscreen||wrap.webkitRequestFullscreen||wrap.mozRequestFullScreen||wrap.msRequestFullscreen;
+  if(req){
+    req.call(wrap).catch(e=>{
+      // fallback: try the game frame directly
+      const f=document.getElementById('gframe');
+      const r2=f.requestFullscreen||f.webkitRequestFullscreen||f.mozRequestFullScreen||f.msRequestFullscreen;
+      if(r2)r2.call(f).catch(()=>toast('Fullscreen denied'));
+    });
+  } else {
+    toast('Fullscreen not supported in this browser');
+  }
 }
-document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.getElementById('cb-fs')?.classList.remove('on')});
+
+function onFSChange(){
+  const btn=document.getElementById('cb-fs');
+  const wrap=document.getElementById('fs-wrap');
+  const gframe=document.getElementById('gframe');
+  const game=document.getElementById('game');
+  if(document.fullscreenElement){
+    btn?.classList.add('on');
+    // Force the game to fill the fullscreen container
+    wrap.style.width='100vw';
+    wrap.style.height='100vh';
+    wrap.style.background='#000';
+    wrap.style.display='flex';
+    wrap.style.alignItems='center';
+    wrap.style.justifyContent='center';
+    gframe.style.borderRadius='0';
+    gframe.style.boxShadow='none';
+    // Size #game to fill while preserving 3:2 aspect ratio
+    const vw=window.screen.width, vh=window.screen.height;
+    const fitW=Math.min(vw, vh*1.5);
+    const fitH=Math.min(vh, vw/1.5);
+    game.style.width=fitW+'px';
+    game.style.height=fitH+'px';
+  } else {
+    btn?.classList.remove('on');
+    // Restore normal sizes
+    wrap.style.cssText='';
+    gframe.style.borderRadius='';
+    gframe.style.boxShadow='';
+    // Restore game to whatever the user had set (default 480x320)
+    const szBtn=document.querySelector('#sz-btns .spd.on');
+    if(!szBtn){game.style.width='480px';game.style.height='320px';}
+  }
+}
+
+document.addEventListener('fullscreenchange', onFSChange);
+document.addEventListener('webkitfullscreenchange', onFSChange);
+document.addEventListener('mozfullscreenchange', onFSChange);
+document.addEventListener('MSFullscreenChange', onFSChange);
 function applySettings(){const cv=document.querySelector('#game canvas');if(cv&&document.getElementById('intsc-tog').checked)cv.style.imageRendering='pixelated'}
 
 /* ═══════════ CHEATS ═══════════ */
