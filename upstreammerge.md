@@ -6,14 +6,11 @@ layout: post
 
 ## Why Not Just Drag and Drop?
 
-When your teacher pushes updates to the OCS Portfolio, you need those changes in your own repo. The manual approach — downloading files, dragging them in, hoping you didn't miss anything — is slow, error-prone, and easy to get wrong. You might overwrite your own work, miss a file, or copy something into the wrong folder without realizing it.
+When there are updates to the OCS Portfolio, you need those changes in your own repo. The manual approach — downloading files, dragging them in, hoping you didn't miss anything — is slow, error-prone, and easy to get wrong. You might overwrite your own work, miss a file, or copy something into the wrong folder without realizing it.
 
-Git gives you a better way.
+Git gives you a better way. By linking your personal repository to the original OCS Portfolio as an **upstream remote**, Git handles the comparison for you. It knows exactly what changed, what's new, and what you've already got. Instead of you eyeballing two folders, Git does the diff automatically and only brings in what's actually different. If there's a conflict between your code and the incoming update, it flags it clearly so you can decide what to keep, so your work doesnt get overwritten
 
-By linking your personal repository to the original OCS Portfolio as an **upstream remote**, Git handles the comparison for you. It knows exactly what changed, what's new, and what you've already got. Instead of you eyeballing two folders, Git does the diff automatically and only brings in what's actually different. If there's a conflict between your code and the incoming update, it flags it clearly so you can decide what to keep — no silent overwrites.
-
-Think of it like this: drag and drop is copying blindly. Git upstream merging is a smart, tracked, reversible sync.
-
+Think of it like this: drag and drop is copying blindly.
 ---
 
 ## First-Time Setup
@@ -32,7 +29,7 @@ git merge upstream/main --allow-unrelated-histories
 - `git fetch upstream` downloads the latest changes from that repo without touching your files yet
 - `git merge upstream/main` is where the magic happens — Git weaves the new updates into your project, preserving your own changes wherever possible
 
-You may see **merge conflicts** appear in VSCode's Version Control panel. This just means both you and the upstream made changes to the same file. It's not an error — it's Git asking you to make a decision.
+You may see **merge conflicts** appear in VSCode's Version Control panel. This just means both you and the upstream made changes to the same file. It's not an error, it just means Git wants you to confirm which version should be on your repository
 
 - Open the merge conflict editor and select **Accept Incoming** to take all new updates
 - After resolving each conflict, click **+** next to each file to move it to **Staged Changes**
@@ -56,10 +53,9 @@ git fetch upstream
 git merge upstream/main
 ```
 
-That's it. No downloading, no file hunting, no guessing. Git knows where the upstream is, fetches whatever is new, and merges it in. From here the routine is the same:
+Thats all you have to do. From here the routine is the same:
 
 - Resolve any merge conflicts in VSCode
 - Test locally to make sure everything works
 - Sync via VSCode Version Control to push your updated repo
 
-Over time, this becomes second nature — and it's exactly how developers stay current with any open-source project in the real world.
