@@ -8,9 +8,8 @@ layout: post
 
 When there are updates to the OCS Portfolio, you need those changes in your own repo. The manual approach — downloading files, dragging them in, hoping you didn't miss anything — is slow, error-prone, and easy to get wrong. You might overwrite your own work, miss a file, or copy something into the wrong folder without realizing it.
 
-Git gives you a better way. By linking your personal repository to the original OCS Portfolio as an **upstream remote**, Git handles the comparison for you. It knows exactly what changed, what's new, and what you've already got. Instead of you eyeballing two folders, Git does the diff automatically and only brings in what's actually different. If there's a conflict between your code and the incoming update, it flags it clearly so you can decide what to keep, so your work doesnt get overwritten
+Git gives you a better way. By linking your personal repository to the original OCS Portfolio as an **upstream remote**, Git handles the comparison for you. It knows exactly what changed, what's new, and what you've already got. Instead of you eyeballing two folders, Git does the diff automatically and only brings in what's actually different. If there's a conflict between your code and the incoming update, it flags it clearly so you can decide what to keep, so your work doesnt get overwritten.
 
-Think of it like this: drag and drop is copying blindly.
 ---
 
 ## First-Time Setup
